@@ -1,0 +1,699 @@
+---
+title: "downstream"
+author: "Alexander Haglund"
+date: "2022-11-10"
+output:
+  html_notebook: default
+  workflowr::wflow_html:
+    toc: true
+    code_folding: hide
+editor_options: 
+  chunk_output_type: inline
+---
+# Libraries
+```{r, class.source = 'fold-show'}
+
+suppressMessages(library(tidyr))
+suppressMessages(library(dplyr))
+```
+
+# eQTL replication
+
+
+
+# Overview of COLOC and MR numbers
+
+```{r, class.source = 'fold-hide'}
+coloc<-read.table("data/COLOC_MR_RESULTS//2022-10-25_FULL_COLOC_RES.txt")
+message(paste0("Total traits analyzed: ",length(unique(coloc$GWAS))))
+message(paste(unique(coloc$GWAS),collapse=", "))
+coloc<-coloc[coloc$PP.H4.abf>0.5,]
+coloc<-coloc[,!colnames(coloc) %in% c("lead_snp","eQTL_pval","eQTL_FDR","directionality","GWAS_pval")]
+
+message(paste0("Total traits with coloc hits: ",length(unique(coloc$GWAS))))
+message(paste0("Total coloc hits: ",nrow(coloc)))
+message(paste(unique(coloc$GWAS),collapse=", "))
+```
+
+## Percentage mapping to a single cell type
+```{r, class.source = 'fold-hide'}
+
+coloc$gene_GWAS<-paste0(coloc$gene,"_",coloc$GWAS)
+freq<-as.data.frame(table(coloc$gene_GWAS))
+
+total<-nrow(freq)
+morethan1<-nrow(freq[freq$Freq>1,])
+only1<-nrow(freq)-morethan1
+
+
+message(paste0("Of ",total," unique trait/gene combinations, ",morethan1," appear more than once (implicating more than one celltype)."))
+message(paste0("This equates to a percentage of ",round((only1/total)*100,2),"% COLOC hits that are cell-type specific."))
+
+```
+
+# MR overview
+
+## total numbers
+```{r, class.source = 'fold-show'}
+
+full<-read.table("data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt")
+full$GWAS_gene_ct<-paste0(full$GWAS,"_",full$gene,"_",full$celltype)
+
+message(paste0("Total tests: ",nrow(full)))
+message(paste0("Total traits: ",length(unique(full$GWAS))))
+message(paste(unique(full$GWAS),collapse=", "))
+message(paste0("Total unique genes: ",length(unique(full$gene))))
+message(paste0("Total unique IV sets: ",length(unique(full$IVs))))
+message(paste0("Total unique IV SNPs: ",length(unique(unlist(strsplit(full$IVs,","))))))
+
+
+##multi vs single ivs
+multi_ivs<-length(grep(",",full$IVs))
+single_ivs<-nrow(full)-multi_ivs
+multi_ivs_prop<-multi_ivs/nrow(full)
+single_ivs_prop<-round((1-multi_ivs_prop),3)*100
+message(paste0("In total, ",single_ivs," IV sets only had a single SNP, equating to ",single_ivs_prop,"%"))
+
+###filter results
+full<-filter(full,IVW<0.05)
+message(paste0("Total hits with significant MR results: ",nrow(full)))
+message(paste0("Total traits with significant MR results: ",length(unique(full$GWAS))))
+message(paste(unique(full$GWAS),collapse=", "))
+message(paste0("Total unique genes in MR results: ",length(unique(full$gene))))
+full$gene_trait<-paste0(full$gene,"_",full$GWAS)
+message(paste0("Total unique gene/traits in MR results: ",length(unique(full$gene_trait))))
+message(paste0("Total unique IV sets in MR results: ",length(unique(full$IVs))))
+
+```
+
+## How many genes across more than one trait
+
+```{r, class.source = 'fold-show'}
+full<-read.table("data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt")
+full<-full[full$IVW<0.05,]
+trait_split<-split(full,full$GWAS)
+
+#split by gwas
+for(i in 1:length(trait_split)){
+    df<-trait_split[[i]]
+    #keep unique genes per trait
+    df<-df[!duplicated(df$gene),]
+    trait_split[[i]]<-df
+    }
+trait_df<-do.call(rbind,trait_split)
+
+#check how many genes appear more than once
+gene_freq<-as.data.frame(table(trait_df$gene))
+gene_freq<-gene_freq[gene_freq$Freq>1,]
+genes<-gene_freq$Var1
+length(genes)
+
+```
+
+## How many genes to a single cell-type
+
+```{r, class.source = 'fold-show'}
+full<-read.table("data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt")
+full<-full[full$IVW<0.05,]
+full$gene_trait<-paste0(full$GWAS,"_",full$gene)
+freq<-as.data.frame(table(full$gene_trait))
+tot<-nrow(freq)
+over_1_ct<-nrow(freq[freq$Freq>1,])
+only_1_ct<-tot-over_1_ct
+only_1_ct
+only_1_ct/tot
+
+```
+
+# Epigenetic Intersection
+
+## SNP2TFBS
+```{r,eval=FALSE}
+source("data/MARKDOWN//helper_funcs.r")
+full<-read.table("data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt")
+full$first_iv<-as.data.frame(do.call(rbind,strsplit(full$IVs,",")))$V1
+full$snp_gene<-paste0(full$first_iv,"_",full$gene)
+
+
+## dataset obtained from https://ccg.epfl.ch/snp2tfbs/ 
+snp2tfbs<-read.table("data/EXT_DATASETS//SNP2TFBS/snp2tfbs_JASPAR_CORE_2014_vert.txt",sep="\t",fill=T)
+colnames(snp2tfbs)<-c("rsid","chr","pos","A1","A2","disrupted_tfs_n","tf","PWM_A1","PWM_A2","PWM_diff")
+
+##filter for tfbs disruption with scores
+snp2tfbs<-filter(snp2tfbs,PWM_A1>=0 | PWM_A2>=0)
+
+##get full list of IVs, some of the MR hits have more than one IV
+snps<-full$IVs
+rsids<-strsplit(full$IVs,", ")
+
+##this function is in the helper_funcs.r file
+results<-snp2tfbs_check_IVs(snp_list=rsids,snp2tfbs_table=snp2tfbs)
+
+results$IVs<-full$IVs
+table(results$tf_disrupted_any)
+#out of the 258 MR tests, 66 contained an IV predicted to disrupt SNP2TFBS binding
+full$SNP2TFBS_disrupt<-results$tf_disrupted_any
+full$SNP2TFBS_top_TF<-results$top_tf
+
+#now check unique IVs
+results<-results[!duplicated(results$IVs),]
+table(results$tf_disrupted_any)
+
+results$IVs<-full$IVs
+table(results$tf_disrupted_any)
+#out of the 258 MR tests, 66 contained an IV predicted to disrupt SNP2TFBS binding
+full$SNP2TFBS_disrupt<-results$tf_disrupted_any
+full$SNP2TFBS_top_TF<-results$top_tf
+
+results$IVs<-full$IVs
+
+message("total IV sets disrupting TFBS")
+table(results$tf_disrupted_any)
+
+full$SNP2TFBS_disrupt<-results$tf_disrupted_any
+full$SNP2TFBS_top_TF<-results$top_tf
+
+#now check unique IVs
+message("total unique IV sets disrupting TFBS")
+results<-results[!duplicated(results$IVs),]
+table(results$tf_disrupted_any)
+
+snp2tfbs_suppl_table<-full[,c("GWAS","celltype","gene","IVs","SNP2TFBS_disrupt","SNP2TFBS_top_TF")]
+write.table(snp2tfbs_suppl_table,"data/TABLES/SNP2TFBS_table.txt")
+
+```
+
+```{r}
+results<-read.table("data/TABLES/SNP2TFBS_table.txt")
+```
+
+### total IV sets disrupting TFBS:
+```{r}
+
+table(results$SNP2TFBS_disrupt)
+```
+
+### total unique IV sets disrupting TFBS:
+```{r}
+### total unique IV sets disrupting TFBS:
+results<-results[!duplicated(results$IVs),]
+table(results$SNP2TFBS_disrupt)
+```
+
+## Nott intersections
+```{r, class.source = 'fold-show'}
+
+source("data/MARKDOWN//helper_funcs.r")
+##the helper funcs contain a number of helper functions created to speed up analysis, as well as essential packages.
+## Note; these functions include a liftover step (hg38 to hg19, both genes and SNPs) to intersect with the Alexi Nott dataset.
+## this necessitates a chain file (obtained from UCSC)
+
+#this will be used downstream in the intersect wrap function
+chain_dir<-"data/helper_files/"
+imported_chain<-import.chain(paste0(chain_dir,"/hg38ToHg19.over.chain"))
+
+inputdir<-"data/EXT_DATASETS/"
+
+# reformat MR results
+full<-read.table("data/COLOC_MR_RESULTS/2022-10-25_FULL_MR_RES.txt",stringsAsFactors = FALSE)
+full$GWAS[which(full$GWAS=="SCV.CAUDATE")]<-"SCV"
+##shorten cell-type names for easier plotting
+full$celltype[which(full$celltype=="Excitatory")]<-"ExN"
+full$celltype[which(full$celltype=="Inhibitory")]<-"InN"
+full$celltype[which(full$celltype=="Oligo")]<-"ODC"
+
+##count how many are left when only considering the 4 cell types
+nrow(filter(full,celltype %in% c("ExN","ODC","InN","Microglia")))
+
+##read in SNP locations file
+snp_locations<-as.data.frame(data.table::fread("data/helper_files//snp_chromlocations_hg38.csv",stringsAsFactors = FALSE))
+
+##read in gene locations file
+gene_locations<-read.table("data/helper_files/Microglia_agg_cpm_gene_locations.csv",stringsAsFactors = FALSE)
+
+```
+
+### Microglia 
+
+```{r, class.source = 'fold-show'}
+message("Intersecting Microglia")
+source("data/MARKDOWN//helper_funcs.r")
+atac<-read.table(paste0(inputdir,"ALEXINOTT_PLACSEQ/brain-cell-type-peak-files//ATAC/PU1_optimal_peak_IDR_ENCODE.ATAC.bed"),stringsAsFactors = FALSE)
+h3k27me<-read.table(paste0(inputdir,"ALEXINOTT_PLACSEQ/brain-cell-type-peak-files//H3K4me3//PU1_optimal_peak.H3K4me3.bed"),stringsAsFactors = FALSE)
+h3k27ac<-read.table(paste0(inputdir,"ALEXINOTT_PLACSEQ//brain-cell-type-peak-files//H3K27ac/PU1_optimal_peak.H3K27.bed"),stringsAsFactors = FALSE)
+plac<-read.table(paste0(inputdir,"ALEXINOTT_PLACSEQ//brain-cell-type-peak-files//PLACseq/Microglia.5k.2.peaks.bedpe"),head=T,stringsAsFactors = FALSE)
+
+gene_locations<-read.table("data/helper_files/Microglia_agg_cpm_gene_locations.csv",stringsAsFactors = FALSE)
+
+
+full2<-full[full$celltype %in% "Microglia",]
+microglia_res<-intersect_wrap(full2,gene_locations = gene_locations, snp_locations=snp_locations,
+                    plac_peaks=plac,atac_peaks=atac,h3kme_peaks=h3k27me,h3kac_peaks=h3k27ac)
+
+colnames(microglia_res$gene_df)<-c("ATAC","H3K4me3","H3K27ac","gene","trait","PLAC","loop")
+colnames(microglia_res$snp_df)<-c("ATAC","H3K4me3","H3K27ac","gene","trait","PLAC","position")
+
+
+##we decided not too include the gene promoter info. Add plac-seq loop info to snp_df
+microglia_res$snp_df$PLAC<-microglia_res$gene_df$loop
+microglia_res$snp_df$trait<-gsub("_",".",microglia_res$snp_df$trait)
+
+##save results in EXT_DATASETS/RESULTS folder
+saveRDS(microglia_res,paste0(inputdir,"RESULTS/microglia_epigenetic_intersection_res.rds"))
+
+
+## we decided to include the SNP2TFBS 
+microglia_res<-readRDS("data/EXT_DATASETS//RESULTS//microglia_epigenetic_intersection_res.rds")
+snp2tfbs<-read.table("data/TABLES//SNP2TFBS_table.txt")
+tmp<-snp2tfbs[snp2tfbs$celltype %in% "Microglia",]
+tmp$trait<-paste0(tmp$GWAS,".",tmp$gene)
+microglia_res$snp_df$SNP2TFBS<-tmp[match(microglia_res$snp_df$trait,tmp$trait),]$SNP2TFBS_disrupt
+microglia_res$snp_df$trait<-gsub("_",".",microglia_res$snp_df$trait)
+
+##this also creates a ggobject, see figure section
+g<-create_plot_wrap(microglia_res,paste0(inputdir,"RESULTS/microglia_intersect.png"),color_pal=c("#E3E3EF","#7876B1FF"))
+g
+```
+
+### Oligo 
+
+```{r, class.source = 'fold-show'}
+###Oligo
+
+message("Intersecting Oligos")
+atac<-read.table(paste0(inputdir,"ALEXINOTT_PLACSEQ/brain-cell-type-peak-files//ATAC/Olig2_optimal_peak_IDR_ENCODE.ATAC.bed"))
+h3k27me<-read.table(paste0(inputdir,"ALEXINOTT_PLACSEQ/brain-cell-type-peak-files//H3K4me3//Olig2_optimal_peak.H3K4me3.bed"))
+h3k27ac<-read.table(paste0(inputdir,"ALEXINOTT_PLACSEQ//brain-cell-type-peak-files//H3K27ac/Olig2_optimal_peak.H3K27.bed"))
+plac<-read.table(paste0(inputdir,"ALEXINOTT_PLACSEQ//brain-cell-type-peak-files//PLACseq/Olig2.5k.2.peaks.bedpe"),head=T)
+
+gene_locations<-read.table("data/helper_files/Oligo_agg_cpm_gene_locations.csv")
+
+full2<-full[full$celltype %in% "ODC",]
+
+oligo_res<-intersect_wrap(full2,gene_locations = gene_locations, snp_locations=snp_locations,
+                    plac_peaks=plac,atac_peaks=atac,h3kme_peaks=h3k27me,h3kac_peaks=h3k27ac)
+
+colnames(oligo_res$gene_df)<-c("ATAC","H3K4me3","H3K27ac","gene","trait","PLAC","loop")
+colnames(oligo_res$snp_df)<-c("ATAC","H3K4me3","H3K27ac","gene","trait","PLAC","position")
+
+oligo_res$snp_df$PLAC<-oligo_res$gene_df$loop
+oligo_res$snp_df$trait<-gsub("_",".",oligo_res$snp_df$trait)
+
+saveRDS(oligo_res,paste0(inputdir,"RESULTS/oligo_epigenetic_intersection_res.rds"))
+
+## we decided to include the SNP2TFBS 
+
+oligo_res<-readRDS("data/EXT_DATASETS//RESULTS//oligo_epigenetic_intersection_res.rds")
+snp2tfbs<-read.table("data/TABLES//SNP2TFBS_table.txt")
+tmp<-snp2tfbs[snp2tfbs$celltype %in% "ODC",]
+tmp$trait<-paste0(tmp$GWAS,".",tmp$gene)
+oligo_res$snp_df$SNP2TFBS<-tmp[match(oligo_res$snp_df$trait,tmp$trait),]$SNP2TFBS_disrupt
+g<-create_plot_wrap(oligo_res,paste0(inputdir,"RESULTS/oligo_intersect.png"),color_pal=c("#E1EAEE","#6F99ADFF"),dims=c(width=4,height=8))
+g
+
+
+```
+
+### Neurons
+```{r, class.source = 'fold-show'}
+
+##Splitting Exc and Inh Neur in two, too large for a single plot
+
+
+##Exc Neur
+message("Intersecting ExcNeurons")
+atac<-read.table(paste0(inputdir,"ALEXINOTT_PLACSEQ/brain-cell-type-peak-files//ATAC/NeuN_optimal_peak_IDR_ENCODE.ATAC.bed"))
+h3k27me<-read.table(paste0(inputdir,"ALEXINOTT_PLACSEQ/brain-cell-type-peak-files//H3K4me3//NeuN_optimal_peak.H3K4me3.bed"))
+h3k27ac<-read.table(paste0(inputdir,"ALEXINOTT_PLACSEQ//brain-cell-type-peak-files//H3K27ac/NeuN_optimal_peak.H3K27.bed"))
+plac<-read.table(paste0(inputdir,"ALEXINOTT_PLACSEQ//brain-cell-type-peak-files//PLACseq/NeuN.5k.2.peaks.bedpe"),head=T)
+
+gene_locations<-read.table("data/helper_files/Excitatory_agg_cpm_gene_locations.csv")
+
+full2<-full[full$celltype %in% "ExN",]
+
+neurons_res<-intersect_wrap(full2,gene_locations = gene_locations, snp_locations=snp_locations,
+                    plac_peaks=plac,atac_peaks=atac,h3kme_peaks=h3k27me,h3kac_peaks=h3k27ac)
+colnames(neurons_res$gene_df)<-c("ATAC","H3K4me3","H3K27ac","gene","trait","PLAC","loop")
+colnames(neurons_res$snp_df)<-c("ATAC","H3K4me3","H3K27ac","gene","trait","PLAC","position")
+
+neurons_res$snp_df$trait<-gsub("_",".",neurons_res$snp_df$trait)
+neurons_res$snp_df$trait<-paste0(neurons_res$snp_df$trait,".ExN")
+neurons_res$snp_df$PLAC<-neurons_res$gene_df$loop
+
+saveRDS(neurons_res,paste0(inputdir,"RESULTS/Excneurons_epigenetic_intersection_res.rds"))
+
+
+
+## we decided to include the SNP2TFBS 
+
+neurons_res<-readRDS("data/EXT_DATASETS//RESULTS//Excneurons_epigenetic_intersection_res.rds")
+snp2tfbs<-read.table("data/TABLES//SNP2TFBS_table.txt")
+tmp<-snp2tfbs[snp2tfbs$celltype %in% "Excitatory",]
+tmp$celltype<-"ExN"
+tmp$trait<-paste0(tmp$GWAS,".",tmp$gene,".",tmp$celltype)
+neurons_res$snp_df$SNP2TFBS<-tmp[match(neurons_res$snp_df$trait,tmp$trait),]$SNP2TFBS_disrupt
+g<-create_plot_wrap(neurons_res,paste0(inputdir,"RESULTS/Excneuron_intersect.png"),color_pal=c("#F8E6D3","#E18727FF"))
+g
+
+
+##Inh Neur
+
+message("Intersecting InhNeurons")
+atac<-read.table(paste0(inputdir,"ALEXINOTT_PLACSEQ/brain-cell-type-peak-files//ATAC/NeuN_optimal_peak_IDR_ENCODE.ATAC.bed"))
+h3k27me<-read.table(paste0(inputdir,"ALEXINOTT_PLACSEQ/brain-cell-type-peak-files//H3K4me3//NeuN_optimal_peak.H3K4me3.bed"))
+h3k27ac<-read.table(paste0(inputdir,"ALEXINOTT_PLACSEQ//brain-cell-type-peak-files//H3K27ac/NeuN_optimal_peak.H3K27.bed"))
+plac<-read.table(paste0(inputdir,"ALEXINOTT_PLACSEQ//brain-cell-type-peak-files//PLACseq/NeuN.5k.2.peaks.bedpe"),head=T)
+
+gene_locations<-read.table("data/helper_files/Inhibitory_agg_cpm_gene_locations.csv")
+
+full2<-full[full$celltype %in% "InN",]
+
+neurons_res<-intersect_wrap(full2,gene_locations = gene_locations, snp_locations=snp_locations,
+                    plac_peaks=plac,atac_peaks=atac,h3kme_peaks=h3k27me,h3kac_peaks=h3k27ac)
+colnames(neurons_res$gene_df)<-c("ATAC","H3K4me3","H3K27ac","gene","trait","PLAC","loop")
+colnames(neurons_res$snp_df)<-c("ATAC","H3K4me3","H3K27ac","gene","trait","PLAC","position")
+
+neurons_res$snp_df$trait<-gsub("_",".",neurons_res$snp_df$trait)
+neurons_res$snp_df$trait<-paste0(neurons_res$snp_df$trait,".InN")
+neurons_res$snp_df$PLAC<-neurons_res$gene_df$loop
+
+saveRDS(neurons_res,paste0(inputdir,"RESULTS/Inneurons_epigenetic_intersection_res.rds"))
+
+
+## we decided to include the SNP2TFBS 
+
+neurons_res<-readRDS("data/EXT_DATASETS//RESULTS//Inneurons_epigenetic_intersection_res.rds")
+snp2tfbs<-read.table("data/TABLES//SNP2TFBS_table.txt")
+tmp<-snp2tfbs[snp2tfbs$celltype %in% "Inhibitory",]
+tmp$celltype<-"InN"
+tmp$trait<-paste0(tmp$GWAS,".",tmp$gene,".",tmp$celltype)
+neurons_res$snp_df$SNP2TFBS<-tmp[match(neurons_res$snp_df$trait,tmp$trait),]$SNP2TFBS_disrupt
+g<-create_plot_wrap(neurons_res,paste0(inputdir,"RESULTS/Inneuron_intersect.png"),color_pal=c("#F8E6D3","#E18727FF"))
+g
+```
+
+# Validation; pQTL, OpenTargets, DGidb, STITCH
+
+## pQTL
+```{r, class.source = 'fold-show'}
+source("data/MARKDOWN//helper_funcs.r")
+full<-read.table("data/COLOC_MR_RESULTS/2022-10-25_FULL_MR_RES.txt")
+#downstream analysis - at this point, filter for significant MR hits
+full<-full[full$IVW<0.05,]
+
+pqtl<-read.csv("data/EXT_DATASETS//PQTL/ROSMAP_DLPFC_pQTLs.csv",head=T)
+
+##attach protein symbols, manually converted from uniprot IDs
+conversion<-read.table("data/EXT_DATASETS//PQTL//Uniprot_Conversion.txt",head=T)
+pqtl$gene<-conversion[match(pqtl$UNIPROT,conversion$From),]$To
+pqtl<-pqtl[complete.cases(pqtl),]
+
+##use helper function to convert chrpos to rsids for intersection with our MR hits
+pqtl$chrpos=paste0(pqtl$CHR,":",pqtl$POS)
+
+#build is hg37
+pqtl$SNP<-chrpos_to_rsid(pqtl$chrpos,build="hg37")
+pqtl$snp_gene<-paste0(pqtl$SNP,"_",pqtl$gene)
+```
+
+
+```{r, class.source = 'fold-show',eval=FALSE}
+
+# get SNPs in LD
+this step takes a long time.
+
+outdir<-("EXT_DATASETS//RESULTS/LD_RESULTS/")
+snps<-strsplit(full$IVs,", ")
+snps<-unlist(snps)
+
+# Using a loop to set output file
+
+for(i in 1:length(snps)){
+    snp<-snps[i]
+    suppressMessages(ld_res<-LDlinkR::LDproxy(snp,pop="CEU",token = "f3d054e6c0ee"))
+    write.table(ld_res,paste0(outdir,snp,"_ldres.txt"))
+    }
+
+```
+
+
+```{r, class.source = 'fold-show'}
+
+##treat every IV as a list, to account for situations where you have more than one IV
+IVs<-strsplit(full$IVs,", ")
+##keep IVs>0.8
+r2_filter<-0.7
+pqtl_FDR_min<-0.05
+
+ld_file_list<-list.files("data/EXT_DATASETS//RESULTS/LD_RESULTS/",full.names=T)
+
+#create empty result vector
+resvec<-vector()
+pqtl_fdr<-vector()
+lead_snp<-vector()
+for(i in 1:nrow(full)){
+     
+    tmp_ivs<-IVs[[i]]
+    gene<-full$gene[i]
+    
+    ##check pQTL first to see if protein is assessed in this dataset (they only look at ~7k proteins)
+    tmp_pqtl<-pqtl[pqtl$gene %in% gene,]
+    if(nrow(tmp_pqtl)==0){
+        resvec<-c(resvec,"N/a")
+        pqtl_fdr<-c(pqtl_fdr,"N/a")
+        lead_snp<-c(lead_snp,"N/a")
+        next
+        }
+
+
+    ##get SNPs
+
+    if(length(tmp_ivs)>1){
+        #if more than one IV, read in each LD table sequentially and bind together
+
+        #initiate empty df
+        ld_res<-data.frame()
+        for(b in 1:length(tmp_ivs)){
+            x<-tmp_ivs[b]
+            #grab the LD file by matching IV name
+            ld_file<-ld_file_list[grep(x,ld_file_list)]
+            ld_res1<-read.table(ld_file)
+            ld_res<-rbind(ld_res,ld_res1)
+            }
+        } else {
+        #grab the LD file by matching IV name
+        ld_file<-ld_file_list[grep(tmp_ivs,ld_file_list)]
+        ld_res<-read.table(ld_file)
+        }
+    #now filter for snps in high LD using a decided threshold
+    ld_res<-filter(ld_res, R2>r2_filter)
+    
+    ld_res$SNP_gene<-paste0(ld_res$RS_Number,"_",gene)
+
+    
+    
+    #now check SNP/gene pairs
+    tmp_pqtl<-filter(tmp_pqtl,snp_gene %in% ld_res$SNP_gene)
+    
+    #filter for the FDR threshold
+    tmp_pqtl<-filter(tmp_pqtl,FDR<pqtl_FDR_min)
+    
+    if(nrow(tmp_pqtl)>0){
+        resvec<-c(resvec,"YES")
+        
+        #save top hit and lead SNP
+        pqtl_fdr<-c(pqtl_fdr,min(tmp_pqtl$FDR))
+        snp<-tmp_pqtl[order(tmp_pqtl$FDR),]$SNP[1]
+        lead_snp<-c(lead_snp,snp)
+        }else{
+        resvec<-c(resvec,"NO")
+        pqtl_fdr<-c(pqtl_fdr,"NO")
+        lead_snp<-c(lead_snp,"NO")
+        }
+    }
+
+```
+
+
+```{r, class.source = 'fold-show'}
+
+full$pQTL_hit<-resvec
+full$pQTL_snp<-lead_snp
+full$pQTL_FDR<-pqtl_fdr
+pqtl_table<-full[,c("GWAS","celltype","gene","IVs","eQTL_FDR","pQTL_hit","pQTL_snp","pQTL_FDR")]
+
+head(pqtl_table)
+
+```
+
+## stitch
+```{r, class.source = 'fold-show'}
+
+
+indir<-"data/EXT_DATASETS//STITCH/"
+library(biomaRt)
+full<-read.table("data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt")
+### filter
+full<-full[full$IVW<0.05,]
+
+
+#read in data. Obtained from http://stitch.embl.de/
+stitch<-read.table(paste0(indir,"9606.protein_chemical.links.v5.0.tsv"),head=T)
+stitch$protein<-gsub("9606.","",stitch$protein)
+
+stitch$combined_score<-stitch$combined_score/1000
+mart = useMart(host = 'grch37.ensembl.org', biomart='ENSEMBL_MART_ENSEMBL', dataset='hsapiens_gene_ensembl')
+mart=useDataset("hsapiens_gene_ensembl",mart = mart)
+
+ensembl_genes <-unique(stitch$protein)
+gene_names <- getBM(
+    filters= "ensembl_peptide_id", 
+    attributes= c("ensembl_peptide_id","hgnc_symbol","description"),
+    values= ensembl_genes,
+    mart= mart)
+stitch$gene<-gene_names[match(stitch$protein,gene_names$ensembl_peptide_id),]$hgnc_symbol
+
+##filter by stitch score
+stitch_score_min=0.7
+stitch_filtered<-stitch[stitch$combined_score>stitch_score_min,]
+
+full$STITCH_intersect<-sapply(full$gene,function(x){
+    tmp_stitch<-stitch_filtered[stitch_filtered$gene %in% x,]
+    if(nrow(tmp_stitch)>=1){
+          return("YES")
+        }else{
+        return("NO")
+        }
+    })
+
+full$STITCH_n_compounds<-sapply(full$gene,function(x){
+    tmp_stitch<-stitch_filtered[stitch_filtered$gene %in% x,]
+    if(nrow(tmp_stitch)>=1){
+          return(nrow(tmp_stitch))
+        }else{
+        return(0)
+        }
+    })
+stitch_table<-full[,c("GWAS","celltype","gene","STITCH_intersect","STITCH_n_compounds")]
+write.table(stitch_table,"data/TABLES/stitch_table.txt")
+
+```
+
+### check numbers that have a hit
+
+```{r}
+stitch_table<-read.table("data/TABLES//stitch_table.txt")
+stitch_table<-stitch_table[!duplicated(stitch_table$gene),]
+table(stitch_table$STITCH_intersect)
+```
+
+## OpenTargets
+
+```{r, class.source = 'fold-show'}
+source("data/MARKDOWN//helper_funcs.r")
+suppressMessages(library(sparklyr))
+
+sc <- spark_connect(master = "local",version="3.1")
+
+
+full<-read.table("data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt")
+full<-full[full$IVW<0.05,]
+
+evidencePath <-"data/EXT_DATASETS//OPENTARGETS/associationByOverallDirect"
+evd <- spark_read_parquet(sc,path = evidencePath)
+OT_disease<-evd %>% collect()
+
+##keep scores above 0
+OT_disease<-OT_disease[OT_disease$score>0,]
+
+#my own helper function to convert geneids; see helper_funcs.r
+conversion_df<-convert_geneids(unique(OT_disease$targetId),format="ENSEMBL",conversion="SYMBOL")
+OT_disease$gene<-conversion_df[match(OT_disease$targetId,conversion_df$pre_conversion),]$symbols
+
+```
+
+```{r}
+### read in disease/trait names
+#this step takes a long time
+evidencePath <-"data/EXT_DATASETS//OPENTARGETS/diseases/"
+OT_disease_terms<- spark_read_parquet(sc,path=evidencePath)
+OT_disease_terms<-OT_disease_terms %>%
+collect()
+```
+
+```{r}
+trait_names<-c("Alzheimer disease","attention deficit-hyperactivity disorder",
+                 "bipolar disorder","Generalized epilepsy","frontotemporal dementia","hippocampal volume",
+                 "intracranial volume measurement","insomnia","intelligence",
+                 "major depressive disorder","multiple sclerosis","neurotic","Parkinson",
+                 "caudate nucleus volume","schizophrenia","sleep duration")
+trait_df<-data.frame(GWAS=unique(full$GWAS),trait=trait_names)
+full$trait<-trait_df[match(full$GWAS,trait_df$GWAS),]$trait
+```
+
+```{r}
+
+resvec<-vector()
+for(i in 1:nrow(full)){
+    mr_gene<-full$gene[i]
+    trait<-full$trait[i]
+    
+    ##extract trait IDs from the first opentargets dataset, looking only at the MR gene
+    OT_disease_tmp<-filter(OT_disease,gene %in% mr_gene)
+    trait_ids<-OT_disease$diseaseId
+
+    if(nrow(OT_disease_tmp)==0){
+        resvec<-c(resvec,"NO")
+        next
+        }
+    
+    ##now check in the disease terms whether they appear (can be more than one hit)
+    OT_disease_terms_tmp<-filter(OT_disease_terms,id %in% trait_ids)
+    OT_disease_terms_tmp<-OT_disease_terms_tmp[grep(trait,OT_disease_terms_tmp$synonyms),]
+
+    if(nrow(OT_disease_terms_tmp)>0){
+        resvec<-c(resvec,"YES")
+        }else{
+        resvec<-c(resvec,"NO")
+    }
+}
+
+```
+
+```{r}
+full$OpenTargets_disease_hit<-resvec
+OT_table<-full[,c("GWAS","gene","celltype","OpenTargets_disease_hit")]
+write.table(OT_table,"data/TABLES/OpenTargets_table.txt")
+```
+
+
+## DGIdb
+```{r}
+full<-read.table("data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt")
+full<-full[full$IVW<0.05,]
+
+## read in dgidb dataset
+dgidb<-read.csv("data/EXT_DATASETS/DGIDB/interactions.tsv",sep="\t")
+
+full$DGIDB_intersect<-sapply(full$gene,function(x){
+    tmp_dgidb<-dgidb[dgidb$gene_name %in% x,]
+    if(nrow(tmp_dgidb)>=1){
+          return("YES")
+        }else{
+        return("NO")
+        }
+    })
+
+dgidb_table<-full[,c("GWAS","celltype","gene","DGIDB_intersect")]
+write.table(dgidb_table,"data/TABLES/dgidb_table.txt")
+```
+
+### check numbers that have a hit
+
+```{r}
+dgidb_table<-read.table("data/TABLES//OpenTargets_table.txt")
+dgidb_table<-dgidb_table[!duplicated(dgidb_table$gene),]
+table(dgidb_table$DGIDB_intersect)
+```
+
+
