@@ -1,11 +1,23 @@
 ---
-title: "Home"
+title: "scMR"
 site: workflowr::wflow_site
 output:
   workflowr::wflow_html:
+    
     toc: false
 editor_options:
   chunk_output_type: console
 ---
+This website contains all code in the paper; ""
 
-Welcome to my research website.
+
+[eQTL analysis](eQTL_analysis.html)
+
+IV selection and MR analysis
+coming soon
+
+
+[Downstream COLOC/MR results](downstream.html)
+
+
+[Figures](figures.html)
