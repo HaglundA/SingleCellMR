@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Alexander Haglund" />
+
+<meta name="date" content="2022-11-10" />
+
+<title>figures</title>
+
+<script src="site_libs/header-attrs-2.15/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">SingleCellMR</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/ah3918/colossus">
+    <span class="fab fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">figures</h1>
+<h4 class="author">Alexander Haglund</h4>
+<h4 class="date">2022-11-10</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+workflowr <span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2022-11-18
+</p>
+<p>
+<strong>Checks:</strong> <span
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong> <code>SingleCellMR/</code> <span
+class="glyphicon glyphicon-question-sign" aria-hidden="true"
+title="This is the local directory in which the code in this file was executed.">
+</span>
+</p>
+<p>
+This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a>
+analysis was created with <a
+  href="https://github.com/workflowr/workflowr">workflowr</a> (version
+1.7.0). The <em>Checks</em> tab describes the reproducibility checks
+that were applied when the results were created. The <em>Past
+versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
+</a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git
+repository, you know the exact version of the code that produced these
+results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the
+global environment can affect the analysis in your R Markdown file in
+unknown ways. For reproduciblity it’s best to always run the code in an
+empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20221110code">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Seed:</strong>
+<code>set.seed(20221110)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20221110code"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20221110)</code> was run prior to running
+the code in the R Markdown file. Setting a seed ensures that any results
+that rely on randomness, e.g. subsampling or permutations, are
+reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Session information:</strong>
+recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package
+versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be
+confident that you successfully produced the results during this
+run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr
+project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomah3918SingleCellMRtree38a3835011b0eead66c76e523cd954982cbddae4targetblank38a3835a">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Repository version:</strong>
+<a href="https://github.com/ah3918/SingleCellMR/tree/38a3835011b0eead66c76e523cd954982cbddae4" target="_blank">38a3835</a>
+</a>
+</p>
+</div>
+<div
+id="strongRepositoryversionstrongahrefhttpsgithubcomah3918SingleCellMRtree38a3835011b0eead66c76e523cd954982cbddae4targetblank38a3835a"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development
+and connecting the code version to the results is critical for
+reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version
+<a href="https://github.com/ah3918/SingleCellMR/tree/38a3835011b0eead66c76e523cd954982cbddae4" target="_blank">38a3835</a>.
+See the <em>Past versions</em> tab to see a history of the changes made
+to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for
+the analysis have been committed to Git prior to generating the results
+(you can use <code>wflow_publish</code> or
+<code>wflow_git_commit</code>). workflowr only checks the R Markdown
+file, but you know if there are other scripts or data files that it
+depends on. Below is the status of the Git repository when the results
+were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    analysis/downstream.nb.html
+    Ignored:    analysis/figures.nb.html
+
+Untracked files:
+    Untracked:  analysis/DOWNSTREAM_RESULTS.Rmd
+    Untracked:  analysis/downstream.Rmd
+    Untracked:  analysis/eQTL_analysis.Rmd
+    Untracked:  colossus/
+    Untracked:  data/COLOC_MR_RESULTS/
+    Untracked:  data/EXT_DATASETS/
+    Untracked:  data/FIGURES/
+    Untracked:  data/GWAS_STUDIES/
+    Untracked:  data/MARKDOWN/
+    Untracked:  data/METADATA/
+    Untracked:  data/TABLES/
+    Untracked:  data/derby.log
+    Untracked:  data/eQTL_RESULTS/
+    Untracked:  data/helper_files/
+    Untracked:  data/logs/
+    Untracked:  derby.log
+    Untracked:  logs/
+
+Unstaged changes:
+    Modified:   analysis/_site.yml
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not
+included in this status report because it is ok for generated content to
+have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were
+made to the R Markdown (<code>analysis/figures.Rmd</code>) and HTML
+(<code>docs/figures.html</code>) files. If you’ve configured a remote
+Git repository (see <code>?wflow_git_remote</code>), click on the
+hyperlinks in the table below to view the files as they were in that
+past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/ah3918/SingleCellMR/blob/38a3835011b0eead66c76e523cd954982cbddae4/analysis/figures.Rmd" target="_blank">38a3835</a>
+</td>
+<td>
+Alexander Haglund
+</td>
+<td>
+2022-11-18
+</td>
+<td>
+wflow_publish(c("analysis/index.Rmd", "analysis/figures.Rmd"))
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div id="libraries" class="section level3">
+<h3>libraries</h3>
+<pre class="r"><code>library(ggplot2)
+library(viridis)
+library(ggsci)
+library(dplyr)
+library(cowplot)
+library(grid)
+library(tidyr)
+suppressMessages(library(reshape))
+color_pal=ggsci::pal_nejm(&quot;default&quot;)(8)
+colorvec&lt;-c(Astrocytes=color_pal[1],
+           Endothelial=color_pal[2],
+           Excitatory=color_pal[3],
+           Inhibitory=color_pal[4],Microglia=color_pal[5],
+           ODC=color_pal[6],OPC=color_pal[7],Pericytes=color_pal[8])</code></pre>
+</div>
+<div id="figure-1" class="section level1">
+<h1>FIGURE 1</h1>
+<p>coming soon</p>
+</div>
+<div id="figure-2" class="section level1">
+<h1>FIGURE 2</h1>
+<div id="figure-2a" class="section level3">
+<h3>Figure 2a</h3>
+<pre class="r"><code>coloc&lt;-read.table(&quot;data/COLOC_MR_RESULTS/2022-10-25_FULL_COLOC_RES.txt&quot;)
+x&lt;-coloc[coloc$GWAS %in% &quot;AD&quot;,]
+x&lt;-coloc[coloc$GWAS %in% &quot;AD&quot;,]
+
+
+genes&lt;-x[x$PP.H4.abf&gt;0.5,]$gene
+x&lt;-x[x$gene %in% genes,]
+x$gene&lt;-factor(x$gene,levels=unique(x$gene))
+
+g&lt;-ggplot(x,aes(x=celltype,y=gene,fill=PP.H4.abf))
+g&lt;-g+geom_tile(aes(fill=round(PP.H4.abf,2)),colour=&quot;black&quot;)+
+geom_text(aes(label = round(PP.H4.abf, 2)),size=5*0.36,family=&quot;Helvetica&quot;)+
+scale_fill_viridis()+
+theme_classic()+
+scale_y_discrete(limits=rev,expand = c(0, 0))+
+scale_x_discrete(expand = c(0, 0),position=&quot;top&quot;)+
+xlab(&quot;Alzheimer&#39;s Disease&quot;)
+g</code></pre>
+<p><img src="figure/figures.Rmd/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="figure-2b" class="section level3">
+<h3>Figure 2b</h3>
+</div>
+<div id="figure-2c" class="section level3">
+<h3>Figure 2c</h3>
+</div>
+<div id="figure-2e" class="section level3">
+<h3>Figure 2e</h3>
+</div>
+<div id="figure-2d" class="section level3">
+<h3>Figure 2d</h3>
+</div>
+</div>
+<div id="figure-3" class="section level1">
+<h1>FIGURE 3</h1>
+<p>The code presented here is in step 5 (Epigenetic Intersection) of the
+downstream results section. The basic syntax is a geom_tile() function
+in ggplot with colours matching cell-types. More in
+data/MARKDOWN/helper_funcs.r</p>
+<p>This is only for Fig 3.a - Fig 3.c and Fig 3.d were made using the
+UCSC track browser.</p>
+<pre class="r"><code>indir&lt;-&quot;data/EXT_DATASETS//RESULTS/&quot;
+fig_dir&lt;-&quot;FIGURES/Figure_3/&quot;
+
+g1&lt;-readRDS(paste0(indir,&quot;oligo_intersect_ggobject.rds&quot;))
+g2&lt;-readRDS(paste0(indir,&quot;Excneuron_intersect_ggobject.rds&quot;))
+g3&lt;-readRDS(paste0(indir,&quot;Inneuron_intersect_ggobject.rds&quot;))
+g4&lt;-readRDS(paste0(indir,&quot;microglia_intersect_ggobject.rds&quot;))
+
+g1&lt;-g1+theme(legend.position = &quot;none&quot;)
+g2&lt;-g2+theme(legend.position = &quot;none&quot;)
+g3&lt;-g3+theme(legend.position = &quot;none&quot;)
+g4&lt;-g4+theme(legend.position = &quot;none&quot;)</code></pre>
+<div id="oligo" class="section level2">
+<h2>Oligo</h2>
+<pre class="r"><code>g1</code></pre>
+<p><img src="figure/figures.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" />
+## ExcNeur</p>
+<pre class="r"><code>g2</code></pre>
+<p><img src="figure/figures.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" />
+## InNeur</p>
+<pre class="r"><code>g3</code></pre>
+<p><img src="figure/figures.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" />
+## Microglia</p>
+<pre class="r"><code>g4</code></pre>
+<p><img src="figure/figures.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" />
+# FIGURE 4 ## Figure 4a bind data together</p>
+<pre class="r"><code>#bind data together
+
+pqtl&lt;-read.table(&quot;data/TABLES/pQTL_table.txt&quot;)
+stitch&lt;-read.table(&quot;data/TABLES//stitch_table.txt&quot;)
+dgidb&lt;-read.table(&quot;data/TABLES/dgidb_table.txt&quot;)
+opentargets&lt;-read.table(&quot;data/TABLES/OpenTargets_table.txt&quot;)
+coloc&lt;-read.table(&quot;data/COLOC_MR_RESULTS//2022-10-25_FULL_COLOC_RES.txt&quot;)
+full&lt;-read.table(&quot;data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt&quot;)
+full&lt;-full[full$IVW&lt;0.05,]
+full$trait_gene&lt;-paste0(full$GWAS,&quot;_&quot;,full$gene)
+full$IVW_dir&lt;-sapply(full$IVW_beta,function(x){
+    if(x&gt;0){
+        return(&quot;positive&quot;)
+        }else{
+        return(&quot;negative&quot;)
+        }
+    })
+direction_vector&lt;-vector()
+for(i in 1:nrow(full)){
+    tmp&lt;-full[full$trait_gene %in% full$trait_gene[i],]
+    betas&lt;-tmp$IVW_beta
+    
+    if(all(betas&gt;0)==TRUE){
+    dir&lt;-&quot;positive&quot;
+    } else if(all(betas&lt;0)==TRUE){
+    dir&lt;-&quot;negative&quot;
+    }else{
+        dir&lt;-&quot;N/A&quot;
+        }
+    direction_vector&lt;-c(direction_vector,dir)    
+        }
+full$IVW_dir&lt;-direction_vector    
+
+
+coloc$trait_gene_ct&lt;-paste0(coloc$GWAS,&quot;_&quot;,coloc$gene,&quot;_&quot;,coloc$celltype)
+trait_gene_ct&lt;-paste0(pqtl$GWAS,&quot;_&quot;,pqtl$gene,&quot;_&quot;,pqtl$celltype)
+coloc&lt;-coloc[match(trait_gene_ct,coloc$trait_gene_ct),]
+
+plot_df&lt;-data.frame(gene_trait=paste0(pqtl$GWAS,&quot;.&quot;,pqtl$gene),
+                    pQTL=pqtl$pQTL_hit,
+                    STITCH=stitch$STITCH_intersect,
+                    DGidb=dgidb$DGIDB_intersect,
+                    OpenTargets=opentargets$OpenTargets_disease_hit,
+                   coloc=coloc$PP.H4.abf,
+                   celltype=pqtl$celltype,
+                   IVW_dir=full$IVW_dir)</code></pre>
+<p>prep plots</p>
+<pre class="r"><code>n_rows&lt;-nrow(plot_df)
+half&lt;-round(n_rows/2)
+
+#split in two (plot is too big otherwise)
+plot_df1&lt;-plot_df[1:half,c(&quot;gene_trait&quot;,&quot;pQTL&quot;,&quot;STITCH&quot;,&quot;DGidb&quot;,&quot;OpenTargets&quot;)]
+melt_df&lt;-melt(plot_df1,id=c(&quot;gene_trait&quot;))
+ggplot_mainplot1&lt;-ggplot(melt_df,aes(x=variable,y=gene_trait,fill=value))+geom_tile(color=&quot;black&quot;)+
+scale_fill_manual(values=c(&quot;#c8c8c8&quot;,&quot;#A6CEE3&quot;,&quot;#1F78B4&quot;))+scale_x_discrete(expand=c(0,0))
+
+
+plot_df2&lt;-plot_df[half:n_rows,c(&quot;gene_trait&quot;,&quot;pQTL&quot;,&quot;STITCH&quot;,&quot;DGidb&quot;,&quot;OpenTargets&quot;)]
+melt_df&lt;-melt(plot_df2,id=c(&quot;gene_trait&quot;))
+ggplot_mainplot2&lt;-ggplot(melt_df,aes(x=variable,y=gene_trait,fill=value))+geom_tile(color=&quot;black&quot;)+
+scale_fill_manual(values=c(&quot;#c8c8c8&quot;,&quot;#A6CEE3&quot;,&quot;#1F78B4&quot;))+scale_x_discrete(expand=c(0,0))
+
+
+
+##coloc PPH4 bar
+coloc_bar&lt;-plot_df[,c(&quot;gene_trait&quot;,&quot;coloc&quot;)]
+
+coloc_bar1&lt;-coloc_bar[1:half,]
+melt_df&lt;-melt(coloc_bar1,id=c(&quot;gene_trait&quot;))
+ggplot_coloc1&lt;-ggplot(melt_df,aes(x=variable,y=gene_trait,fill=value))+geom_tile(color=&quot;black&quot;)+
+scale_fill_viridis(limits=c(0.5,1))
+
+coloc_bar2&lt;-coloc_bar[half:n_rows,]
+melt_df&lt;-melt(coloc_bar2,id=c(&quot;gene_trait&quot;))
+ggplot_coloc2&lt;-ggplot(melt_df,aes(x=variable,y=gene_trait,fill=value))+geom_tile(color=&quot;black&quot;)+
+scale_fill_viridis(limits=c(0.5,1))
+
+##celltype MR direction
+
+celltype_dir&lt;-plot_df[,c(&quot;gene_trait&quot;,&quot;celltype&quot;,&quot;IVW_dir&quot;)]
+celltype_dir1&lt;-celltype_dir[1:half,]
+
+ggplot_celltype_dir1&lt;-ggplot(celltype_dir1,aes(x=IVW_dir,y=gene_trait,fill=celltype,group=celltype))+
+geom_point(shape=22,size=2,stroke=0.1,position=position_dodge(w=0.7))+
+scale_fill_manual(values = colorvec)+
+theme_classic()+
+geom_vline(xintercept=0,linetype=&quot;dotted&quot;)
+
+celltype_dir2&lt;-celltype_dir[half:n_rows,]
+
+ggplot_celltype_dir2&lt;-ggplot(celltype_dir2,aes(x=IVW_dir,y=gene_trait,fill=celltype,group=celltype))+
+geom_point(shape=22,size=2,stroke=0.1,position=position_dodge(w=0.7))+
+scale_fill_manual(values = colorvec)+
+theme_classic()+
+geom_vline(xintercept=0,linetype=&quot;dotted&quot;)
+
+##direction only
+ivw_dir&lt;-plot_df[,c(&quot;gene_trait&quot;,&quot;IVW_dir&quot;)]
+ivw_dir$trait&lt;-&quot;gwas&quot;
+ivw_dir1&lt;-ivw_dir[1:half,]
+
+ggplot_ivwdir1&lt;-ggplot(ivw_dir1,aes(y=gene_trait,x=trait,fill=IVW_dir,group=IVW_dir))+geom_tile(colour=&quot;black&quot;)+
+scale_fill_manual(values = c(&quot;#c8c8c8&quot;,&quot;#F8766D&quot;,&quot;#00BFC4&quot;),guide = guide_legend(reverse = TRUE))+
+theme_classic()
+
+
+ivw_dir&lt;-plot_df[,c(&quot;gene_trait&quot;,&quot;IVW_dir&quot;)]
+ivw_dir$trait&lt;-&quot;gwas&quot;
+ivw_dir2&lt;-ivw_dir[half:n_rows,]
+
+ggplot_ivwdir2&lt;-ggplot(ivw_dir2,aes(y=gene_trait,x=trait,fill=IVW_dir,group=IVW_dir))+geom_tile(colour=&quot;black&quot;)+
+scale_fill_manual(values = c(&quot;#F8766D&quot;,&quot;#00BFC4&quot;),guide = guide_legend(reverse = TRUE))+
+theme_classic()
+
+
+
+##celltype bar
+celltype_bar&lt;-plot_df[,c(&quot;gene_trait&quot;,&quot;celltype&quot;)]
+
+celltype_bar1&lt;-celltype_bar[1:half,]
+test&lt;-celltype_bar1 %&gt;% 
+count(gene_trait,celltype,name=&quot;count&quot;) %&gt;% 
+complete(gene_trait,celltype)
+newvec&lt;-vector()
+for(i in 1:nrow(test)){
+    if(is.na(test$count[i])){
+        newvec&lt;-c(newvec,NA)
+        }else{
+        newvec&lt;-c(newvec,test$celltype[i])
+        }
+    }
+test$new&lt;-newvec
+# melt_df&lt;-melt(celltype_bar1,id=c(&quot;gene_trait&quot;))
+# df2 = celltype_bar1 %&gt;% complete(gene_trait,celltype)
+ggplot_celltype1&lt;-ggplot(test,aes(x=celltype,y=gene_trait,fill=new))+geom_tile(color=&quot;black&quot;)+
+scale_fill_manual(values=colorvec,na.value=&quot;white&quot;)
+
+celltype_bar2&lt;-celltype_bar[half:n_rows,]
+test&lt;-celltype_bar2 %&gt;% 
+count(gene_trait,celltype,name=&quot;count&quot;) %&gt;% 
+complete(gene_trait,celltype)
+newvec&lt;-vector()
+for(i in 1:nrow(test)){
+    if(is.na(test$count[i])){
+        newvec&lt;-c(newvec,NA)
+        }else{
+        newvec&lt;-c(newvec,test$celltype[i])
+        }
+    }
+test$new&lt;-newvec
+# melt_df&lt;-melt(celltype_bar2,id=c(&quot;gene_trait&quot;))
+ggplot_celltype2&lt;-ggplot(test,aes(x=celltype,y=gene_trait,fill=new))+geom_tile(color=&quot;black&quot;)+
+scale_fill_manual(values=colorvec,na.value=&quot;white&quot;)</code></pre>
+<div id="plot1" class="section level3">
+<h3>plot1</h3>
+<pre class="r"><code>ggplot_mainplot1&lt;-ggplot_mainplot1+theme_classic()+
+theme(axis.text.x=element_text(size=5,face=&quot;bold&quot;,angle=45,vjust=0.8,hjust=0.8,family=&quot;Helvetica&quot;),
+      axis.text.y=element_text(size=5,face=&quot;bold&quot;,vjust=0.8,family=&quot;Helvetica&quot;),axis.title.y=element_blank(),
+      axis.line.y=element_blank(),axis.line.x=element_blank(),
+      axis.title.x=element_blank(),legend.key.size=unit(0.7,&quot;cm&quot;),
+      legend.title=element_blank(),
+      legend.text=element_text(size=5),
+      panel.background = element_rect(fill=&#39;transparent&#39;),
+      plot.background = element_rect(fill=&#39;transparent&#39;, color=NA),
+      panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+      legend.background = element_rect(fill=&#39;transparent&#39;),
+      legend.key.height= unit(0.3, &#39;cm&#39;),
+      legend.key.width= unit(0.2, &#39;cm&#39;))#
+
+ggplot_celltype_dir1&lt;-ggplot_celltype_dir1+theme_classic()+
+theme(axis.text.x=element_text(size=5,face=&quot;bold&quot;,angle=45,vjust=0.8,hjust=0.8,family=&quot;Helvetica&quot;),
+      axis.text.y=element_blank(),axis.title.y=element_blank(),axis.ticks.y=element_blank(),
+      axis.line.y=element_blank(),axis.line.x=element_blank(),
+      axis.title.x=element_blank(),legend.key.size=unit(0.7,&quot;cm&quot;),
+      legend.position=&quot;none&quot;,panel.grid.major.y=element_line(size=0.3,colour=&quot;grey&quot;),
+      legend.text=element_text(size=5),
+      panel.background = element_rect(fill=&#39;transparent&#39;),
+      plot.background = element_rect(fill=&#39;transparent&#39;, color=NA),
+      legend.background = element_rect(fill=&#39;transparent&#39;),
+      legend.key.height= unit(0.3, &#39;cm&#39;),
+      legend.key.width= unit(0.2, &#39;cm&#39;))#
+
+ggplot_ivwdir1&lt;-ggplot_ivwdir1+theme_classic()+
+theme(axis.text.x=element_blank(),
+      axis.text.y=element_blank(),axis.title.y=element_blank(),axis.ticks.y=element_blank(),
+      axis.ticks.x=element_blank(),
+      axis.line.y=element_blank(),axis.line.x=element_blank(),
+      axis.title.x=element_blank(),legend.key.size=unit(0.7,&quot;cm&quot;),
+      legend.text=element_text(size=5), legend.title=element_text(size=5),
+      panel.background = element_rect(fill=&#39;transparent&#39;),
+      plot.background = element_rect(fill=&#39;transparent&#39;, color=NA),
+      legend.background = element_rect(fill=&#39;transparent&#39;),
+      legend.key.height= unit(0.3, &#39;cm&#39;),
+      legend.key.width= unit(0.2, &#39;cm&#39;))#
+
+ggplot_coloc1&lt;-ggplot_coloc1+theme_classic()+
+theme(axis.text.x=element_blank(),axis.ticks.x=element_blank(),
+      axis.text.y=element_blank(),axis.title.y=element_blank(),axis.ticks.y=element_blank(),
+      axis.line.y=element_blank(),axis.line.x=element_blank(),
+      axis.title.x=element_blank(),legend.key.size=unit(0.7,&quot;cm&quot;),
+      legend.title=element_blank(),
+      legend.text=element_text(size=5),
+      panel.background = element_rect(fill=&#39;transparent&#39;),
+      plot.background = element_rect(fill=&#39;transparent&#39;, color=NA),
+      panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+      legend.background = element_rect(fill=&#39;transparent&#39;),
+      legend.key.height= unit(0.3, &#39;cm&#39;),
+      legend.key.width= unit(0.2, &#39;cm&#39;))#
+
+ggplot_celltype1&lt;-ggplot_celltype1+theme_classic()+
+theme(axis.text.x=element_text(size=5,face=&quot;bold&quot;,angle=45,vjust=0.8,hjust=0.8,family=&quot;Helvetica&quot;),
+      axis.text.y=element_blank(),axis.title.y=element_blank(),axis.ticks.y=element_blank(),
+      axis.line.y=element_blank(),axis.line.x=element_blank(),
+      axis.title.x=element_blank(),legend.key.size=unit(0.7,&quot;cm&quot;),
+      legend.title=element_blank(),
+      legend.text=element_text(size=5),
+      panel.background = element_rect(fill=&#39;transparent&#39;),
+      plot.background = element_rect(fill=&#39;transparent&#39;, color=NA),
+      legend.background = element_rect(fill=&#39;transparent&#39;),
+      legend.key.height= unit(0.3, &#39;cm&#39;),
+      legend.key.width= unit(0.2, &#39;cm&#39;))#
+
+coloc_legend&lt;-get_legend(ggplot_coloc1)
+ggplot_mainplot1_legend&lt;-get_legend(ggplot_mainplot1)
+celltype_legend&lt;-get_legend(ggplot_celltype1)
+ivw_dir&lt;-get_legend(ggplot_ivwdir1)
+
+
+ggplot_coloc1&lt;-ggplot_coloc1+theme(plot.margin = unit(c(0,0,0,0), &quot;cm&quot;),legend.position = &quot;none&quot;)
+ggplot_ivwdir1&lt;-ggplot_ivwdir1+theme(plot.margin = unit(c(0,0,0,0), &quot;cm&quot;),legend.position = &quot;none&quot;)
+ggplot_mainplot1&lt;-ggplot_mainplot1+theme(plot.margin = unit(c(0,0,0,0), &quot;cm&quot;),legend.position = &quot;none&quot;)
+ggplot_celltype1&lt;-ggplot_celltype1+theme(plot.margin = unit(c(0,0,0,0), &quot;cm&quot;),legend.position=&quot;none&quot;)
+
+g&lt;-plot_grid(ggplot_mainplot1,ggplot_celltype1,ggplot_ivwdir1, align = &quot;h&quot;, ncol =3, rel_widths = c(0.008,0.005,0.001))
+g</code></pre>
+<p><img src="figure/figures.Rmd/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="plot2" class="section level3">
+<h3>plot2</h3>
+<pre class="r"><code>ggplot_mainplot2&lt;-ggplot_mainplot2+theme_classic()+
+theme(axis.text.x=element_text(size=5,face=&quot;bold&quot;,angle=45,vjust=0.8,hjust=0.8,family=&quot;Helvetica&quot;),
+      axis.text.y=element_text(size=5,face=&quot;bold&quot;,vjust=0.8,family=&quot;Helvetica&quot;),axis.title.y=element_blank(),
+      axis.line.y=element_blank(),axis.line.x=element_blank(),
+      axis.title.x=element_blank(),legend.key.size=unit(0.7,&quot;cm&quot;),
+      legend.title=element_blank(),
+      legend.text=element_text(size=5),
+      panel.background = element_rect(fill=&#39;transparent&#39;),
+      plot.background = element_rect(fill=&#39;transparent&#39;, color=NA),
+      panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+      legend.background = element_rect(fill=&#39;transparent&#39;),legend.box.background = element_rect(fill=&#39;transparent&#39;))#
+
+ggplot_coloc2&lt;-ggplot_coloc2+theme_classic()+
+theme(axis.text.x=element_blank(),axis.ticks.x=element_blank(),
+      axis.text.y=element_blank(),axis.title.y=element_blank(),axis.ticks.y=element_blank(),
+      axis.line.y=element_blank(),axis.line.x=element_blank(),
+      axis.title.x=element_blank(),legend.key.size=unit(0.7,&quot;cm&quot;),
+      legend.title=element_blank(),
+      legend.text=element_text(size=5),
+      panel.background = element_rect(fill=&#39;transparent&#39;),
+      plot.background = element_rect(fill=&#39;transparent&#39;, color=NA),
+      legend.background = element_rect(fill=&#39;transparent&#39;),legend.box.background = element_rect(fill=&#39;transparent&#39;))#
+
+ggplot_celltype_dir2&lt;-ggplot_celltype_dir2+theme_classic()+
+theme(axis.text.x=element_text(size=5,face=&quot;bold&quot;,angle=45,vjust=0.8,hjust=0.8,family=&quot;Helvetica&quot;),
+      axis.text.y=element_blank(),axis.title.y=element_blank(),axis.ticks.y=element_blank(),
+      axis.line.y=element_blank(),axis.line.x=element_blank(),
+      axis.title.x=element_blank(),legend.key.size=unit(0.7,&quot;cm&quot;),
+      legend.position=&quot;none&quot;,panel.grid.major.y=element_line(size=0.3,colour=&quot;grey&quot;),
+      legend.text=element_text(size=5),
+      panel.background = element_rect(fill=&#39;transparent&#39;),
+      plot.background = element_rect(fill=&#39;transparent&#39;, color=NA),
+      legend.background = element_rect(fill=&#39;transparent&#39;),
+      legend.key.height= unit(0.3, &#39;cm&#39;),
+      legend.key.width= unit(0.2, &#39;cm&#39;))#
+
+ggplot_ivwdir2&lt;-ggplot_ivwdir2+theme_classic()+
+theme(axis.text.x=element_blank(),
+      axis.text.y=element_blank(),axis.title.y=element_blank(),axis.ticks.y=element_blank(),
+      axis.ticks.x=element_blank(),
+      axis.line.y=element_blank(),axis.line.x=element_blank(),
+      axis.title.x=element_blank(),legend.key.size=unit(0.7,&quot;cm&quot;),
+      legend.text=element_text(size=5), legend.title=element_text(size=5),
+      panel.background = element_rect(fill=&#39;transparent&#39;),
+      plot.background = element_rect(fill=&#39;transparent&#39;, color=NA),
+      legend.background = element_rect(fill=&#39;transparent&#39;),
+      legend.key.height= unit(0.3, &#39;cm&#39;),
+      legend.key.width= unit(0.2, &#39;cm&#39;))#
+
+ggplot_celltype2&lt;-ggplot_celltype2+theme_classic()+
+theme(axis.text.x=element_text(size=5,face=&quot;bold&quot;,angle=45,vjust=0.8,hjust=0.8,family=&quot;Helvetica&quot;),
+      axis.text.y=element_blank(),axis.title.y=element_blank(),axis.ticks.y=element_blank(),
+      axis.line.y=element_blank(),axis.line.x=element_blank(),
+      axis.title.x=element_blank(),legend.key.size=unit(0.7,&quot;cm&quot;),
+      legend.title=element_blank(),
+      legend.text=element_text(size=5),
+      panel.background = element_rect(fill=&#39;transparent&#39;),
+      plot.background = element_rect(fill=&#39;transparent&#39;, color=NA),
+      panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+      legend.background = element_rect(fill=&#39;transparent&#39;),legend.box.background = element_rect(fill=&#39;transparent&#39;))#
+
+ggplot_coloc2&lt;-ggplot_coloc2+theme(plot.margin = unit(c(0,0,0,0), &quot;cm&quot;),legend.position = &quot;none&quot;)
+ggplot_ivwdir2&lt;-ggplot_ivwdir2+theme(plot.margin = unit(c(0,0,0,0), &quot;cm&quot;),legend.position = &quot;none&quot;)
+ggplot_mainplot2&lt;-ggplot_mainplot2+theme(plot.margin = unit(c(0,0,0,0), &quot;cm&quot;),legend.position = &quot;none&quot;)
+ggplot_celltype2&lt;-ggplot_celltype2+theme(plot.margin = unit(c(0,0,0,0), &quot;cm&quot;),legend.position=&quot;none&quot;)
+
+
+g&lt;-plot_grid(ggplot_mainplot2,ggplot_celltype2,ggplot_ivwdir2, align = &quot;h&quot;, ncol =3, rel_widths = c(0.008,0.005,0.001))
+g</code></pre>
+<p><img src="figure/figures.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+</div>
+<div id="figure-5" class="section level1">
+<h1>FIGURE 5</h1>
+<div id="figure-5a" class="section level2">
+<h2>Figure 5a</h2>
+<pre class="r"><code>full&lt;-read.table(&quot;data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt&quot;)
+full&lt;-full[full$IVW&lt;0.05,]
+full$trait_gene&lt;-paste0(full$GWAS,&quot;_&quot;,full$gene)
+full$IVW_dir&lt;-sapply(full$IVW_beta,function(x){
+    if(x&gt;0){
+        return(&quot;CAUSAL&quot;)
+        }else{
+        return(&quot;PROTECTIVE&quot;)
+        }
+    })
+
+tmp&lt;-full[full$GWAS==&quot;AD&quot;,]
+tmp&lt;-tmp[order(tmp$celltype),]
+tmp$gene&lt;-factor(tmp$gene,levels=unique(tmp$gene))
+color_pal=ggsci::pal_nejm(&quot;default&quot;)(8)
+colorvec&lt;-c(Astrocytes=color_pal[1],
+           Endothelial=color_pal[2],
+           Excitatory=color_pal[3],
+           Inhibitory=color_pal[4],Microglia=color_pal[5],
+           ODC=color_pal[6],OPC=color_pal[7],Pericytes=color_pal[8])
+
+g&lt;-ggplot(tmp,aes(y=gene,x=IVW_beta,fill=celltype))+
+geom_point(colour=&quot;black&quot;,shape=21,stroke=0.3,size=2)+
+scale_fill_manual(values = colorvec)+
+theme_classic()+
+geom_vline(xintercept=0,linetype=&quot;dotted&quot;)+scale_x_continuous(limits=c(-0.6,0.6))
+g2&lt;-g+
+theme(text=element_text(family=&quot;Helvetica&quot;,size=5),legend.text = element_text(family=&quot;Helvetica&quot;,size=5,face=&quot;bold&quot;),
+      legend.title=element_blank(),
+      legend.spacing.y = unit(-1, &#39;cm&#39;),axis.text.y=element_text(family=&quot;Helvetica&quot;,size=5,face=&quot;bold&quot;))+guides(fill = guide_legend(byrow = TRUE))
+g2</code></pre>
+<p><img src="figure/figures.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="figure-5b" class="section level2">
+<h2>Figure 5b</h2>
+<pre class="r"><code>full&lt;-read.table(&quot;data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt&quot;)
+plot_df&lt;-data.frame()
+for(i in 1:length(unique(full$GWAS))){
+    gwas&lt;-unique(full$GWAS)[i]
+    tmp_full&lt;-full[full$GWAS==gwas,]
+    cellvec&lt;-as.vector(table(tmp_full$celltype))
+    plot_df&lt;-rbind(plot_df,data.frame(gwas=gwas,
+                                      celltype=names(table(tmp_full$celltype)),
+                                      occurrence=cellvec))
+    }
+g&lt;-ggplot(data=plot_df,aes(y=occurrence,x=gwas,fill=celltype))+
+geom_bar(stat=&quot;identity&quot;,colour=&quot;black&quot;,size=0.25)+
+scale_fill_manual(values=color_pal)+theme_classic()+
+geom_text(aes(label=occurrence),family=&quot;Helvetica&quot;,size=5*0.36, position = position_stack(vjust = 0.5))+
+theme_classic()+scale_y_continuous(expand=c(0,0))+
+labs(title=&quot;Cell-type proportions in MR results&quot;,size=7,family=&quot;Helvetica&quot;)+
+theme(text=element_text(size=7,family=&quot;Helvetica&quot;),axis.text.x=element_text(size=5,face=&quot;bold&quot;,angle=90),
+                                  axis.text.y=element_text(size=5),
+                                  axis.title.y=element_blank(),
+                                 axis.title.x=element_blank(),legend.position=&quot;none&quot;,
+     title=element_text(size=7,face=&quot;bold&quot;))
+g</code></pre>
+<p><img src="figure/figures.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" />
+## Figure 5c</p>
+<pre class="r"><code>full&lt;-read.table(&quot;data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt&quot;)
+full$celltype_gene&lt;-paste0(full$celltype,&quot;.&quot;,full$gene)
+scz&lt;-full[full$GWAS==&quot;SCZ&quot;,]
+iq&lt;-full[full$GWAS==&quot;IQ&quot;,]
+common&lt;-intersect(iq$celltype_gene,scz$celltype_gene)
+
+##remove ct/gene combinations in other traits - we are only interested in the SCZ/IQ overlap
+# filtered&lt;-full[full$celltype_gene %in% common,]
+# filtered&lt;-filtered[!filtered$GWAS %in% c(&quot;SCZ&quot;,&quot;IQ&quot;),]
+# to_exclude&lt;-unique(filtered$celltype_gene)
+# common&lt;-common[!common %in% to_exclude]
+
+
+
+#filter both
+scz&lt;-scz[match(common,scz$celltype_gene),]
+iq&lt;-iq[match(common,iq$celltype_gene),]
+df&lt;-data.frame(celltype_gene=common,IQ=iq$IVW_beta,SCZ=scz$IVW_beta)
+
+
+##now plot
+ylims=c(-0.2,0.2)
+xlims=c(-0.7,0.7)
+
+g&lt;-ggplot(df,aes(x=SCZ,y=IQ,fill=celltype_gene))+
+geom_point(shape=21,size=2)+
+scale_y_continuous(limits=ylims)+
+scale_x_continuous(limits=xlims)+
+geom_vline(xintercept =0,linetype=&quot;dotted&quot;)+
+geom_hline(yintercept =0,linetype=&quot;dotted&quot;)+theme_classic()+
+theme(text=element_text(size=5,family=&quot;Helvetica&quot;),legend.title=element_blank(),legend.text = element_text(family=&quot;Helvetica&quot;,size=5,face=&quot;bold&quot;),legend.spacing.y = unit(-1, &#39;cm&#39;))+
+xlab(&quot;SCZ - MR beta&quot;)+ylab(&quot;IQ - MR beta&quot;)+
+guides(fill = guide_legend(byrow = TRUE))
+g</code></pre>
+<p><img src="figure/figures.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="figure-5d" class="section level2">
+<h2>Figure 5d</h2>
+<pre class="r"><code>full&lt;-read.table(&quot;data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt&quot;)
+full$celltype_gene&lt;-paste0(full$celltype,&quot;.&quot;,full$gene)
+scz&lt;-full[full$GWAS==&quot;SCZ&quot;,]
+neur&lt;-full[full$GWAS==&quot;NEUR&quot;,]
+common&lt;-intersect(neur$celltype_gene,scz$celltype_gene)
+
+# filtered&lt;-full[full$celltype_gene %in% common,]
+# filtered&lt;-filtered[!filtered$GWAS %in% c(&quot;SCZ&quot;,&quot;NEUR&quot;),]
+# to_exclude&lt;-unique(filtered$celltype_gene)
+# common&lt;-common[!common %in% to_exclude]
+
+
+#filter both
+scz&lt;-scz[match(common,scz$celltype_gene),]
+neur&lt;-neur[match(common,neur$celltype_gene),]
+df&lt;-data.frame(celltype_gene=common,NEUR=neur$IVW_beta,SCZ=scz$IVW_beta)
+
+
+##now plot
+ylims=c(-0.2,0.2)
+xlims=c(-0.8,0.8)
+
+g&lt;-ggplot(df,aes(x=SCZ,y=NEUR,fill=celltype_gene))+
+geom_point(shape=21,size=2)+
+scale_y_continuous(limits=ylims)+
+scale_x_continuous(limits=xlims)+
+geom_vline(xintercept =0,linetype=&quot;dotted&quot;)+
+geom_hline(yintercept =0,linetype=&quot;dotted&quot;)+theme_classic()+
+theme(text=element_text(size=5,family=&quot;Helvetica&quot;),legend.text = element_text(family=&quot;Helvetica&quot;,size=5,face=&quot;bold&quot;),legend.title=element_blank(),legend.spacing.y = unit(-1, &#39;cm&#39;))+
+xlab(&quot;SCZ - MR beta&quot;)+ylab(&quot;NEUR - MR beta&quot;)+guides(fill = guide_legend(byrow = TRUE))
+g</code></pre>
+<p><img src="figure/figures.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.0.5 (2021-03-31)
+Platform: x86_64-conda-linux-gnu (64-bit)
+Running under: Ubuntu 18.04.6 LTS
+
+Matrix products: default
+BLAS/LAPACK: /home/ah3918/anaconda3/envs/ODIN3/lib/libopenblasp-r0.3.12.so
+
+locale:
+ [1] LC_CTYPE=en_GB.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_GB.UTF-8        LC_COLLATE=en_GB.UTF-8    
+ [5] LC_MONETARY=en_GB.UTF-8    LC_MESSAGES=en_GB.UTF-8   
+ [7] LC_PAPER=en_GB.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_GB.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+[1] grid      stats     graphics  grDevices utils     datasets  methods  
+[8] base     
+
+other attached packages:
+[1] reshape_0.8.9     tidyr_1.2.1       cowplot_1.1.1     dplyr_1.0.9      
+[5] ggsci_2.9         viridis_0.6.2     viridisLite_0.4.1 ggplot2_3.3.6    
+[9] workflowr_1.7.0  
+
+loaded via a namespace (and not attached):
+ [1] tidyselect_1.1.2 xfun_0.32        bslib_0.4.0      purrr_0.3.4     
+ [5] colorspace_2.0-3 vctrs_0.5.0      generics_0.1.3   htmltools_0.5.3 
+ [9] yaml_2.3.5       utf8_1.2.2       rlang_1.0.6      jquerylib_0.1.4 
+[13] later_1.2.0      pillar_1.8.1     glue_1.6.2       withr_2.5.0     
+[17] DBI_1.1.3        plyr_1.8.7       lifecycle_1.0.3  stringr_1.4.0   
+[21] munsell_0.5.0    gtable_0.3.1     evaluate_0.16    labeling_0.4.2  
+[25] knitr_1.39       callr_3.7.1      fastmap_1.1.0    httpuv_1.6.5    
+[29] ps_1.7.1         fansi_1.0.3      highr_0.9        Rcpp_1.0.9      
+[33] promises_1.2.0.1 scales_1.2.1     cachem_1.0.6     jsonlite_1.8.0  
+[37] farver_2.1.1     fs_1.5.2         gridExtra_2.3    digest_0.6.30   
+[41] stringi_1.7.8    processx_3.7.0   getPass_0.2-2    rprojroot_2.0.3 
+[45] cli_3.4.1        tools_4.0.5      magrittr_2.0.3   sass_0.4.2      
+[49] tibble_3.1.8     whisker_0.4      pkgconfig_2.0.3  ellipsis_0.3.2  
+[53] assertthat_0.2.1 rmarkdown_2.15   httr_1.4.3       rstudioapi_0.13 
+[57] R6_2.5.1         git2r_0.30.1     compiler_4.0.5  </code></pre>
+</div>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+https://docs.mathjax.org/en/latest/web/configuration.html. This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
