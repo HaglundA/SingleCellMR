@@ -1,0 +1,1530 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Alexander Haglund" />
+
+<meta name="date" content="2022-11-10" />
+
+<title>downstream</title>
+
+<script src="site_libs/header-attrs-2.15/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">SingleCellMR</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/ah3918/colossus">
+    <span class="fab fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">downstream</h1>
+<h4 class="author">Alexander Haglund</h4>
+<h4 class="date">2022-11-10</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+workflowr <span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2022-11-18
+</p>
+<p>
+<strong>Checks:</strong> <span
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong> <code>SingleCellMR/</code> <span
+class="glyphicon glyphicon-question-sign" aria-hidden="true"
+title="This is the local directory in which the code in this file was executed.">
+</span>
+</p>
+<p>
+This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a>
+analysis was created with <a
+  href="https://github.com/workflowr/workflowr">workflowr</a> (version
+1.7.0). The <em>Checks</em> tab describes the reproducibility checks
+that were applied when the results were created. The <em>Past
+versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
+</a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git
+repository, you know the exact version of the code that produced these
+results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the
+global environment can affect the analysis in your R Markdown file in
+unknown ways. For reproduciblity it’s best to always run the code in an
+empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20221110code">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Seed:</strong>
+<code>set.seed(20221110)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20221110code"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20221110)</code> was run prior to running
+the code in the R Markdown file. Setting a seed ensures that any results
+that rely on randomness, e.g. subsampling or permutations, are
+reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Session information:</strong>
+recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package
+versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be
+confident that you successfully produced the results during this
+run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr
+project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomah3918SingleCellMRtree85347c063facd5d4e9d7d8ee30e520de2d160d7etargetblank85347c0a">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Repository version:</strong>
+<a href="https://github.com/ah3918/SingleCellMR/tree/85347c063facd5d4e9d7d8ee30e520de2d160d7e" target="_blank">85347c0</a>
+</a>
+</p>
+</div>
+<div
+id="strongRepositoryversionstrongahrefhttpsgithubcomah3918SingleCellMRtree85347c063facd5d4e9d7d8ee30e520de2d160d7etargetblank85347c0a"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development
+and connecting the code version to the results is critical for
+reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version
+<a href="https://github.com/ah3918/SingleCellMR/tree/85347c063facd5d4e9d7d8ee30e520de2d160d7e" target="_blank">85347c0</a>.
+See the <em>Past versions</em> tab to see a history of the changes made
+to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for
+the analysis have been committed to Git prior to generating the results
+(you can use <code>wflow_publish</code> or
+<code>wflow_git_commit</code>). workflowr only checks the R Markdown
+file, but you know if there are other scripts or data files that it
+depends on. Below is the status of the Git repository when the results
+were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    analysis/downstream.nb.html
+    Ignored:    analysis/figure/
+    Ignored:    analysis/figures.nb.html
+
+Untracked files:
+    Untracked:  analysis/DOWNSTREAM_RESULTS.Rmd
+    Untracked:  analysis/eQTL_analysis.Rmd
+    Untracked:  colossus/
+    Untracked:  data/COLOC_MR_RESULTS/
+    Untracked:  data/EXT_DATASETS/
+    Untracked:  data/FIGURES/
+    Untracked:  data/GWAS_STUDIES/
+    Untracked:  data/MARKDOWN/
+    Untracked:  data/METADATA/
+    Untracked:  data/TABLES/
+    Untracked:  data/derby.log
+    Untracked:  data/eQTL_RESULTS/
+    Untracked:  data/helper_files/
+    Untracked:  data/logs/
+    Untracked:  derby.log
+    Untracked:  logs/
+
+Unstaged changes:
+    Modified:   analysis/_site.yml
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not
+included in this status report because it is ok for generated content to
+have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were
+made to the R Markdown (<code>analysis/downstream.Rmd</code>) and HTML
+(<code>docs/downstream.html</code>) files. If you’ve configured a remote
+Git repository (see <code>?wflow_git_remote</code>), click on the
+hyperlinks in the table below to view the files as they were in that
+past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/ah3918/SingleCellMR/blob/85347c063facd5d4e9d7d8ee30e520de2d160d7e/analysis/downstream.Rmd" target="_blank">85347c0</a>
+</td>
+<td>
+Alexander Haglund
+</td>
+<td>
+2022-11-18
+</td>
+<td>
+wflow_publish("analysis/downstream.Rmd")
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div id="libraries" class="section level1">
+<h1>Libraries</h1>
+<pre class="r fold-show"><code>suppressMessages(library(tidyr))
+suppressMessages(library(dplyr))</code></pre>
+</div>
+<div id="eqtl-replication" class="section level1">
+<h1>eQTL replication</h1>
+</div>
+<div id="overview-of-coloc-and-mr-numbers" class="section level1">
+<h1>Overview of COLOC and MR numbers</h1>
+<pre class="r fold-hide"><code>coloc&lt;-read.table(&quot;data/COLOC_MR_RESULTS//2022-10-25_FULL_COLOC_RES.txt&quot;)
+message(paste0(&quot;Total traits analyzed: &quot;,length(unique(coloc$GWAS))))</code></pre>
+<pre><code>Total traits analyzed: 23</code></pre>
+<pre class="r fold-hide"><code>message(paste(unique(coloc$GWAS),collapse=&quot;, &quot;))</code></pre>
+<pre><code>AD, ADHD, ALS, ANX, ASD, BD, DS, EPI.ALL, EPI.FD, EPI.GEN, FTD, HV, ICV, INS, IQ, MDD, MS, NEUR, PD, SCV, SCZ, SD, SWB</code></pre>
+<pre class="r fold-hide"><code>coloc&lt;-coloc[coloc$PP.H4.abf&gt;0.5,]
+coloc&lt;-coloc[,!colnames(coloc) %in% c(&quot;lead_snp&quot;,&quot;eQTL_pval&quot;,&quot;eQTL_FDR&quot;,&quot;directionality&quot;,&quot;GWAS_pval&quot;)]
+
+message(paste0(&quot;Total traits with coloc hits: &quot;,length(unique(coloc$GWAS))))</code></pre>
+<pre><code>Total traits with coloc hits: 16</code></pre>
+<pre class="r fold-hide"><code>message(paste0(&quot;Total coloc hits: &quot;,nrow(coloc)))</code></pre>
+<pre><code>Total coloc hits: 402</code></pre>
+<pre class="r fold-hide"><code>message(paste(unique(coloc$GWAS),collapse=&quot;, &quot;))</code></pre>
+<pre><code>AD, ADHD, BD, EPI.GEN, FTD, HV, ICV, INS, IQ, MDD, MS, NEUR, PD, SCV, SCZ, SD</code></pre>
+<div id="percentage-mapping-to-a-single-cell-type"
+class="section level2">
+<h2>Percentage mapping to a single cell type</h2>
+<pre class="r fold-hide"><code>coloc$gene_GWAS&lt;-paste0(coloc$gene,&quot;_&quot;,coloc$GWAS)
+freq&lt;-as.data.frame(table(coloc$gene_GWAS))
+
+total&lt;-nrow(freq)
+morethan1&lt;-nrow(freq[freq$Freq&gt;1,])
+only1&lt;-nrow(freq)-morethan1
+
+
+message(paste0(&quot;Of &quot;,total,&quot; unique trait/gene combinations, &quot;,morethan1,&quot; appear more than once (implicating more than one celltype).&quot;))</code></pre>
+<pre><code>Of 255 unique trait/gene combinations, 60 appear more than once (implicating more than one celltype).</code></pre>
+<pre class="r fold-hide"><code>message(paste0(&quot;This equates to a percentage of &quot;,round((only1/total)*100,2),&quot;% COLOC hits that are cell-type specific.&quot;))</code></pre>
+<pre><code>This equates to a percentage of 76.47% COLOC hits that are cell-type specific.</code></pre>
+</div>
+</div>
+<div id="mr-overview" class="section level1">
+<h1>MR overview</h1>
+<div id="total-numbers" class="section level2">
+<h2>total numbers</h2>
+<pre class="r fold-show"><code>full&lt;-read.table(&quot;data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt&quot;)
+full$GWAS_gene_ct&lt;-paste0(full$GWAS,&quot;_&quot;,full$gene,&quot;_&quot;,full$celltype)
+
+message(paste0(&quot;Total tests: &quot;,nrow(full)))</code></pre>
+<pre><code>Total tests: 262</code></pre>
+<pre class="r fold-show"><code>message(paste0(&quot;Total traits: &quot;,length(unique(full$GWAS))))</code></pre>
+<pre><code>Total traits: 16</code></pre>
+<pre class="r fold-show"><code>message(paste(unique(full$GWAS),collapse=&quot;, &quot;))</code></pre>
+<pre><code>AD, ADHD, BD, EPI, FTD, HV, ICV, INS, IQ, MDD, MS, NEUR, PD, SCV, SCZ, SD</code></pre>
+<pre class="r fold-show"><code>message(paste0(&quot;Total unique genes: &quot;,length(unique(full$gene))))</code></pre>
+<pre><code>Total unique genes: 121</code></pre>
+<pre class="r fold-show"><code>message(paste0(&quot;Total unique IV sets: &quot;,length(unique(full$IVs))))</code></pre>
+<pre><code>Total unique IV sets: 167</code></pre>
+<pre class="r fold-show"><code>message(paste0(&quot;Total unique IV SNPs: &quot;,length(unique(unlist(strsplit(full$IVs,&quot;,&quot;))))))</code></pre>
+<pre><code>Total unique IV SNPs: 172</code></pre>
+<pre class="r fold-show"><code>##multi vs single ivs
+multi_ivs&lt;-length(grep(&quot;,&quot;,full$IVs))
+single_ivs&lt;-nrow(full)-multi_ivs
+multi_ivs_prop&lt;-multi_ivs/nrow(full)
+single_ivs_prop&lt;-round((1-multi_ivs_prop),3)*100
+message(paste0(&quot;In total, &quot;,single_ivs,&quot; IV sets only had a single SNP, equating to &quot;,single_ivs_prop,&quot;%&quot;))</code></pre>
+<pre><code>In total, 254 IV sets only had a single SNP, equating to 96.9%</code></pre>
+<pre class="r fold-show"><code>###filter results
+full&lt;-filter(full,IVW&lt;0.05)
+message(paste0(&quot;Total hits with significant MR results: &quot;,nrow(full)))</code></pre>
+<pre><code>Total hits with significant MR results: 256</code></pre>
+<pre class="r fold-show"><code>message(paste0(&quot;Total traits with significant MR results: &quot;,length(unique(full$GWAS))))</code></pre>
+<pre><code>Total traits with significant MR results: 16</code></pre>
+<pre class="r fold-show"><code>message(paste(unique(full$GWAS),collapse=&quot;, &quot;))</code></pre>
+<pre><code>AD, ADHD, BD, EPI, FTD, HV, ICV, INS, IQ, MDD, MS, NEUR, PD, SCV, SCZ, SD</code></pre>
+<pre class="r fold-show"><code>message(paste0(&quot;Total unique genes in MR results: &quot;,length(unique(full$gene))))</code></pre>
+<pre><code>Total unique genes in MR results: 118</code></pre>
+<pre class="r fold-show"><code>full$gene_trait&lt;-paste0(full$gene,&quot;_&quot;,full$GWAS)
+message(paste0(&quot;Total unique gene/traits in MR results: &quot;,length(unique(full$gene_trait))))</code></pre>
+<pre><code>Total unique gene/traits in MR results: 149</code></pre>
+<pre class="r fold-show"><code>message(paste0(&quot;Total unique IV sets in MR results: &quot;,length(unique(full$IVs))))</code></pre>
+<pre><code>Total unique IV sets in MR results: 162</code></pre>
+</div>
+<div id="how-many-genes-across-more-than-one-trait"
+class="section level2">
+<h2>How many genes across more than one trait</h2>
+<pre class="r fold-show"><code>full&lt;-read.table(&quot;data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt&quot;)
+full&lt;-full[full$IVW&lt;0.05,]
+trait_split&lt;-split(full,full$GWAS)
+
+#split by gwas
+for(i in 1:length(trait_split)){
+    df&lt;-trait_split[[i]]
+    #keep unique genes per trait
+    df&lt;-df[!duplicated(df$gene),]
+    trait_split[[i]]&lt;-df
+    }
+trait_df&lt;-do.call(rbind,trait_split)
+
+#check how many genes appear more than once
+gene_freq&lt;-as.data.frame(table(trait_df$gene))
+gene_freq&lt;-gene_freq[gene_freq$Freq&gt;1,]
+genes&lt;-gene_freq$Var1
+length(genes)</code></pre>
+<pre><code>[1] 21</code></pre>
+</div>
+<div id="how-many-genes-to-a-single-cell-type" class="section level2">
+<h2>How many genes to a single cell-type</h2>
+<pre class="r fold-show"><code>full&lt;-read.table(&quot;data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt&quot;)
+full&lt;-full[full$IVW&lt;0.05,]
+full$gene_trait&lt;-paste0(full$GWAS,&quot;_&quot;,full$gene)
+freq&lt;-as.data.frame(table(full$gene_trait))
+tot&lt;-nrow(freq)
+over_1_ct&lt;-nrow(freq[freq$Freq&gt;1,])
+only_1_ct&lt;-tot-over_1_ct
+only_1_ct</code></pre>
+<pre><code>[1] 105</code></pre>
+<pre class="r fold-show"><code>only_1_ct/tot</code></pre>
+<pre><code>[1] 0.704698</code></pre>
+</div>
+</div>
+<div id="epigenetic-intersection" class="section level1">
+<h1>Epigenetic Intersection</h1>
+<div id="snp2tfbs" class="section level2">
+<h2>SNP2TFBS</h2>
+<pre class="r"><code>source(&quot;data/MARKDOWN//helper_funcs.r&quot;)
+full&lt;-read.table(&quot;data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt&quot;)
+full$first_iv&lt;-as.data.frame(do.call(rbind,strsplit(full$IVs,&quot;,&quot;)))$V1
+full$snp_gene&lt;-paste0(full$first_iv,&quot;_&quot;,full$gene)
+
+
+## dataset obtained from https://ccg.epfl.ch/snp2tfbs/ 
+snp2tfbs&lt;-read.table(&quot;data/EXT_DATASETS//SNP2TFBS/snp2tfbs_JASPAR_CORE_2014_vert.txt&quot;,sep=&quot;\t&quot;,fill=T)
+colnames(snp2tfbs)&lt;-c(&quot;rsid&quot;,&quot;chr&quot;,&quot;pos&quot;,&quot;A1&quot;,&quot;A2&quot;,&quot;disrupted_tfs_n&quot;,&quot;tf&quot;,&quot;PWM_A1&quot;,&quot;PWM_A2&quot;,&quot;PWM_diff&quot;)
+
+##filter for tfbs disruption with scores
+snp2tfbs&lt;-filter(snp2tfbs,PWM_A1&gt;=0 | PWM_A2&gt;=0)
+
+##get full list of IVs, some of the MR hits have more than one IV
+snps&lt;-full$IVs
+rsids&lt;-strsplit(full$IVs,&quot;, &quot;)
+
+##this function is in the helper_funcs.r file
+results&lt;-snp2tfbs_check_IVs(snp_list=rsids,snp2tfbs_table=snp2tfbs)
+
+results$IVs&lt;-full$IVs
+table(results$tf_disrupted_any)
+#out of the 258 MR tests, 66 contained an IV predicted to disrupt SNP2TFBS binding
+full$SNP2TFBS_disrupt&lt;-results$tf_disrupted_any
+full$SNP2TFBS_top_TF&lt;-results$top_tf
+
+#now check unique IVs
+results&lt;-results[!duplicated(results$IVs),]
+table(results$tf_disrupted_any)
+
+results$IVs&lt;-full$IVs
+table(results$tf_disrupted_any)
+#out of the 258 MR tests, 66 contained an IV predicted to disrupt SNP2TFBS binding
+full$SNP2TFBS_disrupt&lt;-results$tf_disrupted_any
+full$SNP2TFBS_top_TF&lt;-results$top_tf
+
+results$IVs&lt;-full$IVs
+
+message(&quot;total IV sets disrupting TFBS&quot;)
+table(results$tf_disrupted_any)
+
+full$SNP2TFBS_disrupt&lt;-results$tf_disrupted_any
+full$SNP2TFBS_top_TF&lt;-results$top_tf
+
+#now check unique IVs
+message(&quot;total unique IV sets disrupting TFBS&quot;)
+results&lt;-results[!duplicated(results$IVs),]
+table(results$tf_disrupted_any)
+
+snp2tfbs_suppl_table&lt;-full[,c(&quot;GWAS&quot;,&quot;celltype&quot;,&quot;gene&quot;,&quot;IVs&quot;,&quot;SNP2TFBS_disrupt&quot;,&quot;SNP2TFBS_top_TF&quot;)]
+write.table(snp2tfbs_suppl_table,&quot;data/TABLES/SNP2TFBS_table.txt&quot;)</code></pre>
+<pre class="r"><code>results&lt;-read.table(&quot;data/TABLES/SNP2TFBS_table.txt&quot;)</code></pre>
+<div id="total-iv-sets-disrupting-tfbs" class="section level3">
+<h3>total IV sets disrupting TFBS:</h3>
+<pre class="r"><code>table(results$SNP2TFBS_disrupt)</code></pre>
+<pre><code>
+ NO YES 
+196  66 </code></pre>
+</div>
+<div id="total-unique-iv-sets-disrupting-tfbs" class="section level3">
+<h3>total unique IV sets disrupting TFBS:</h3>
+<pre class="r"><code>### total unique IV sets disrupting TFBS:
+results&lt;-results[!duplicated(results$IVs),]
+table(results$SNP2TFBS_disrupt)</code></pre>
+<pre><code>
+ NO YES 
+126  41 </code></pre>
+</div>
+</div>
+<div id="nott-intersections" class="section level2">
+<h2>Nott intersections</h2>
+<pre class="r fold-show"><code>source(&quot;data/MARKDOWN//helper_funcs.r&quot;)
+##the helper funcs contain a number of helper functions created to speed up analysis, as well as essential packages.
+## Note; these functions include a liftover step (hg38 to hg19, both genes and SNPs) to intersect with the Alexi Nott dataset.
+## this necessitates a chain file (obtained from UCSC)
+
+#this will be used downstream in the intersect wrap function
+chain_dir&lt;-&quot;data/helper_files/&quot;
+imported_chain&lt;-import.chain(paste0(chain_dir,&quot;/hg38ToHg19.over.chain&quot;))
+
+inputdir&lt;-&quot;data/EXT_DATASETS/&quot;
+
+# reformat MR results
+full&lt;-read.table(&quot;data/COLOC_MR_RESULTS/2022-10-25_FULL_MR_RES.txt&quot;,stringsAsFactors = FALSE)
+full$GWAS[which(full$GWAS==&quot;SCV.CAUDATE&quot;)]&lt;-&quot;SCV&quot;
+##shorten cell-type names for easier plotting
+full$celltype[which(full$celltype==&quot;Excitatory&quot;)]&lt;-&quot;ExN&quot;
+full$celltype[which(full$celltype==&quot;Inhibitory&quot;)]&lt;-&quot;InN&quot;
+full$celltype[which(full$celltype==&quot;Oligo&quot;)]&lt;-&quot;ODC&quot;
+
+##count how many are left when only considering the 4 cell types
+nrow(filter(full,celltype %in% c(&quot;ExN&quot;,&quot;ODC&quot;,&quot;InN&quot;,&quot;Microglia&quot;)))</code></pre>
+<pre><code>[1] 186</code></pre>
+<pre class="r fold-show"><code>##read in SNP locations file
+snp_locations&lt;-as.data.frame(data.table::fread(&quot;data/helper_files//snp_chromlocations_hg38.csv&quot;,stringsAsFactors = FALSE))
+
+##read in gene locations file
+gene_locations&lt;-read.table(&quot;data/helper_files/Microglia_agg_cpm_gene_locations.csv&quot;,stringsAsFactors = FALSE)</code></pre>
+<div id="microglia" class="section level3">
+<h3>Microglia</h3>
+<pre class="r fold-show"><code>message(&quot;Intersecting Microglia&quot;)</code></pre>
+<pre><code>Intersecting Microglia</code></pre>
+<pre class="r fold-show"><code>source(&quot;data/MARKDOWN//helper_funcs.r&quot;)
+atac&lt;-read.table(paste0(inputdir,&quot;ALEXINOTT_PLACSEQ/brain-cell-type-peak-files//ATAC/PU1_optimal_peak_IDR_ENCODE.ATAC.bed&quot;),stringsAsFactors = FALSE)
+h3k27me&lt;-read.table(paste0(inputdir,&quot;ALEXINOTT_PLACSEQ/brain-cell-type-peak-files//H3K4me3//PU1_optimal_peak.H3K4me3.bed&quot;),stringsAsFactors = FALSE)
+h3k27ac&lt;-read.table(paste0(inputdir,&quot;ALEXINOTT_PLACSEQ//brain-cell-type-peak-files//H3K27ac/PU1_optimal_peak.H3K27.bed&quot;),stringsAsFactors = FALSE)
+plac&lt;-read.table(paste0(inputdir,&quot;ALEXINOTT_PLACSEQ//brain-cell-type-peak-files//PLACseq/Microglia.5k.2.peaks.bedpe&quot;),head=T,stringsAsFactors = FALSE)
+
+gene_locations&lt;-read.table(&quot;data/helper_files/Microglia_agg_cpm_gene_locations.csv&quot;,stringsAsFactors = FALSE)
+
+
+full2&lt;-full[full$celltype %in% &quot;Microglia&quot;,]
+microglia_res&lt;-intersect_wrap(full2,gene_locations = gene_locations, snp_locations=snp_locations,
+                    plac_peaks=plac,atac_peaks=atac,h3kme_peaks=h3k27me,h3kac_peaks=h3k27ac)
+
+colnames(microglia_res$gene_df)&lt;-c(&quot;ATAC&quot;,&quot;H3K4me3&quot;,&quot;H3K27ac&quot;,&quot;gene&quot;,&quot;trait&quot;,&quot;PLAC&quot;,&quot;loop&quot;)
+colnames(microglia_res$snp_df)&lt;-c(&quot;ATAC&quot;,&quot;H3K4me3&quot;,&quot;H3K27ac&quot;,&quot;gene&quot;,&quot;trait&quot;,&quot;PLAC&quot;,&quot;position&quot;)
+
+
+##we decided not too include the gene promoter info. Add plac-seq loop info to snp_df
+microglia_res$snp_df$PLAC&lt;-microglia_res$gene_df$loop
+microglia_res$snp_df$trait&lt;-gsub(&quot;_&quot;,&quot;.&quot;,microglia_res$snp_df$trait)
+
+##save results in EXT_DATASETS/RESULTS folder
+saveRDS(microglia_res,paste0(inputdir,&quot;RESULTS/microglia_epigenetic_intersection_res.rds&quot;))
+
+
+## we decided to include the SNP2TFBS 
+microglia_res&lt;-readRDS(&quot;data/EXT_DATASETS//RESULTS//microglia_epigenetic_intersection_res.rds&quot;)
+snp2tfbs&lt;-read.table(&quot;data/TABLES//SNP2TFBS_table.txt&quot;)
+tmp&lt;-snp2tfbs[snp2tfbs$celltype %in% &quot;Microglia&quot;,]
+tmp$trait&lt;-paste0(tmp$GWAS,&quot;.&quot;,tmp$gene)
+microglia_res$snp_df$SNP2TFBS&lt;-tmp[match(microglia_res$snp_df$trait,tmp$trait),]$SNP2TFBS_disrupt
+microglia_res$snp_df$trait&lt;-gsub(&quot;_&quot;,&quot;.&quot;,microglia_res$snp_df$trait)
+
+##this also creates a ggobject, see figure section
+g&lt;-create_plot_wrap(microglia_res,paste0(inputdir,&quot;RESULTS/microglia_intersect.png&quot;),color_pal=c(&quot;#E3E3EF&quot;,&quot;#7876B1FF&quot;))
+g</code></pre>
+<p><img src="figure/downstream.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="oligo" class="section level3">
+<h3>Oligo</h3>
+<pre class="r fold-show"><code>###Oligo
+
+message(&quot;Intersecting Oligos&quot;)</code></pre>
+<pre><code>Intersecting Oligos</code></pre>
+<pre class="r fold-show"><code>atac&lt;-read.table(paste0(inputdir,&quot;ALEXINOTT_PLACSEQ/brain-cell-type-peak-files//ATAC/Olig2_optimal_peak_IDR_ENCODE.ATAC.bed&quot;))
+h3k27me&lt;-read.table(paste0(inputdir,&quot;ALEXINOTT_PLACSEQ/brain-cell-type-peak-files//H3K4me3//Olig2_optimal_peak.H3K4me3.bed&quot;))
+h3k27ac&lt;-read.table(paste0(inputdir,&quot;ALEXINOTT_PLACSEQ//brain-cell-type-peak-files//H3K27ac/Olig2_optimal_peak.H3K27.bed&quot;))
+plac&lt;-read.table(paste0(inputdir,&quot;ALEXINOTT_PLACSEQ//brain-cell-type-peak-files//PLACseq/Olig2.5k.2.peaks.bedpe&quot;),head=T)
+
+gene_locations&lt;-read.table(&quot;data/helper_files/Oligo_agg_cpm_gene_locations.csv&quot;)
+
+full2&lt;-full[full$celltype %in% &quot;ODC&quot;,]
+
+oligo_res&lt;-intersect_wrap(full2,gene_locations = gene_locations, snp_locations=snp_locations,
+                    plac_peaks=plac,atac_peaks=atac,h3kme_peaks=h3k27me,h3kac_peaks=h3k27ac)
+
+colnames(oligo_res$gene_df)&lt;-c(&quot;ATAC&quot;,&quot;H3K4me3&quot;,&quot;H3K27ac&quot;,&quot;gene&quot;,&quot;trait&quot;,&quot;PLAC&quot;,&quot;loop&quot;)
+colnames(oligo_res$snp_df)&lt;-c(&quot;ATAC&quot;,&quot;H3K4me3&quot;,&quot;H3K27ac&quot;,&quot;gene&quot;,&quot;trait&quot;,&quot;PLAC&quot;,&quot;position&quot;)
+
+oligo_res$snp_df$PLAC&lt;-oligo_res$gene_df$loop
+oligo_res$snp_df$trait&lt;-gsub(&quot;_&quot;,&quot;.&quot;,oligo_res$snp_df$trait)
+
+saveRDS(oligo_res,paste0(inputdir,&quot;RESULTS/oligo_epigenetic_intersection_res.rds&quot;))
+
+## we decided to include the SNP2TFBS 
+
+oligo_res&lt;-readRDS(&quot;data/EXT_DATASETS//RESULTS//oligo_epigenetic_intersection_res.rds&quot;)
+snp2tfbs&lt;-read.table(&quot;data/TABLES//SNP2TFBS_table.txt&quot;)
+tmp&lt;-snp2tfbs[snp2tfbs$celltype %in% &quot;ODC&quot;,]
+tmp$trait&lt;-paste0(tmp$GWAS,&quot;.&quot;,tmp$gene)
+oligo_res$snp_df$SNP2TFBS&lt;-tmp[match(oligo_res$snp_df$trait,tmp$trait),]$SNP2TFBS_disrupt
+g&lt;-create_plot_wrap(oligo_res,paste0(inputdir,&quot;RESULTS/oligo_intersect.png&quot;),color_pal=c(&quot;#E1EAEE&quot;,&quot;#6F99ADFF&quot;),dims=c(width=4,height=8))
+g</code></pre>
+<p><img src="figure/downstream.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="neurons" class="section level3">
+<h3>Neurons</h3>
+<pre class="r fold-show"><code>##Splitting Exc and Inh Neur in two, too large for a single plot
+
+
+##Exc Neur
+message(&quot;Intersecting ExcNeurons&quot;)</code></pre>
+<pre><code>Intersecting ExcNeurons</code></pre>
+<pre class="r fold-show"><code>atac&lt;-read.table(paste0(inputdir,&quot;ALEXINOTT_PLACSEQ/brain-cell-type-peak-files//ATAC/NeuN_optimal_peak_IDR_ENCODE.ATAC.bed&quot;))
+h3k27me&lt;-read.table(paste0(inputdir,&quot;ALEXINOTT_PLACSEQ/brain-cell-type-peak-files//H3K4me3//NeuN_optimal_peak.H3K4me3.bed&quot;))
+h3k27ac&lt;-read.table(paste0(inputdir,&quot;ALEXINOTT_PLACSEQ//brain-cell-type-peak-files//H3K27ac/NeuN_optimal_peak.H3K27.bed&quot;))
+plac&lt;-read.table(paste0(inputdir,&quot;ALEXINOTT_PLACSEQ//brain-cell-type-peak-files//PLACseq/NeuN.5k.2.peaks.bedpe&quot;),head=T)
+
+gene_locations&lt;-read.table(&quot;data/helper_files/Excitatory_agg_cpm_gene_locations.csv&quot;)
+
+full2&lt;-full[full$celltype %in% &quot;ExN&quot;,]
+
+neurons_res&lt;-intersect_wrap(full2,gene_locations = gene_locations, snp_locations=snp_locations,
+                    plac_peaks=plac,atac_peaks=atac,h3kme_peaks=h3k27me,h3kac_peaks=h3k27ac)
+colnames(neurons_res$gene_df)&lt;-c(&quot;ATAC&quot;,&quot;H3K4me3&quot;,&quot;H3K27ac&quot;,&quot;gene&quot;,&quot;trait&quot;,&quot;PLAC&quot;,&quot;loop&quot;)
+colnames(neurons_res$snp_df)&lt;-c(&quot;ATAC&quot;,&quot;H3K4me3&quot;,&quot;H3K27ac&quot;,&quot;gene&quot;,&quot;trait&quot;,&quot;PLAC&quot;,&quot;position&quot;)
+
+neurons_res$snp_df$trait&lt;-gsub(&quot;_&quot;,&quot;.&quot;,neurons_res$snp_df$trait)
+neurons_res$snp_df$trait&lt;-paste0(neurons_res$snp_df$trait,&quot;.ExN&quot;)
+neurons_res$snp_df$PLAC&lt;-neurons_res$gene_df$loop
+
+saveRDS(neurons_res,paste0(inputdir,&quot;RESULTS/Excneurons_epigenetic_intersection_res.rds&quot;))
+
+
+
+## we decided to include the SNP2TFBS 
+
+neurons_res&lt;-readRDS(&quot;data/EXT_DATASETS//RESULTS//Excneurons_epigenetic_intersection_res.rds&quot;)
+snp2tfbs&lt;-read.table(&quot;data/TABLES//SNP2TFBS_table.txt&quot;)
+tmp&lt;-snp2tfbs[snp2tfbs$celltype %in% &quot;Excitatory&quot;,]
+tmp$celltype&lt;-&quot;ExN&quot;
+tmp$trait&lt;-paste0(tmp$GWAS,&quot;.&quot;,tmp$gene,&quot;.&quot;,tmp$celltype)
+neurons_res$snp_df$SNP2TFBS&lt;-tmp[match(neurons_res$snp_df$trait,tmp$trait),]$SNP2TFBS_disrupt
+g&lt;-create_plot_wrap(neurons_res,paste0(inputdir,&quot;RESULTS/Excneuron_intersect.png&quot;),color_pal=c(&quot;#F8E6D3&quot;,&quot;#E18727FF&quot;))
+g</code></pre>
+<p><img src="figure/downstream.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r fold-show"><code>##Inh Neur
+
+message(&quot;Intersecting InhNeurons&quot;)</code></pre>
+<pre><code>Intersecting InhNeurons</code></pre>
+<pre class="r fold-show"><code>atac&lt;-read.table(paste0(inputdir,&quot;ALEXINOTT_PLACSEQ/brain-cell-type-peak-files//ATAC/NeuN_optimal_peak_IDR_ENCODE.ATAC.bed&quot;))
+h3k27me&lt;-read.table(paste0(inputdir,&quot;ALEXINOTT_PLACSEQ/brain-cell-type-peak-files//H3K4me3//NeuN_optimal_peak.H3K4me3.bed&quot;))
+h3k27ac&lt;-read.table(paste0(inputdir,&quot;ALEXINOTT_PLACSEQ//brain-cell-type-peak-files//H3K27ac/NeuN_optimal_peak.H3K27.bed&quot;))
+plac&lt;-read.table(paste0(inputdir,&quot;ALEXINOTT_PLACSEQ//brain-cell-type-peak-files//PLACseq/NeuN.5k.2.peaks.bedpe&quot;),head=T)
+
+gene_locations&lt;-read.table(&quot;data/helper_files/Inhibitory_agg_cpm_gene_locations.csv&quot;)
+
+full2&lt;-full[full$celltype %in% &quot;InN&quot;,]
+
+neurons_res&lt;-intersect_wrap(full2,gene_locations = gene_locations, snp_locations=snp_locations,
+                    plac_peaks=plac,atac_peaks=atac,h3kme_peaks=h3k27me,h3kac_peaks=h3k27ac)
+colnames(neurons_res$gene_df)&lt;-c(&quot;ATAC&quot;,&quot;H3K4me3&quot;,&quot;H3K27ac&quot;,&quot;gene&quot;,&quot;trait&quot;,&quot;PLAC&quot;,&quot;loop&quot;)
+colnames(neurons_res$snp_df)&lt;-c(&quot;ATAC&quot;,&quot;H3K4me3&quot;,&quot;H3K27ac&quot;,&quot;gene&quot;,&quot;trait&quot;,&quot;PLAC&quot;,&quot;position&quot;)
+
+neurons_res$snp_df$trait&lt;-gsub(&quot;_&quot;,&quot;.&quot;,neurons_res$snp_df$trait)
+neurons_res$snp_df$trait&lt;-paste0(neurons_res$snp_df$trait,&quot;.InN&quot;)
+neurons_res$snp_df$PLAC&lt;-neurons_res$gene_df$loop
+
+saveRDS(neurons_res,paste0(inputdir,&quot;RESULTS/Inneurons_epigenetic_intersection_res.rds&quot;))
+
+
+## we decided to include the SNP2TFBS 
+
+neurons_res&lt;-readRDS(&quot;data/EXT_DATASETS//RESULTS//Inneurons_epigenetic_intersection_res.rds&quot;)
+snp2tfbs&lt;-read.table(&quot;data/TABLES//SNP2TFBS_table.txt&quot;)
+tmp&lt;-snp2tfbs[snp2tfbs$celltype %in% &quot;Inhibitory&quot;,]
+tmp$celltype&lt;-&quot;InN&quot;
+tmp$trait&lt;-paste0(tmp$GWAS,&quot;.&quot;,tmp$gene,&quot;.&quot;,tmp$celltype)
+neurons_res$snp_df$SNP2TFBS&lt;-tmp[match(neurons_res$snp_df$trait,tmp$trait),]$SNP2TFBS_disrupt
+g&lt;-create_plot_wrap(neurons_res,paste0(inputdir,&quot;RESULTS/Inneuron_intersect.png&quot;),color_pal=c(&quot;#F8E6D3&quot;,&quot;#E18727FF&quot;))
+g</code></pre>
+<p><img src="figure/downstream.Rmd/unnamed-chunk-14-2.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+</div>
+<div id="validation-pqtl-opentargets-dgidb-stitch"
+class="section level1">
+<h1>Validation; pQTL, OpenTargets, DGidb, STITCH</h1>
+<div id="pqtl" class="section level2">
+<h2>pQTL</h2>
+<pre class="r fold-show"><code>source(&quot;data/MARKDOWN//helper_funcs.r&quot;)
+full&lt;-read.table(&quot;data/COLOC_MR_RESULTS/2022-10-25_FULL_MR_RES.txt&quot;)
+#downstream analysis - at this point, filter for significant MR hits
+full&lt;-full[full$IVW&lt;0.05,]
+
+pqtl&lt;-read.csv(&quot;data/EXT_DATASETS//PQTL/ROSMAP_DLPFC_pQTLs.csv&quot;,head=T)
+
+##attach protein symbols, manually converted from uniprot IDs
+conversion&lt;-read.table(&quot;data/EXT_DATASETS//PQTL//Uniprot_Conversion.txt&quot;,head=T)
+pqtl$gene&lt;-conversion[match(pqtl$UNIPROT,conversion$From),]$To
+pqtl&lt;-pqtl[complete.cases(pqtl),]
+
+##use helper function to convert chrpos to rsids for intersection with our MR hits
+pqtl$chrpos=paste0(pqtl$CHR,&quot;:&quot;,pqtl$POS)
+
+#build is hg37
+pqtl$SNP&lt;-chrpos_to_rsid(pqtl$chrpos,build=&quot;hg37&quot;)
+pqtl$snp_gene&lt;-paste0(pqtl$SNP,&quot;_&quot;,pqtl$gene)</code></pre>
+<pre class="r fold-show"><code># get SNPs in LD
+this step takes a long time.
+
+outdir&lt;-(&quot;EXT_DATASETS//RESULTS/LD_RESULTS/&quot;)
+snps&lt;-strsplit(full$IVs,&quot;, &quot;)
+snps&lt;-unlist(snps)
+
+# Using a loop to set output file
+
+for(i in 1:length(snps)){
+    snp&lt;-snps[i]
+    suppressMessages(ld_res&lt;-LDlinkR::LDproxy(snp,pop=&quot;CEU&quot;,token = &quot;f3d054e6c0ee&quot;))
+    write.table(ld_res,paste0(outdir,snp,&quot;_ldres.txt&quot;))
+    }</code></pre>
+<pre class="r fold-show"><code>##treat every IV as a list, to account for situations where you have more than one IV
+IVs&lt;-strsplit(full$IVs,&quot;, &quot;)
+##keep IVs&gt;0.8
+r2_filter&lt;-0.7
+pqtl_FDR_min&lt;-0.05
+
+ld_file_list&lt;-list.files(&quot;data/EXT_DATASETS//RESULTS/LD_RESULTS/&quot;,full.names=T)
+
+#create empty result vector
+resvec&lt;-vector()
+pqtl_fdr&lt;-vector()
+lead_snp&lt;-vector()
+for(i in 1:nrow(full)){
+     
+    tmp_ivs&lt;-IVs[[i]]
+    gene&lt;-full$gene[i]
+    
+    ##check pQTL first to see if protein is assessed in this dataset (they only look at ~7k proteins)
+    tmp_pqtl&lt;-pqtl[pqtl$gene %in% gene,]
+    if(nrow(tmp_pqtl)==0){
+        resvec&lt;-c(resvec,&quot;N/a&quot;)
+        pqtl_fdr&lt;-c(pqtl_fdr,&quot;N/a&quot;)
+        lead_snp&lt;-c(lead_snp,&quot;N/a&quot;)
+        next
+        }
+
+    ##get SNPs
+
+    if(length(tmp_ivs)&gt;1){
+        #if more than one IV, read in each LD table sequentially and bind together
+
+        #initiate empty df
+        ld_res&lt;-data.frame()
+        for(b in 1:length(tmp_ivs)){
+            x&lt;-tmp_ivs[b]
+            #grab the LD file by matching IV name
+            ld_file&lt;-ld_file_list[grep(x,ld_file_list)]
+            ld_res1&lt;-read.table(ld_file)
+            ld_res&lt;-rbind(ld_res,ld_res1)
+            }
+        } else {
+        #grab the LD file by matching IV name
+        ld_file&lt;-ld_file_list[grep(tmp_ivs,ld_file_list)]
+        ld_res&lt;-read.table(ld_file)
+        }
+    #now filter for snps in high LD using a decided threshold
+    ld_res&lt;-filter(ld_res, R2&gt;r2_filter)
+    
+    ld_res$SNP_gene&lt;-paste0(ld_res$RS_Number,&quot;_&quot;,gene)
+
+    
+    
+    #now check SNP/gene pairs
+    tmp_pqtl&lt;-filter(tmp_pqtl,snp_gene %in% ld_res$SNP_gene)
+    
+    #filter for the FDR threshold
+    tmp_pqtl&lt;-filter(tmp_pqtl,FDR&lt;pqtl_FDR_min)
+    
+    if(nrow(tmp_pqtl)&gt;0){
+        resvec&lt;-c(resvec,&quot;YES&quot;)
+        
+        #save top hit and lead SNP
+        pqtl_fdr&lt;-c(pqtl_fdr,min(tmp_pqtl$FDR))
+        snp&lt;-tmp_pqtl[order(tmp_pqtl$FDR),]$SNP[1]
+        lead_snp&lt;-c(lead_snp,snp)
+        }else{
+        resvec&lt;-c(resvec,&quot;NO&quot;)
+        pqtl_fdr&lt;-c(pqtl_fdr,&quot;NO&quot;)
+        lead_snp&lt;-c(lead_snp,&quot;NO&quot;)
+        }
+    }</code></pre>
+<pre class="r fold-show"><code>full$pQTL_hit&lt;-resvec
+full$pQTL_snp&lt;-lead_snp
+full$pQTL_FDR&lt;-pqtl_fdr
+pqtl_table&lt;-full[,c(&quot;GWAS&quot;,&quot;celltype&quot;,&quot;gene&quot;,&quot;IVs&quot;,&quot;eQTL_FDR&quot;,&quot;pQTL_hit&quot;,&quot;pQTL_snp&quot;,&quot;pQTL_FDR&quot;)]
+
+head(pqtl_table)</code></pre>
+<pre><code>                      GWAS   celltype    gene        IVs     eQTL_FDR pQTL_hit
+AD_Astrocytes_SNX31     AD Astrocytes   SNX31  rs1693551 6.255985e-08      N/a
+AD_Microglia_RIN3       AD  Microglia    RIN3 rs12590654 1.310662e-02      N/a
+AD_Microglia_PICALM     AD  Microglia  PICALM rs10792832 3.554858e-03       NO
+AD_Excitatory_LRRC37A   AD Excitatory LRRC37A  rs4510068 5.337876e-06      N/a
+AD_Inhibitory_LRRC37A   AD Inhibitory LRRC37A  rs4510068 3.877490e-05      N/a
+AD_Microglia_JAZF1      AD  Microglia   JAZF1  rs4722758 1.103842e-07      N/a
+                      pQTL_snp pQTL_FDR
+AD_Astrocytes_SNX31        N/a      N/a
+AD_Microglia_RIN3          N/a      N/a
+AD_Microglia_PICALM         NO       NO
+AD_Excitatory_LRRC37A      N/a      N/a
+AD_Inhibitory_LRRC37A      N/a      N/a
+AD_Microglia_JAZF1         N/a      N/a</code></pre>
+</div>
+<div id="stitch" class="section level2">
+<h2>stitch</h2>
+<pre class="r fold-show"><code>indir&lt;-&quot;data/EXT_DATASETS//STITCH/&quot;
+library(biomaRt)
+full&lt;-read.table(&quot;data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt&quot;)
+### filter
+full&lt;-full[full$IVW&lt;0.05,]
+
+
+#read in data. Obtained from http://stitch.embl.de/
+stitch&lt;-read.table(paste0(indir,&quot;9606.protein_chemical.links.v5.0.tsv&quot;),head=T)
+stitch$protein&lt;-gsub(&quot;9606.&quot;,&quot;&quot;,stitch$protein)
+
+stitch$combined_score&lt;-stitch$combined_score/1000
+mart = useMart(host = &#39;grch37.ensembl.org&#39;, biomart=&#39;ENSEMBL_MART_ENSEMBL&#39;, dataset=&#39;hsapiens_gene_ensembl&#39;)
+mart=useDataset(&quot;hsapiens_gene_ensembl&quot;,mart = mart)
+
+ensembl_genes &lt;-unique(stitch$protein)
+gene_names &lt;- getBM(
+    filters= &quot;ensembl_peptide_id&quot;, 
+    attributes= c(&quot;ensembl_peptide_id&quot;,&quot;hgnc_symbol&quot;,&quot;description&quot;),
+    values= ensembl_genes,
+    mart= mart)
+stitch$gene&lt;-gene_names[match(stitch$protein,gene_names$ensembl_peptide_id),]$hgnc_symbol
+
+##filter by stitch score
+stitch_score_min=0.7
+stitch_filtered&lt;-stitch[stitch$combined_score&gt;stitch_score_min,]
+
+full$STITCH_intersect&lt;-sapply(full$gene,function(x){
+    tmp_stitch&lt;-stitch_filtered[stitch_filtered$gene %in% x,]
+    if(nrow(tmp_stitch)&gt;=1){
+          return(&quot;YES&quot;)
+        }else{
+        return(&quot;NO&quot;)
+        }
+    })
+
+full$STITCH_n_compounds&lt;-sapply(full$gene,function(x){
+    tmp_stitch&lt;-stitch_filtered[stitch_filtered$gene %in% x,]
+    if(nrow(tmp_stitch)&gt;=1){
+          return(nrow(tmp_stitch))
+        }else{
+        return(0)
+        }
+    })
+stitch_table&lt;-full[,c(&quot;GWAS&quot;,&quot;celltype&quot;,&quot;gene&quot;,&quot;STITCH_intersect&quot;,&quot;STITCH_n_compounds&quot;)]
+write.table(stitch_table,&quot;data/TABLES/stitch_table.txt&quot;)</code></pre>
+<div id="check-numbers-that-have-a-hit" class="section level3">
+<h3>check numbers that have a hit</h3>
+<pre class="r"><code>stitch_table&lt;-read.table(&quot;data/TABLES//stitch_table.txt&quot;)
+stitch_table&lt;-stitch_table[!duplicated(stitch_table$gene),]
+table(stitch_table$STITCH_intersect)</code></pre>
+<pre><code>
+ NO YES 
+ 60  58 </code></pre>
+</div>
+</div>
+<div id="opentargets" class="section level2">
+<h2>OpenTargets</h2>
+<pre class="r fold-show"><code>source(&quot;data/MARKDOWN//helper_funcs.r&quot;)
+suppressMessages(library(sparklyr))
+
+sc &lt;- spark_connect(master = &quot;local&quot;,version=&quot;3.1&quot;)
+
+
+full&lt;-read.table(&quot;data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt&quot;)
+full&lt;-full[full$IVW&lt;0.05,]
+
+evidencePath &lt;-&quot;data/EXT_DATASETS//OPENTARGETS/associationByOverallDirect&quot;
+evd &lt;- spark_read_parquet(sc,path = evidencePath)
+OT_disease&lt;-evd %&gt;% collect()
+
+##keep scores above 0
+OT_disease&lt;-OT_disease[OT_disease$score&gt;0,]
+
+#my own helper function to convert geneids; see helper_funcs.r
+conversion_df&lt;-convert_geneids(unique(OT_disease$targetId),format=&quot;ENSEMBL&quot;,conversion=&quot;SYMBOL&quot;)
+OT_disease$gene&lt;-conversion_df[match(OT_disease$targetId,conversion_df$pre_conversion),]$symbols</code></pre>
+<pre class="r"><code>### read in disease/trait names
+#this step takes a long time
+evidencePath &lt;-&quot;data/EXT_DATASETS//OPENTARGETS/diseases/&quot;
+OT_disease_terms&lt;- spark_read_parquet(sc,path=evidencePath)
+OT_disease_terms&lt;-OT_disease_terms %&gt;%
+collect()</code></pre>
+<pre class="r"><code>trait_names&lt;-c(&quot;Alzheimer disease&quot;,&quot;attention deficit-hyperactivity disorder&quot;,
+                 &quot;bipolar disorder&quot;,&quot;Generalized epilepsy&quot;,&quot;frontotemporal dementia&quot;,&quot;hippocampal volume&quot;,
+                 &quot;intracranial volume measurement&quot;,&quot;insomnia&quot;,&quot;intelligence&quot;,
+                 &quot;major depressive disorder&quot;,&quot;multiple sclerosis&quot;,&quot;neurotic&quot;,&quot;Parkinson&quot;,
+                 &quot;caudate nucleus volume&quot;,&quot;schizophrenia&quot;,&quot;sleep duration&quot;)
+trait_df&lt;-data.frame(GWAS=unique(full$GWAS),trait=trait_names)
+full$trait&lt;-trait_df[match(full$GWAS,trait_df$GWAS),]$trait</code></pre>
+<pre class="r"><code>resvec&lt;-vector()
+for(i in 1:nrow(full)){
+    mr_gene&lt;-full$gene[i]
+    trait&lt;-full$trait[i]
+    
+    ##extract trait IDs from the first opentargets dataset, looking only at the MR gene
+    OT_disease_tmp&lt;-filter(OT_disease,gene %in% mr_gene)
+    trait_ids&lt;-OT_disease$diseaseId
+
+    if(nrow(OT_disease_tmp)==0){
+        resvec&lt;-c(resvec,&quot;NO&quot;)
+        next
+        }
+    
+    ##now check in the disease terms whether they appear (can be more than one hit)
+    OT_disease_terms_tmp&lt;-filter(OT_disease_terms,id %in% trait_ids)
+    OT_disease_terms_tmp&lt;-OT_disease_terms_tmp[grep(trait,OT_disease_terms_tmp$synonyms),]
+
+    if(nrow(OT_disease_terms_tmp)&gt;0){
+        resvec&lt;-c(resvec,&quot;YES&quot;)
+        }else{
+        resvec&lt;-c(resvec,&quot;NO&quot;)
+    }
+}</code></pre>
+<pre class="r"><code>full$OpenTargets_disease_hit&lt;-resvec
+OT_table&lt;-full[,c(&quot;GWAS&quot;,&quot;gene&quot;,&quot;celltype&quot;,&quot;OpenTargets_disease_hit&quot;)]
+write.table(OT_table,&quot;data/TABLES/OpenTargets_table.txt&quot;)</code></pre>
+</div>
+<div id="dgidb" class="section level2">
+<h2>DGIdb</h2>
+<pre class="r"><code>full&lt;-read.table(&quot;data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt&quot;)
+full&lt;-full[full$IVW&lt;0.05,]
+
+## read in dgidb dataset
+dgidb&lt;-read.csv(&quot;data/EXT_DATASETS/DGIDB/interactions.tsv&quot;,sep=&quot;\t&quot;)
+
+full$DGIDB_intersect&lt;-sapply(full$gene,function(x){
+    tmp_dgidb&lt;-dgidb[dgidb$gene_name %in% x,]
+    if(nrow(tmp_dgidb)&gt;=1){
+          return(&quot;YES&quot;)
+        }else{
+        return(&quot;NO&quot;)
+        }
+    })
+
+dgidb_table&lt;-full[,c(&quot;GWAS&quot;,&quot;celltype&quot;,&quot;gene&quot;,&quot;DGIDB_intersect&quot;)]
+write.table(dgidb_table,&quot;data/TABLES/dgidb_table.txt&quot;)</code></pre>
+<div id="check-numbers-that-have-a-hit-1" class="section level3">
+<h3>check numbers that have a hit</h3>
+<pre class="r"><code>dgidb_table&lt;-read.table(&quot;data/TABLES//OpenTargets_table.txt&quot;)
+dgidb_table&lt;-dgidb_table[!duplicated(dgidb_table$gene),]
+table(dgidb_table$DGIDB_intersect)</code></pre>
+<pre><code>&lt; table of extent 0 &gt;</code></pre>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.0.5 (2021-03-31)
+Platform: x86_64-conda-linux-gnu (64-bit)
+Running under: Ubuntu 18.04.6 LTS
+
+Matrix products: default
+BLAS/LAPACK: /home/ah3918/anaconda3/envs/ODIN3/lib/libopenblasp-r0.3.12.so
+
+locale:
+ [1] LC_CTYPE=en_GB.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_GB.UTF-8        LC_COLLATE=en_GB.UTF-8    
+ [5] LC_MONETARY=en_GB.UTF-8    LC_MESSAGES=en_GB.UTF-8   
+ [7] LC_PAPER=en_GB.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_GB.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+[1] stats4    parallel  stats     graphics  grDevices utils     datasets 
+[8] methods   base     
+
+other attached packages:
+ [1] biomaRt_2.46.3                          
+ [2] sparklyr.nested_0.0.3                   
+ [3] sparklyr_1.7.8                          
+ [4] ggplot2_3.3.6                           
+ [5] org.Hs.eg.db_3.12.0                     
+ [6] SNPlocs.Hsapiens.dbSNP151.GRCh38_0.99.20
+ [7] TxDb.Hsapiens.UCSC.hg19.knownGene_3.2.2 
+ [8] GenomicFeatures_1.42.3                  
+ [9] AnnotationDbi_1.52.0                    
+[10] Biobase_2.50.0                          
+[11] SNPlocs.Hsapiens.dbSNP144.GRCh37_0.99.20
+[12] BSgenome_1.58.0                         
+[13] rtracklayer_1.50.0                      
+[14] Biostrings_2.58.0                       
+[15] XVector_0.30.0                          
+[16] GenomicRanges_1.42.0                    
+[17] GenomeInfoDb_1.26.7                     
+[18] IRanges_2.24.1                          
+[19] S4Vectors_0.28.1                        
+[20] BiocGenerics_0.36.1                     
+[21] dplyr_1.0.9                             
+[22] tidyr_1.2.1                             
+[23] workflowr_1.7.0                         
+
+loaded via a namespace (and not attached):
+  [1] colorspace_2.0-3            ellipsis_0.3.2             
+  [3] rprojroot_2.0.3             base64enc_0.1-3            
+  [5] fs_1.5.2                    rstudioapi_0.13            
+  [7] farver_2.1.1                bit64_4.0.5                
+  [9] fansi_1.0.3                 xml2_1.3.3                 
+ [11] cachem_1.0.6                knitr_1.39                 
+ [13] config_0.3.1                jsonlite_1.8.0             
+ [15] listviewer_3.0.0            Rsamtools_2.6.0            
+ [17] dbplyr_2.2.1                compiler_4.0.5             
+ [19] httr_1.4.3                  assertthat_0.2.1           
+ [21] Matrix_1.5-1                fastmap_1.1.0              
+ [23] cli_3.4.1                   later_1.2.0                
+ [25] htmltools_0.5.3             prettyunits_1.1.1          
+ [27] tools_4.0.5                 gtable_0.3.1               
+ [29] glue_1.6.2                  GenomeInfoDbData_1.2.4     
+ [31] reshape2_1.4.4              rappdirs_0.3.3             
+ [33] Rcpp_1.0.9                  jquerylib_0.1.4            
+ [35] vctrs_0.5.0                 xfun_0.32                  
+ [37] stringr_1.4.0               ps_1.7.1                   
+ [39] lifecycle_1.0.3             XML_3.99-0.10              
+ [41] getPass_0.2-2               zlibbioc_1.36.0            
+ [43] scales_1.2.1                ragg_1.2.2                 
+ [45] hms_1.1.1                   promises_1.2.0.1           
+ [47] MatrixGenerics_1.2.1        SummarizedExperiment_1.20.0
+ [49] yaml_2.3.5                  curl_4.3.2                 
+ [51] memoise_2.0.1               forge_0.2.0                
+ [53] sass_0.4.2                  stringi_1.7.8              
+ [55] RSQLite_2.2.15              highr_0.9                  
+ [57] BiocParallel_1.24.1         rlang_1.0.6                
+ [59] pkgconfig_2.0.3             systemfonts_1.0.4          
+ [61] matrixStats_0.62.0          bitops_1.0-7               
+ [63] evaluate_0.16               lattice_0.20-45            
+ [65] purrr_0.3.4                 GenomicAlignments_1.26.0   
+ [67] htmlwidgets_1.5.4           bit_4.0.4                  
+ [69] processx_3.7.0              tidyselect_1.1.2           
+ [71] plyr_1.8.7                  magrittr_2.0.3             
+ [73] R6_2.5.1                    generics_0.1.3             
+ [75] DelayedArray_0.16.3         DBI_1.1.3                  
+ [77] pillar_1.8.1                whisker_0.4                
+ [79] withr_2.5.0                 RCurl_1.98-1.8             
+ [81] tibble_3.1.8                crayon_1.5.1               
+ [83] uuid_1.1-0                  utf8_1.2.2                 
+ [85] BiocFileCache_1.14.0        rmarkdown_2.15             
+ [87] progress_1.2.2              grid_4.0.5                 
+ [89] data.table_1.14.2           blob_1.2.3                 
+ [91] callr_3.7.1                 git2r_0.30.1               
+ [93] digest_0.6.30               httpuv_1.6.5               
+ [95] r2d3_0.2.6                  textshaping_0.3.6          
+ [97] openssl_2.0.2               munsell_0.5.0              
+ [99] bslib_0.4.0                 askpass_1.1                </code></pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+https://docs.mathjax.org/en/latest/web/configuration.html. This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
