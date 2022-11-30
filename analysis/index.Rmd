@@ -8,8 +8,9 @@ output:
 editor_options:
   chunk_output_type: console
 ---
-This website contains all code in the paper; ""
+This website contains all code in the paper; "Single-cell Mendelian randomisation identifies cell-type specific genetic effects on human brain disease and behaviour"
 
+Currently on bioRxiv: https://doi.org/10.1101/2022.11.28.517913 
 
 eQTL analysis (coming soon)
 
