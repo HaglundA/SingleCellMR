@@ -11,10 +11,9 @@ editor_options:
 This website contains all code in the paper; ""
 
 
-[eQTL analysis](eQTL_analysis.html)
+eQTL analysis (coming soon)
 
-IV selection and MR analysis
-coming soon
+IV selection and MR analysis (coming soon)
 
 
 [Downstream COLOC/MR results](downstream.html)
