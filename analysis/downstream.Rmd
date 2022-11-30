@@ -17,10 +17,6 @@ suppressMessages(library(tidyr))
 suppressMessages(library(dplyr))
 ```
 
-# eQTL replication
-
-
-
 # Overview of COLOC and MR numbers
 
 ```{r, class.source = 'fold-hide'}
