@@ -711,6 +711,39 @@ g2
 ## Suppl. Fig. 6
 ```{r}
 
+full<-read.table("data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt")
+full<-full[full$IVW<0.05,]
+full$trait_gene<-paste0(full$GWAS,"_",full$gene)
+
+tmp<-full[full$GWAS=="AD",]
+tmp<-tmp[order(tmp$celltype),]
+tmp$gene<-factor(tmp$gene,levels=unique(tmp$gene))
+color_pal=ggsci::pal_nejm("default")(8)
+colorvec<-c(Astrocytes=color_pal[1],
+           Endothelial=color_pal[2],
+           Excitatory=color_pal[3],
+           Inhibitory=color_pal[4],Microglia=color_pal[5],
+           ODC=color_pal[6],OPC=color_pal[7],Pericytes=color_pal[8])
+
+
+for(i in 1:length(unique(full$GWAS))){
+    gwas<-unique(full$GWAS)[i]
+    tmp<-full[full$GWAS %in% gwas,]
+    len<-nrow(tmp)
+    fig_height=3/20*len
+    lims=max(abs(tmp$IVW_beta))+0.1
+    
+    g<-ggplot(tmp,aes(y=gene,x=IVW_beta,fill=celltype))+
+    geom_point(colour="black",shape=21,stroke=0.3)+
+    scale_fill_manual(values = colorvec)+
+    theme_classic()+
+    geom_vline(xintercept=0,linetype="dotted")+scale_x_continuous(limits=c(lims*-1,lims))
+    g<-g+
+    theme(text=element_text(size=5,family="Helvetica"),legend.title=element_blank(),
+      axis.text.y=element_text(size=5,family="Helvetica"),axis.text.x=element_text(size=5,family="Helvetica"),
+      legend.text = element_text(family="Helvetica",size=5,face="bold"))+ggtitle(gwas)
+   print(g)
+}
 ```
 
 
