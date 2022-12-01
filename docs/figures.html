@@ -540,15 +540,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomah3918SingleCellMRtree2fd70c5aa49c52df57f3a1876fecd6b2ba6a7308targetblank2fd70c5a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomah3918SingleCellMRtree9aafc1c688e1f89dc9fc467d56cb347169003d62targetblank9aafc1ca">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/ah3918/SingleCellMR/tree/2fd70c5aa49c52df57f3a1876fecd6b2ba6a7308" target="_blank">2fd70c5</a>
+<a href="https://github.com/ah3918/SingleCellMR/tree/9aafc1c688e1f89dc9fc467d56cb347169003d62" target="_blank">9aafc1c</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomah3918SingleCellMRtree2fd70c5aa49c52df57f3a1876fecd6b2ba6a7308targetblank2fd70c5a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomah3918SingleCellMRtree9aafc1c688e1f89dc9fc467d56cb347169003d62targetblank9aafc1ca"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -558,7 +558,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/ah3918/SingleCellMR/tree/2fd70c5aa49c52df57f3a1876fecd6b2ba6a7308" target="_blank">2fd70c5</a>.
+<a href="https://github.com/ah3918/SingleCellMR/tree/9aafc1c688e1f89dc9fc467d56cb347169003d62" target="_blank">9aafc1c</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -574,6 +574,7 @@ were generated:
 <pre><code>
 Ignored files:
     Ignored:    analysis/downstream.nb.html
+    Ignored:    analysis/figure/
     Ignored:    analysis/figures.nb.html
 
 Untracked files:
@@ -641,6 +642,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/ah3918/SingleCellMR/blob/9aafc1c688e1f89dc9fc467d56cb347169003d62/analysis/figures.Rmd" target="_blank">9aafc1c</a>
+</td>
+<td>
+Alexander Haglund
+</td>
+<td>
+2022-12-01
+</td>
+<td>
+wflow_publish(c("analysis/figures.Rmd"))
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/ah3918/SingleCellMR/3f6c35b5e78065a5add2135798ff2bac9fc81f0f/docs/figures.html" target="_blank">3f6c35b</a>
+</td>
+<td>
+Alexander Haglund
+</td>
+<td>
+2022-12-01
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -858,6 +893,43 @@ theme(text=element_text(family=&quot;Helvetica&quot;,face=&quot;bold&quot;),
      axis.title.x=element_text(size=5),axis.title.y=element_text(size=5))
 g</code></pre>
 <p><img src="figure/figures.Rmd/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-3-1">
+Past versions of unnamed-chunk-3-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-3-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/ah3918/SingleCellMR/blob/3f6c35b5e78065a5add2135798ff2bac9fc81f0f/docs/figure/figures.Rmd/unnamed-chunk-3-1.png" target="_blank">3f6c35b</a>
+</td>
+<td>
+Alexander Haglund
+</td>
+<td>
+2022-12-01
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="figure-2e" class="section level3">
 <h3>Figure 2e</h3>
@@ -1215,79 +1287,24 @@ plot_df&lt;-data.frame(gene_trait=paste0(pqtl$GWAS,&quot;.&quot;,pqtl$gene),
                    celltype=pqtl$celltype,
                    IVW_dir=full$IVW_dir)</code></pre>
 <p>prep plots</p>
-<pre class="r"><code>n_rows&lt;-nrow(plot_df)
-half&lt;-round(n_rows/2)
-
-#split in two (plot is too big otherwise)
-plot_df1&lt;-plot_df[1:half,c(&quot;gene_trait&quot;,&quot;pQTL&quot;,&quot;STITCH&quot;,&quot;DGidb&quot;,&quot;OpenTargets&quot;)]
+<pre class="r"><code>##intersection plot
+plot_df1&lt;-plot_df[,c(&quot;gene_trait&quot;,&quot;pQTL&quot;,&quot;STITCH&quot;,&quot;DGidb&quot;,&quot;OpenTargets&quot;)]
 melt_df&lt;-melt(plot_df1,id=c(&quot;gene_trait&quot;))
 ggplot_mainplot1&lt;-ggplot(melt_df,aes(x=variable,y=gene_trait,fill=value))+geom_tile(color=&quot;black&quot;)+
 scale_fill_manual(values=c(&quot;#c8c8c8&quot;,&quot;#A6CEE3&quot;,&quot;#1F78B4&quot;))+scale_x_discrete(expand=c(0,0))
 
-
-plot_df2&lt;-plot_df[half:n_rows,c(&quot;gene_trait&quot;,&quot;pQTL&quot;,&quot;STITCH&quot;,&quot;DGidb&quot;,&quot;OpenTargets&quot;)]
-melt_df&lt;-melt(plot_df2,id=c(&quot;gene_trait&quot;))
-ggplot_mainplot2&lt;-ggplot(melt_df,aes(x=variable,y=gene_trait,fill=value))+geom_tile(color=&quot;black&quot;)+
-scale_fill_manual(values=c(&quot;#c8c8c8&quot;,&quot;#A6CEE3&quot;,&quot;#1F78B4&quot;))+scale_x_discrete(expand=c(0,0))
-
-
-
-##coloc PPH4 bar
-coloc_bar&lt;-plot_df[,c(&quot;gene_trait&quot;,&quot;coloc&quot;)]
-
-coloc_bar1&lt;-coloc_bar[1:half,]
-melt_df&lt;-melt(coloc_bar1,id=c(&quot;gene_trait&quot;))
-ggplot_coloc1&lt;-ggplot(melt_df,aes(x=variable,y=gene_trait,fill=value))+geom_tile(color=&quot;black&quot;)+
-scale_fill_viridis(limits=c(0.5,1))
-
-coloc_bar2&lt;-coloc_bar[half:n_rows,]
-melt_df&lt;-melt(coloc_bar2,id=c(&quot;gene_trait&quot;))
-ggplot_coloc2&lt;-ggplot(melt_df,aes(x=variable,y=gene_trait,fill=value))+geom_tile(color=&quot;black&quot;)+
-scale_fill_viridis(limits=c(0.5,1))
-
-##celltype MR direction
-
-celltype_dir&lt;-plot_df[,c(&quot;gene_trait&quot;,&quot;celltype&quot;,&quot;IVW_dir&quot;)]
-celltype_dir1&lt;-celltype_dir[1:half,]
-
-ggplot_celltype_dir1&lt;-ggplot(celltype_dir1,aes(x=IVW_dir,y=gene_trait,fill=celltype,group=celltype))+
-geom_point(shape=22,size=2,stroke=0.1,position=position_dodge(w=0.7))+
-scale_fill_manual(values = colorvec)+
-theme_classic()+
-geom_vline(xintercept=0,linetype=&quot;dotted&quot;)
-
-celltype_dir2&lt;-celltype_dir[half:n_rows,]
-
-ggplot_celltype_dir2&lt;-ggplot(celltype_dir2,aes(x=IVW_dir,y=gene_trait,fill=celltype,group=celltype))+
-geom_point(shape=22,size=2,stroke=0.1,position=position_dodge(w=0.7))+
-scale_fill_manual(values = colorvec)+
-theme_classic()+
-geom_vline(xintercept=0,linetype=&quot;dotted&quot;)
-
-##direction only
+##direction
 ivw_dir&lt;-plot_df[,c(&quot;gene_trait&quot;,&quot;IVW_dir&quot;)]
 ivw_dir$trait&lt;-&quot;gwas&quot;
-ivw_dir1&lt;-ivw_dir[1:half,]
-
+ivw_dir1&lt;-ivw_dir
 ggplot_ivwdir1&lt;-ggplot(ivw_dir1,aes(y=gene_trait,x=trait,fill=IVW_dir,group=IVW_dir))+geom_tile(colour=&quot;black&quot;)+
 scale_fill_manual(values = c(&quot;#c8c8c8&quot;,&quot;#F8766D&quot;,&quot;#00BFC4&quot;),guide = guide_legend(reverse = TRUE))+
 theme_classic()
 
+##celltypes
 
-ivw_dir&lt;-plot_df[,c(&quot;gene_trait&quot;,&quot;IVW_dir&quot;)]
-ivw_dir$trait&lt;-&quot;gwas&quot;
-ivw_dir2&lt;-ivw_dir[half:n_rows,]
-
-ggplot_ivwdir2&lt;-ggplot(ivw_dir2,aes(y=gene_trait,x=trait,fill=IVW_dir,group=IVW_dir))+geom_tile(colour=&quot;black&quot;)+
-scale_fill_manual(values = c(&quot;#F8766D&quot;,&quot;#00BFC4&quot;),guide = guide_legend(reverse = TRUE))+
-theme_classic()
-
-
-
-##celltype bar
 celltype_bar&lt;-plot_df[,c(&quot;gene_trait&quot;,&quot;celltype&quot;)]
-
-celltype_bar1&lt;-celltype_bar[1:half,]
+celltype_bar1&lt;-celltype_bar
 test&lt;-celltype_bar1 %&gt;% 
 count(gene_trait,celltype,name=&quot;count&quot;) %&gt;% 
 complete(gene_trait,celltype)
@@ -1303,23 +1320,6 @@ test$new&lt;-newvec
 # melt_df&lt;-melt(celltype_bar1,id=c(&quot;gene_trait&quot;))
 # df2 = celltype_bar1 %&gt;% complete(gene_trait,celltype)
 ggplot_celltype1&lt;-ggplot(test,aes(x=celltype,y=gene_trait,fill=new))+geom_tile(color=&quot;black&quot;)+
-scale_fill_manual(values=colorvec,na.value=&quot;white&quot;)
-
-celltype_bar2&lt;-celltype_bar[half:n_rows,]
-test&lt;-celltype_bar2 %&gt;% 
-count(gene_trait,celltype,name=&quot;count&quot;) %&gt;% 
-complete(gene_trait,celltype)
-newvec&lt;-vector()
-for(i in 1:nrow(test)){
-    if(is.na(test$count[i])){
-        newvec&lt;-c(newvec,NA)
-        }else{
-        newvec&lt;-c(newvec,test$celltype[i])
-        }
-    }
-test$new&lt;-newvec
-# melt_df&lt;-melt(celltype_bar2,id=c(&quot;gene_trait&quot;))
-ggplot_celltype2&lt;-ggplot(test,aes(x=celltype,y=gene_trait,fill=new))+geom_tile(color=&quot;black&quot;)+
 scale_fill_manual(values=colorvec,na.value=&quot;white&quot;)</code></pre>
 <div id="plot1" class="section level3">
 <h3>plot1</h3>
@@ -1337,19 +1337,6 @@ theme(axis.text.x=element_text(size=5,face=&quot;bold&quot;,angle=45,vjust=0.8,h
       legend.key.height= unit(0.3, &#39;cm&#39;),
       legend.key.width= unit(0.2, &#39;cm&#39;))#
 
-ggplot_celltype_dir1&lt;-ggplot_celltype_dir1+theme_classic()+
-theme(axis.text.x=element_text(size=5,face=&quot;bold&quot;,angle=45,vjust=0.8,hjust=0.8,family=&quot;Helvetica&quot;),
-      axis.text.y=element_blank(),axis.title.y=element_blank(),axis.ticks.y=element_blank(),
-      axis.line.y=element_blank(),axis.line.x=element_blank(),
-      axis.title.x=element_blank(),legend.key.size=unit(0.7,&quot;cm&quot;),
-      legend.position=&quot;none&quot;,panel.grid.major.y=element_line(size=0.3,colour=&quot;grey&quot;),
-      legend.text=element_text(size=5),
-      panel.background = element_rect(fill=&#39;transparent&#39;),
-      plot.background = element_rect(fill=&#39;transparent&#39;, color=NA),
-      legend.background = element_rect(fill=&#39;transparent&#39;),
-      legend.key.height= unit(0.3, &#39;cm&#39;),
-      legend.key.width= unit(0.2, &#39;cm&#39;))#
-
 ggplot_ivwdir1&lt;-ggplot_ivwdir1+theme_classic()+
 theme(axis.text.x=element_blank(),
       axis.text.y=element_blank(),axis.title.y=element_blank(),axis.ticks.y=element_blank(),
@@ -1363,19 +1350,6 @@ theme(axis.text.x=element_blank(),
       legend.key.height= unit(0.3, &#39;cm&#39;),
       legend.key.width= unit(0.2, &#39;cm&#39;))#
 
-ggplot_coloc1&lt;-ggplot_coloc1+theme_classic()+
-theme(axis.text.x=element_blank(),axis.ticks.x=element_blank(),
-      axis.text.y=element_blank(),axis.title.y=element_blank(),axis.ticks.y=element_blank(),
-      axis.line.y=element_blank(),axis.line.x=element_blank(),
-      axis.title.x=element_blank(),legend.key.size=unit(0.7,&quot;cm&quot;),
-      legend.title=element_blank(),
-      legend.text=element_text(size=5),
-      panel.background = element_rect(fill=&#39;transparent&#39;),
-      plot.background = element_rect(fill=&#39;transparent&#39;, color=NA),
-      panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-      legend.background = element_rect(fill=&#39;transparent&#39;),
-      legend.key.height= unit(0.3, &#39;cm&#39;),
-      legend.key.width= unit(0.2, &#39;cm&#39;))#
 
 ggplot_celltype1&lt;-ggplot_celltype1+theme_classic()+
 theme(axis.text.x=element_text(size=5,face=&quot;bold&quot;,angle=45,vjust=0.8,hjust=0.8,family=&quot;Helvetica&quot;),
@@ -1390,13 +1364,11 @@ theme(axis.text.x=element_text(size=5,face=&quot;bold&quot;,angle=45,vjust=0.8,h
       legend.key.height= unit(0.3, &#39;cm&#39;),
       legend.key.width= unit(0.2, &#39;cm&#39;))#
 
-coloc_legend&lt;-get_legend(ggplot_coloc1)
 ggplot_mainplot1_legend&lt;-get_legend(ggplot_mainplot1)
 celltype_legend&lt;-get_legend(ggplot_celltype1)
 ivw_dir&lt;-get_legend(ggplot_ivwdir1)
 
 
-ggplot_coloc1&lt;-ggplot_coloc1+theme(plot.margin = unit(c(0,0,0,0), &quot;cm&quot;),legend.position = &quot;none&quot;)
 ggplot_ivwdir1&lt;-ggplot_ivwdir1+theme(plot.margin = unit(c(0,0,0,0), &quot;cm&quot;),legend.position = &quot;none&quot;)
 ggplot_mainplot1&lt;-ggplot_mainplot1+theme(plot.margin = unit(c(0,0,0,0), &quot;cm&quot;),legend.position = &quot;none&quot;)
 ggplot_celltype1&lt;-ggplot_celltype1+theme(plot.margin = unit(c(0,0,0,0), &quot;cm&quot;),legend.position=&quot;none&quot;)
@@ -1453,77 +1425,43 @@ Alexander Haglund
 </div>
 </div>
 </div>
-<div id="plot2" class="section level3">
-<h3>plot2</h3>
-<pre class="r"><code>ggplot_mainplot2&lt;-ggplot_mainplot2+theme_classic()+
-theme(axis.text.x=element_text(size=5,face=&quot;bold&quot;,angle=45,vjust=0.8,hjust=0.8,family=&quot;Helvetica&quot;),
-      axis.text.y=element_text(size=5,face=&quot;bold&quot;,vjust=0.8,family=&quot;Helvetica&quot;),axis.title.y=element_blank(),
-      axis.line.y=element_blank(),axis.line.x=element_blank(),
-      axis.title.x=element_blank(),legend.key.size=unit(0.7,&quot;cm&quot;),
+</div>
+</div>
+<div id="figure-5" class="section level1">
+<h1>FIGURE 5</h1>
+<div id="figure-5a" class="section level2">
+<h2>Figure 5a</h2>
+<pre class="r"><code>full&lt;-read.table(&quot;data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt&quot;)
+full&lt;-full[full$IVW&lt;0.05,]
+full$trait_gene&lt;-paste0(full$GWAS,&quot;_&quot;,full$gene)
+full$IVW_dir&lt;-sapply(full$IVW_beta,function(x){
+    if(x&gt;0){
+        return(&quot;CAUSAL&quot;)
+        }else{
+        return(&quot;PROTECTIVE&quot;)
+        }
+    })
+
+tmp&lt;-full[full$GWAS==&quot;AD&quot;,]
+tmp&lt;-tmp[order(tmp$celltype),]
+tmp$gene&lt;-factor(tmp$gene,levels=unique(tmp$gene))
+color_pal=ggsci::pal_nejm(&quot;default&quot;)(8)
+colorvec&lt;-c(Astrocytes=color_pal[1],
+           Endothelial=color_pal[2],
+           Excitatory=color_pal[3],
+           Inhibitory=color_pal[4],Microglia=color_pal[5],
+           ODC=color_pal[6],OPC=color_pal[7],Pericytes=color_pal[8])
+
+g&lt;-ggplot(tmp,aes(y=gene,x=IVW_beta,fill=celltype))+
+geom_point(colour=&quot;black&quot;,shape=21,stroke=0.3,size=2)+
+scale_fill_manual(values = colorvec)+
+theme_classic()+
+geom_vline(xintercept=0,linetype=&quot;dotted&quot;)+scale_x_continuous(limits=c(-0.6,0.6))
+g2&lt;-g+
+theme(text=element_text(family=&quot;Helvetica&quot;,size=5),legend.text = element_text(family=&quot;Helvetica&quot;,size=5,face=&quot;bold&quot;),
       legend.title=element_blank(),
-      legend.text=element_text(size=5),
-      panel.background = element_rect(fill=&#39;transparent&#39;),
-      plot.background = element_rect(fill=&#39;transparent&#39;, color=NA),
-      panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-      legend.background = element_rect(fill=&#39;transparent&#39;),legend.box.background = element_rect(fill=&#39;transparent&#39;))#
-
-ggplot_coloc2&lt;-ggplot_coloc2+theme_classic()+
-theme(axis.text.x=element_blank(),axis.ticks.x=element_blank(),
-      axis.text.y=element_blank(),axis.title.y=element_blank(),axis.ticks.y=element_blank(),
-      axis.line.y=element_blank(),axis.line.x=element_blank(),
-      axis.title.x=element_blank(),legend.key.size=unit(0.7,&quot;cm&quot;),
-      legend.title=element_blank(),
-      legend.text=element_text(size=5),
-      panel.background = element_rect(fill=&#39;transparent&#39;),
-      plot.background = element_rect(fill=&#39;transparent&#39;, color=NA),
-      legend.background = element_rect(fill=&#39;transparent&#39;),legend.box.background = element_rect(fill=&#39;transparent&#39;))#
-
-ggplot_celltype_dir2&lt;-ggplot_celltype_dir2+theme_classic()+
-theme(axis.text.x=element_text(size=5,face=&quot;bold&quot;,angle=45,vjust=0.8,hjust=0.8,family=&quot;Helvetica&quot;),
-      axis.text.y=element_blank(),axis.title.y=element_blank(),axis.ticks.y=element_blank(),
-      axis.line.y=element_blank(),axis.line.x=element_blank(),
-      axis.title.x=element_blank(),legend.key.size=unit(0.7,&quot;cm&quot;),
-      legend.position=&quot;none&quot;,panel.grid.major.y=element_line(size=0.3,colour=&quot;grey&quot;),
-      legend.text=element_text(size=5),
-      panel.background = element_rect(fill=&#39;transparent&#39;),
-      plot.background = element_rect(fill=&#39;transparent&#39;, color=NA),
-      legend.background = element_rect(fill=&#39;transparent&#39;),
-      legend.key.height= unit(0.3, &#39;cm&#39;),
-      legend.key.width= unit(0.2, &#39;cm&#39;))#
-
-ggplot_ivwdir2&lt;-ggplot_ivwdir2+theme_classic()+
-theme(axis.text.x=element_blank(),
-      axis.text.y=element_blank(),axis.title.y=element_blank(),axis.ticks.y=element_blank(),
-      axis.ticks.x=element_blank(),
-      axis.line.y=element_blank(),axis.line.x=element_blank(),
-      axis.title.x=element_blank(),legend.key.size=unit(0.7,&quot;cm&quot;),
-      legend.text=element_text(size=5), legend.title=element_text(size=5),
-      panel.background = element_rect(fill=&#39;transparent&#39;),
-      plot.background = element_rect(fill=&#39;transparent&#39;, color=NA),
-      legend.background = element_rect(fill=&#39;transparent&#39;),
-      legend.key.height= unit(0.3, &#39;cm&#39;),
-      legend.key.width= unit(0.2, &#39;cm&#39;))#
-
-ggplot_celltype2&lt;-ggplot_celltype2+theme_classic()+
-theme(axis.text.x=element_text(size=5,face=&quot;bold&quot;,angle=45,vjust=0.8,hjust=0.8,family=&quot;Helvetica&quot;),
-      axis.text.y=element_blank(),axis.title.y=element_blank(),axis.ticks.y=element_blank(),
-      axis.line.y=element_blank(),axis.line.x=element_blank(),
-      axis.title.x=element_blank(),legend.key.size=unit(0.7,&quot;cm&quot;),
-      legend.title=element_blank(),
-      legend.text=element_text(size=5),
-      panel.background = element_rect(fill=&#39;transparent&#39;),
-      plot.background = element_rect(fill=&#39;transparent&#39;, color=NA),
-      panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-      legend.background = element_rect(fill=&#39;transparent&#39;),legend.box.background = element_rect(fill=&#39;transparent&#39;))#
-
-ggplot_coloc2&lt;-ggplot_coloc2+theme(plot.margin = unit(c(0,0,0,0), &quot;cm&quot;),legend.position = &quot;none&quot;)
-ggplot_ivwdir2&lt;-ggplot_ivwdir2+theme(plot.margin = unit(c(0,0,0,0), &quot;cm&quot;),legend.position = &quot;none&quot;)
-ggplot_mainplot2&lt;-ggplot_mainplot2+theme(plot.margin = unit(c(0,0,0,0), &quot;cm&quot;),legend.position = &quot;none&quot;)
-ggplot_celltype2&lt;-ggplot_celltype2+theme(plot.margin = unit(c(0,0,0,0), &quot;cm&quot;),legend.position=&quot;none&quot;)
-
-
-g&lt;-plot_grid(ggplot_mainplot2,ggplot_celltype2,ggplot_ivwdir2, align = &quot;h&quot;, ncol =3, rel_widths = c(0.008,0.005,0.001))
-g</code></pre>
+      legend.spacing.y = unit(-1, &#39;cm&#39;),axis.text.y=element_text(family=&quot;Helvetica&quot;,size=5,face=&quot;bold&quot;))+guides(fill = guide_legend(byrow = TRUE))
+g2</code></pre>
 <p><img src="figure/figures.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-13-1">
@@ -1574,43 +1512,30 @@ Alexander Haglund
 </div>
 </div>
 </div>
-</div>
-</div>
-<div id="figure-5" class="section level1">
-<h1>FIGURE 5</h1>
-<div id="figure-5a" class="section level2">
-<h2>Figure 5a</h2>
+<div id="figure-5b" class="section level2">
+<h2>Figure 5b</h2>
 <pre class="r"><code>full&lt;-read.table(&quot;data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt&quot;)
-full&lt;-full[full$IVW&lt;0.05,]
-full$trait_gene&lt;-paste0(full$GWAS,&quot;_&quot;,full$gene)
-full$IVW_dir&lt;-sapply(full$IVW_beta,function(x){
-    if(x&gt;0){
-        return(&quot;CAUSAL&quot;)
-        }else{
-        return(&quot;PROTECTIVE&quot;)
-        }
-    })
-
-tmp&lt;-full[full$GWAS==&quot;AD&quot;,]
-tmp&lt;-tmp[order(tmp$celltype),]
-tmp$gene&lt;-factor(tmp$gene,levels=unique(tmp$gene))
-color_pal=ggsci::pal_nejm(&quot;default&quot;)(8)
-colorvec&lt;-c(Astrocytes=color_pal[1],
-           Endothelial=color_pal[2],
-           Excitatory=color_pal[3],
-           Inhibitory=color_pal[4],Microglia=color_pal[5],
-           ODC=color_pal[6],OPC=color_pal[7],Pericytes=color_pal[8])
-
-g&lt;-ggplot(tmp,aes(y=gene,x=IVW_beta,fill=celltype))+
-geom_point(colour=&quot;black&quot;,shape=21,stroke=0.3,size=2)+
-scale_fill_manual(values = colorvec)+
-theme_classic()+
-geom_vline(xintercept=0,linetype=&quot;dotted&quot;)+scale_x_continuous(limits=c(-0.6,0.6))
-g2&lt;-g+
-theme(text=element_text(family=&quot;Helvetica&quot;,size=5),legend.text = element_text(family=&quot;Helvetica&quot;,size=5,face=&quot;bold&quot;),
-      legend.title=element_blank(),
-      legend.spacing.y = unit(-1, &#39;cm&#39;),axis.text.y=element_text(family=&quot;Helvetica&quot;,size=5,face=&quot;bold&quot;))+guides(fill = guide_legend(byrow = TRUE))
-g2</code></pre>
+plot_df&lt;-data.frame()
+for(i in 1:length(unique(full$GWAS))){
+    gwas&lt;-unique(full$GWAS)[i]
+    tmp_full&lt;-full[full$GWAS==gwas,]
+    cellvec&lt;-as.vector(table(tmp_full$celltype))
+    plot_df&lt;-rbind(plot_df,data.frame(gwas=gwas,
+                                      celltype=names(table(tmp_full$celltype)),
+                                      occurrence=cellvec))
+    }
+g&lt;-ggplot(data=plot_df,aes(y=occurrence,x=gwas,fill=celltype))+
+geom_bar(stat=&quot;identity&quot;,colour=&quot;black&quot;,size=0.25)+
+scale_fill_manual(values=color_pal)+theme_classic()+
+geom_text(aes(label=occurrence),family=&quot;Helvetica&quot;,size=5*0.36, position = position_stack(vjust = 0.5))+
+theme_classic()+scale_y_continuous(expand=c(0,0))+
+labs(title=&quot;Cell-type proportions in MR results&quot;,size=7,family=&quot;Helvetica&quot;)+
+theme(text=element_text(size=7,family=&quot;Helvetica&quot;),axis.text.x=element_text(size=5,face=&quot;bold&quot;,angle=90),
+                                  axis.text.y=element_text(size=5),
+                                  axis.title.y=element_blank(),
+                                 axis.title.x=element_blank(),legend.position=&quot;none&quot;,
+     title=element_text(size=7,face=&quot;bold&quot;))
+g</code></pre>
 <p><img src="figure/figures.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-14-1">
@@ -1661,29 +1586,41 @@ Alexander Haglund
 </div>
 </div>
 </div>
-<div id="figure-5b" class="section level2">
-<h2>Figure 5b</h2>
+<div id="figure-5c" class="section level2">
+<h2>Figure 5c</h2>
 <pre class="r"><code>full&lt;-read.table(&quot;data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt&quot;)
-plot_df&lt;-data.frame()
-for(i in 1:length(unique(full$GWAS))){
-    gwas&lt;-unique(full$GWAS)[i]
-    tmp_full&lt;-full[full$GWAS==gwas,]
-    cellvec&lt;-as.vector(table(tmp_full$celltype))
-    plot_df&lt;-rbind(plot_df,data.frame(gwas=gwas,
-                                      celltype=names(table(tmp_full$celltype)),
-                                      occurrence=cellvec))
-    }
-g&lt;-ggplot(data=plot_df,aes(y=occurrence,x=gwas,fill=celltype))+
-geom_bar(stat=&quot;identity&quot;,colour=&quot;black&quot;,size=0.25)+
-scale_fill_manual(values=color_pal)+theme_classic()+
-geom_text(aes(label=occurrence),family=&quot;Helvetica&quot;,size=5*0.36, position = position_stack(vjust = 0.5))+
-theme_classic()+scale_y_continuous(expand=c(0,0))+
-labs(title=&quot;Cell-type proportions in MR results&quot;,size=7,family=&quot;Helvetica&quot;)+
-theme(text=element_text(size=7,family=&quot;Helvetica&quot;),axis.text.x=element_text(size=5,face=&quot;bold&quot;,angle=90),
-                                  axis.text.y=element_text(size=5),
-                                  axis.title.y=element_blank(),
-                                 axis.title.x=element_blank(),legend.position=&quot;none&quot;,
-     title=element_text(size=7,face=&quot;bold&quot;))
+full$celltype_gene&lt;-paste0(full$celltype,&quot;.&quot;,full$gene)
+scz&lt;-full[full$GWAS==&quot;SCZ&quot;,]
+iq&lt;-full[full$GWAS==&quot;IQ&quot;,]
+common&lt;-intersect(iq$celltype_gene,scz$celltype_gene)
+
+##remove ct/gene combinations in other traits - we are only interested in the SCZ/IQ overlap
+# filtered&lt;-full[full$celltype_gene %in% common,]
+# filtered&lt;-filtered[!filtered$GWAS %in% c(&quot;SCZ&quot;,&quot;IQ&quot;),]
+# to_exclude&lt;-unique(filtered$celltype_gene)
+# common&lt;-common[!common %in% to_exclude]
+
+
+
+#filter both
+scz&lt;-scz[match(common,scz$celltype_gene),]
+iq&lt;-iq[match(common,iq$celltype_gene),]
+df&lt;-data.frame(celltype_gene=common,IQ=iq$IVW_beta,SCZ=scz$IVW_beta)
+
+
+##now plot
+ylims=c(-0.2,0.2)
+xlims=c(-0.7,0.7)
+
+g&lt;-ggplot(df,aes(x=SCZ,y=IQ,fill=celltype_gene))+
+geom_point(shape=21,size=2)+
+scale_y_continuous(limits=ylims)+
+scale_x_continuous(limits=xlims)+
+geom_vline(xintercept =0,linetype=&quot;dotted&quot;)+
+geom_hline(yintercept =0,linetype=&quot;dotted&quot;)+theme_classic()+
+theme(text=element_text(size=5,family=&quot;Helvetica&quot;),legend.title=element_blank(),legend.text = element_text(family=&quot;Helvetica&quot;,size=5,face=&quot;bold&quot;),legend.spacing.y = unit(-1, &#39;cm&#39;))+
+xlab(&quot;SCZ - MR beta&quot;)+ylab(&quot;IQ - MR beta&quot;)+
+guides(fill = guide_legend(byrow = TRUE))
 g</code></pre>
 <p><img src="figure/figures.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
@@ -1735,81 +1672,6 @@ Alexander Haglund
 </div>
 </div>
 </div>
-<div id="figure-5c" class="section level2">
-<h2>Figure 5c</h2>
-<pre class="r"><code>full&lt;-read.table(&quot;data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt&quot;)
-full$celltype_gene&lt;-paste0(full$celltype,&quot;.&quot;,full$gene)
-scz&lt;-full[full$GWAS==&quot;SCZ&quot;,]
-iq&lt;-full[full$GWAS==&quot;IQ&quot;,]
-common&lt;-intersect(iq$celltype_gene,scz$celltype_gene)
-
-##remove ct/gene combinations in other traits - we are only interested in the SCZ/IQ overlap
-# filtered&lt;-full[full$celltype_gene %in% common,]
-# filtered&lt;-filtered[!filtered$GWAS %in% c(&quot;SCZ&quot;,&quot;IQ&quot;),]
-# to_exclude&lt;-unique(filtered$celltype_gene)
-# common&lt;-common[!common %in% to_exclude]
-
-
-
-#filter both
-scz&lt;-scz[match(common,scz$celltype_gene),]
-iq&lt;-iq[match(common,iq$celltype_gene),]
-df&lt;-data.frame(celltype_gene=common,IQ=iq$IVW_beta,SCZ=scz$IVW_beta)
-
-
-##now plot
-ylims=c(-0.2,0.2)
-xlims=c(-0.7,0.7)
-
-g&lt;-ggplot(df,aes(x=SCZ,y=IQ,fill=celltype_gene))+
-geom_point(shape=21,size=2)+
-scale_y_continuous(limits=ylims)+
-scale_x_continuous(limits=xlims)+
-geom_vline(xintercept =0,linetype=&quot;dotted&quot;)+
-geom_hline(yintercept =0,linetype=&quot;dotted&quot;)+theme_classic()+
-theme(text=element_text(size=5,family=&quot;Helvetica&quot;),legend.title=element_blank(),legend.text = element_text(family=&quot;Helvetica&quot;,size=5,face=&quot;bold&quot;),legend.spacing.y = unit(-1, &#39;cm&#39;))+
-xlab(&quot;SCZ - MR beta&quot;)+ylab(&quot;IQ - MR beta&quot;)+
-guides(fill = guide_legend(byrow = TRUE))
-g</code></pre>
-<p><img src="figure/figures.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-16-1">
-Past versions of unnamed-chunk-16-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-16-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/ah3918/SingleCellMR/blob/4fcf3eac64490e9323f7548575f9ffc274df12ae/docs/figure/figures.Rmd/unnamed-chunk-16-1.png" target="_blank">4fcf3ea</a>
-</td>
-<td>
-Alexander Haglund
-</td>
-<td>
-2022-12-01
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
 <div id="figure-5d" class="section level2">
 <h2>Figure 5d</h2>
 <pre class="r"><code>full&lt;-read.table(&quot;data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt&quot;)
@@ -1843,13 +1705,13 @@ geom_hline(yintercept =0,linetype=&quot;dotted&quot;)+theme_classic()+
 theme(text=element_text(size=5,family=&quot;Helvetica&quot;),legend.text = element_text(family=&quot;Helvetica&quot;,size=5,face=&quot;bold&quot;),legend.title=element_blank(),legend.spacing.y = unit(-1, &#39;cm&#39;))+
 xlab(&quot;SCZ - MR beta&quot;)+ylab(&quot;NEUR - MR beta&quot;)+guides(fill = guide_legend(byrow = TRUE))
 g</code></pre>
-<p><img src="figure/figures.Rmd/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/figures.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-17-1">
-Past versions of unnamed-chunk-17-1.png
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-16-1">
+Past versions of unnamed-chunk-16-1.png
 </button>
 </p>
-<div id="fig-unnamed-chunk-17-1" class="collapse">
+<div id="fig-unnamed-chunk-16-1" class="collapse">
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
 <thead>
@@ -1868,7 +1730,7 @@ Date
 <tbody>
 <tr>
 <td>
-<a href="https://github.com/ah3918/SingleCellMR/blob/4fcf3eac64490e9323f7548575f9ffc274df12ae/docs/figure/figures.Rmd/unnamed-chunk-17-1.png" target="_blank">4fcf3ea</a>
+<a href="https://github.com/ah3918/SingleCellMR/blob/4fcf3eac64490e9323f7548575f9ffc274df12ae/docs/figure/figures.Rmd/unnamed-chunk-16-1.png" target="_blank">4fcf3ea</a>
 </td>
 <td>
 Alexander Haglund
