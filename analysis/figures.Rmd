@@ -439,3 +439,81 @@ ggsci::scale_fill_nejm()+ coord_polar("y", start=0)
 p
 ```
 
+## Suppl. Fig. 2
+```{r}
+
+res<-read.table("data/EXT_DATASETS/METABRAIN//metabrain_replication.txt")
+res$celltype<-c("Astrocytes","Endothelial","Excitatory","Inhibitory","Microglia","Oligo","OPC","Pericytes")
+color_plane_1=ggsci::pal_nejm("default")(8)
+colnames(res)<-c("total","replicated","percentage","totalinboth","celltype")
+g<-ggplot()+
+geom_point(res,mapping=aes(x=total,y=percentage,fill=celltype),size=2,shape=21)+
+scale_fill_manual(values=c("Astrocytes"=color_plane_1[1],
+"Endothelial"=color_plane_1[2],
+"Excitatory"=color_plane_1[3],
+"Inhibitory"=color_plane_1[4],
+"Microglia"=color_plane_1[5],
+"Oligo"=color_plane_1[6],
+"OPC"=color_plane_1[7],
+"Pericytes"=color_plane_1[8]))+
+ylab("Percentage replication in metabrain")+
+xlab("Total SNP gene pairs at 5% FDR\nalso assessed in metabrain")+
+scale_y_continuous(breaks = scales::pretty_breaks(n = 10),limits=c(0,1),labels = function(x) paste0(x*100, "%"))+
+                   scale_x_continuous(breaks = scales::pretty_breaks(n = 7))+
+                  theme_classic()+theme(axis.text.x=element_text(size=5,family="Helvetica",angle=45,vjust=0.6,face="bold"),
+                                  axis.text.y=element_text(size=5,family="Helvetica",face="bold"),
+                                  axis.title.y=element_text(size=6,family="Helvetica",margin=margin(r=20),face="bold"),
+                                 axis.title.x=element_text(size=6,family="Helvetica",margin=margin(t=20),face="bold"),
+                                                 legend.key.size=unit(0.25,"cm"),
+                                                 # legend.position="none",
+                                                                legend.text=element_text(size=5),legend.title=element_blank())
+g
+```
+
+
+
+
+## Suppl. Fig. 2
+```{r}
+
+```
+
+## Suppl. Fig. 2
+```{r}
+
+```
+
+## Suppl. Fig. 2
+```{r}
+
+```
+
+## Suppl. Fig. 2
+```{r}
+
+```
+
+## Suppl. Fig. 2
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
