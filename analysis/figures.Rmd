@@ -222,79 +222,25 @@ plot_df<-data.frame(gene_trait=paste0(pqtl$GWAS,".",pqtl$gene),
 
 prep plots
 ```{r}
-n_rows<-nrow(plot_df)
-half<-round(n_rows/2)
 
-#split in two (plot is too big otherwise)
-plot_df1<-plot_df[1:half,c("gene_trait","pQTL","STITCH","DGidb","OpenTargets")]
+##intersection plot
+plot_df1<-plot_df[,c("gene_trait","pQTL","STITCH","DGidb","OpenTargets")]
 melt_df<-melt(plot_df1,id=c("gene_trait"))
 ggplot_mainplot1<-ggplot(melt_df,aes(x=variable,y=gene_trait,fill=value))+geom_tile(color="black")+
 scale_fill_manual(values=c("#c8c8c8","#A6CEE3","#1F78B4"))+scale_x_discrete(expand=c(0,0))
 
-
-plot_df2<-plot_df[half:n_rows,c("gene_trait","pQTL","STITCH","DGidb","OpenTargets")]
-melt_df<-melt(plot_df2,id=c("gene_trait"))
-ggplot_mainplot2<-ggplot(melt_df,aes(x=variable,y=gene_trait,fill=value))+geom_tile(color="black")+
-scale_fill_manual(values=c("#c8c8c8","#A6CEE3","#1F78B4"))+scale_x_discrete(expand=c(0,0))
-
-
-
-##coloc PPH4 bar
-coloc_bar<-plot_df[,c("gene_trait","coloc")]
-
-coloc_bar1<-coloc_bar[1:half,]
-melt_df<-melt(coloc_bar1,id=c("gene_trait"))
-ggplot_coloc1<-ggplot(melt_df,aes(x=variable,y=gene_trait,fill=value))+geom_tile(color="black")+
-scale_fill_viridis(limits=c(0.5,1))
-
-coloc_bar2<-coloc_bar[half:n_rows,]
-melt_df<-melt(coloc_bar2,id=c("gene_trait"))
-ggplot_coloc2<-ggplot(melt_df,aes(x=variable,y=gene_trait,fill=value))+geom_tile(color="black")+
-scale_fill_viridis(limits=c(0.5,1))
-
-##celltype MR direction
-
-celltype_dir<-plot_df[,c("gene_trait","celltype","IVW_dir")]
-celltype_dir1<-celltype_dir[1:half,]
-
-ggplot_celltype_dir1<-ggplot(celltype_dir1,aes(x=IVW_dir,y=gene_trait,fill=celltype,group=celltype))+
-geom_point(shape=22,size=2,stroke=0.1,position=position_dodge(w=0.7))+
-scale_fill_manual(values = colorvec)+
-theme_classic()+
-geom_vline(xintercept=0,linetype="dotted")
-
-celltype_dir2<-celltype_dir[half:n_rows,]
-
-ggplot_celltype_dir2<-ggplot(celltype_dir2,aes(x=IVW_dir,y=gene_trait,fill=celltype,group=celltype))+
-geom_point(shape=22,size=2,stroke=0.1,position=position_dodge(w=0.7))+
-scale_fill_manual(values = colorvec)+
-theme_classic()+
-geom_vline(xintercept=0,linetype="dotted")
-
-##direction only
+##direction
 ivw_dir<-plot_df[,c("gene_trait","IVW_dir")]
 ivw_dir$trait<-"gwas"
-ivw_dir1<-ivw_dir[1:half,]
-
+ivw_dir1<-ivw_dir
 ggplot_ivwdir1<-ggplot(ivw_dir1,aes(y=gene_trait,x=trait,fill=IVW_dir,group=IVW_dir))+geom_tile(colour="black")+
 scale_fill_manual(values = c("#c8c8c8","#F8766D","#00BFC4"),guide = guide_legend(reverse = TRUE))+
 theme_classic()
 
+##celltypes
 
-ivw_dir<-plot_df[,c("gene_trait","IVW_dir")]
-ivw_dir$trait<-"gwas"
-ivw_dir2<-ivw_dir[half:n_rows,]
-
-ggplot_ivwdir2<-ggplot(ivw_dir2,aes(y=gene_trait,x=trait,fill=IVW_dir,group=IVW_dir))+geom_tile(colour="black")+
-scale_fill_manual(values = c("#F8766D","#00BFC4"),guide = guide_legend(reverse = TRUE))+
-theme_classic()
-
-
-
-##celltype bar
 celltype_bar<-plot_df[,c("gene_trait","celltype")]
-
-celltype_bar1<-celltype_bar[1:half,]
+celltype_bar1<-celltype_bar
 test<-celltype_bar1 %>% 
 count(gene_trait,celltype,name="count") %>% 
 complete(gene_trait,celltype)
@@ -312,22 +258,6 @@ test$new<-newvec
 ggplot_celltype1<-ggplot(test,aes(x=celltype,y=gene_trait,fill=new))+geom_tile(color="black")+
 scale_fill_manual(values=colorvec,na.value="white")
 
-celltype_bar2<-celltype_bar[half:n_rows,]
-test<-celltype_bar2 %>% 
-count(gene_trait,celltype,name="count") %>% 
-complete(gene_trait,celltype)
-newvec<-vector()
-for(i in 1:nrow(test)){
-    if(is.na(test$count[i])){
-        newvec<-c(newvec,NA)
-        }else{
-        newvec<-c(newvec,test$celltype[i])
-        }
-    }
-test$new<-newvec
-# melt_df<-melt(celltype_bar2,id=c("gene_trait"))
-ggplot_celltype2<-ggplot(test,aes(x=celltype,y=gene_trait,fill=new))+geom_tile(color="black")+
-scale_fill_manual(values=colorvec,na.value="white")
 ```
 
 ### plot1
@@ -346,19 +276,6 @@ theme(axis.text.x=element_text(size=5,face="bold",angle=45,vjust=0.8,hjust=0.8,f
       legend.key.height= unit(0.3, 'cm'),
       legend.key.width= unit(0.2, 'cm'))#
 
-ggplot_celltype_dir1<-ggplot_celltype_dir1+theme_classic()+
-theme(axis.text.x=element_text(size=5,face="bold",angle=45,vjust=0.8,hjust=0.8,family="Helvetica"),
-      axis.text.y=element_blank(),axis.title.y=element_blank(),axis.ticks.y=element_blank(),
-      axis.line.y=element_blank(),axis.line.x=element_blank(),
-      axis.title.x=element_blank(),legend.key.size=unit(0.7,"cm"),
-      legend.position="none",panel.grid.major.y=element_line(size=0.3,colour="grey"),
-      legend.text=element_text(size=5),
-      panel.background = element_rect(fill='transparent'),
-      plot.background = element_rect(fill='transparent', color=NA),
-      legend.background = element_rect(fill='transparent'),
-      legend.key.height= unit(0.3, 'cm'),
-      legend.key.width= unit(0.2, 'cm'))#
-
 ggplot_ivwdir1<-ggplot_ivwdir1+theme_classic()+
 theme(axis.text.x=element_blank(),
       axis.text.y=element_blank(),axis.title.y=element_blank(),axis.ticks.y=element_blank(),
@@ -372,19 +289,6 @@ theme(axis.text.x=element_blank(),
       legend.key.height= unit(0.3, 'cm'),
       legend.key.width= unit(0.2, 'cm'))#
 
-ggplot_coloc1<-ggplot_coloc1+theme_classic()+
-theme(axis.text.x=element_blank(),axis.ticks.x=element_blank(),
-      axis.text.y=element_blank(),axis.title.y=element_blank(),axis.ticks.y=element_blank(),
-      axis.line.y=element_blank(),axis.line.x=element_blank(),
-      axis.title.x=element_blank(),legend.key.size=unit(0.7,"cm"),
-      legend.title=element_blank(),
-      legend.text=element_text(size=5),
-      panel.background = element_rect(fill='transparent'),
-      plot.background = element_rect(fill='transparent', color=NA),
-      panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-      legend.background = element_rect(fill='transparent'),
-      legend.key.height= unit(0.3, 'cm'),
-      legend.key.width= unit(0.2, 'cm'))#
 
 ggplot_celltype1<-ggplot_celltype1+theme_classic()+
 theme(axis.text.x=element_text(size=5,face="bold",angle=45,vjust=0.8,hjust=0.8,family="Helvetica"),
@@ -399,91 +303,16 @@ theme(axis.text.x=element_text(size=5,face="bold",angle=45,vjust=0.8,hjust=0.8,f
       legend.key.height= unit(0.3, 'cm'),
       legend.key.width= unit(0.2, 'cm'))#
 
-coloc_legend<-get_legend(ggplot_coloc1)
 ggplot_mainplot1_legend<-get_legend(ggplot_mainplot1)
 celltype_legend<-get_legend(ggplot_celltype1)
 ivw_dir<-get_legend(ggplot_ivwdir1)
 
 
-ggplot_coloc1<-ggplot_coloc1+theme(plot.margin = unit(c(0,0,0,0), "cm"),legend.position = "none")
 ggplot_ivwdir1<-ggplot_ivwdir1+theme(plot.margin = unit(c(0,0,0,0), "cm"),legend.position = "none")
 ggplot_mainplot1<-ggplot_mainplot1+theme(plot.margin = unit(c(0,0,0,0), "cm"),legend.position = "none")
 ggplot_celltype1<-ggplot_celltype1+theme(plot.margin = unit(c(0,0,0,0), "cm"),legend.position="none")
 
 g<-plot_grid(ggplot_mainplot1,ggplot_celltype1,ggplot_ivwdir1, align = "h", ncol =3, rel_widths = c(0.008,0.005,0.001))
-g
-```
-
-### plot2
-```{r}
-ggplot_mainplot2<-ggplot_mainplot2+theme_classic()+
-theme(axis.text.x=element_text(size=5,face="bold",angle=45,vjust=0.8,hjust=0.8,family="Helvetica"),
-      axis.text.y=element_text(size=5,face="bold",vjust=0.8,family="Helvetica"),axis.title.y=element_blank(),
-      axis.line.y=element_blank(),axis.line.x=element_blank(),
-      axis.title.x=element_blank(),legend.key.size=unit(0.7,"cm"),
-      legend.title=element_blank(),
-      legend.text=element_text(size=5),
-      panel.background = element_rect(fill='transparent'),
-      plot.background = element_rect(fill='transparent', color=NA),
-      panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-      legend.background = element_rect(fill='transparent'),legend.box.background = element_rect(fill='transparent'))#
-
-ggplot_coloc2<-ggplot_coloc2+theme_classic()+
-theme(axis.text.x=element_blank(),axis.ticks.x=element_blank(),
-      axis.text.y=element_blank(),axis.title.y=element_blank(),axis.ticks.y=element_blank(),
-      axis.line.y=element_blank(),axis.line.x=element_blank(),
-      axis.title.x=element_blank(),legend.key.size=unit(0.7,"cm"),
-      legend.title=element_blank(),
-      legend.text=element_text(size=5),
-      panel.background = element_rect(fill='transparent'),
-      plot.background = element_rect(fill='transparent', color=NA),
-      legend.background = element_rect(fill='transparent'),legend.box.background = element_rect(fill='transparent'))#
-
-ggplot_celltype_dir2<-ggplot_celltype_dir2+theme_classic()+
-theme(axis.text.x=element_text(size=5,face="bold",angle=45,vjust=0.8,hjust=0.8,family="Helvetica"),
-      axis.text.y=element_blank(),axis.title.y=element_blank(),axis.ticks.y=element_blank(),
-      axis.line.y=element_blank(),axis.line.x=element_blank(),
-      axis.title.x=element_blank(),legend.key.size=unit(0.7,"cm"),
-      legend.position="none",panel.grid.major.y=element_line(size=0.3,colour="grey"),
-      legend.text=element_text(size=5),
-      panel.background = element_rect(fill='transparent'),
-      plot.background = element_rect(fill='transparent', color=NA),
-      legend.background = element_rect(fill='transparent'),
-      legend.key.height= unit(0.3, 'cm'),
-      legend.key.width= unit(0.2, 'cm'))#
-
-ggplot_ivwdir2<-ggplot_ivwdir2+theme_classic()+
-theme(axis.text.x=element_blank(),
-      axis.text.y=element_blank(),axis.title.y=element_blank(),axis.ticks.y=element_blank(),
-      axis.ticks.x=element_blank(),
-      axis.line.y=element_blank(),axis.line.x=element_blank(),
-      axis.title.x=element_blank(),legend.key.size=unit(0.7,"cm"),
-      legend.text=element_text(size=5), legend.title=element_text(size=5),
-      panel.background = element_rect(fill='transparent'),
-      plot.background = element_rect(fill='transparent', color=NA),
-      legend.background = element_rect(fill='transparent'),
-      legend.key.height= unit(0.3, 'cm'),
-      legend.key.width= unit(0.2, 'cm'))#
-
-ggplot_celltype2<-ggplot_celltype2+theme_classic()+
-theme(axis.text.x=element_text(size=5,face="bold",angle=45,vjust=0.8,hjust=0.8,family="Helvetica"),
-      axis.text.y=element_blank(),axis.title.y=element_blank(),axis.ticks.y=element_blank(),
-      axis.line.y=element_blank(),axis.line.x=element_blank(),
-      axis.title.x=element_blank(),legend.key.size=unit(0.7,"cm"),
-      legend.title=element_blank(),
-      legend.text=element_text(size=5),
-      panel.background = element_rect(fill='transparent'),
-      plot.background = element_rect(fill='transparent', color=NA),
-      panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-      legend.background = element_rect(fill='transparent'),legend.box.background = element_rect(fill='transparent'))#
-
-ggplot_coloc2<-ggplot_coloc2+theme(plot.margin = unit(c(0,0,0,0), "cm"),legend.position = "none")
-ggplot_ivwdir2<-ggplot_ivwdir2+theme(plot.margin = unit(c(0,0,0,0), "cm"),legend.position = "none")
-ggplot_mainplot2<-ggplot_mainplot2+theme(plot.margin = unit(c(0,0,0,0), "cm"),legend.position = "none")
-ggplot_celltype2<-ggplot_celltype2+theme(plot.margin = unit(c(0,0,0,0), "cm"),legend.position="none")
-
-
-g<-plot_grid(ggplot_mainplot2,ggplot_celltype2,ggplot_ivwdir2, align = "h", ncol =3, rel_widths = c(0.008,0.005,0.001))
 g
 ```
 
