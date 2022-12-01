@@ -540,15 +540,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomah3918SingleCellMRtree6966b3414a9feec84ba9f38a559b3d347dfa4142targetblank6966b34a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomah3918SingleCellMRtreea155feacdcbf2a16da9b7d12b9f1ffb41384a223targetblanka155feaa">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/ah3918/SingleCellMR/tree/6966b3414a9feec84ba9f38a559b3d347dfa4142" target="_blank">6966b34</a>
+<a href="https://github.com/ah3918/SingleCellMR/tree/a155feacdcbf2a16da9b7d12b9f1ffb41384a223" target="_blank">a155fea</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomah3918SingleCellMRtree6966b3414a9feec84ba9f38a559b3d347dfa4142targetblank6966b34a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomah3918SingleCellMRtreea155feacdcbf2a16da9b7d12b9f1ffb41384a223targetblanka155feaa"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -558,7 +558,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/ah3918/SingleCellMR/tree/6966b3414a9feec84ba9f38a559b3d347dfa4142" target="_blank">6966b34</a>.
+<a href="https://github.com/ah3918/SingleCellMR/tree/a155feacdcbf2a16da9b7d12b9f1ffb41384a223" target="_blank">a155fea</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -574,6 +574,7 @@ were generated:
 <pre><code>
 Ignored files:
     Ignored:    analysis/downstream.nb.html
+    Ignored:    analysis/figure/
     Ignored:    analysis/figures.nb.html
 
 Untracked files:
@@ -641,6 +642,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/ah3918/SingleCellMR/blob/a155feacdcbf2a16da9b7d12b9f1ffb41384a223/analysis/figures.Rmd" target="_blank">a155fea</a>
+</td>
+<td>
+Alexander Haglund
+</td>
+<td>
+2022-12-01
+</td>
+<td>
+wflow_publish(c("analysis/figures.Rmd"))
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/ah3918/SingleCellMR/babc9f5864aeb9b1bd9094360df227456790c30c/docs/figures.html" target="_blank">babc9f5</a>
+</td>
+<td>
+Alexander Haglund
+</td>
+<td>
+2022-12-01
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1608,15 +1643,10 @@ Alexander Haglund
 </div>
 <div id="figure-4b" class="section level2">
 <h2>Figure 4b</h2>
-<pre class="r"><code>library(UpSetR)
+<pre class="r"><code>suppressMessages(library(UpSetR))
 library(dplyr)
-library(ComplexUpset)</code></pre>
-<pre><code>
-Attaching package: &#39;ComplexUpset&#39;</code></pre>
-<pre><code>The following object is masked from &#39;package:UpSetR&#39;:
-
-    upset</code></pre>
-<pre class="r"><code>library(tidyr)
+suppressMessages(library(ComplexUpset))
+library(tidyr)
 
 color_pal=ggsci::pal_nejm(&quot;default&quot;)(8)
 colorvec&lt;-c(Astrocytes=color_pal[1],
@@ -1732,6 +1762,8 @@ Alexander Haglund
 <h1>SUPPLEMENTARY FIGURES</h1>
 <div id="suppl.-fig.-1" class="section level2">
 <h2>Suppl. Fig. 1</h2>
+<div id="suppl.-fig.-1a" class="section level3">
+<h3>Suppl. Fig. 1a</h3>
 <pre class="r"><code>metadata&lt;-readRDS(&quot;data/METADATA/Final_Seurat_129samples_15May2022_metadata.rds&quot;)
 
 ##this sample was excluded earlier
@@ -1855,146 +1887,48 @@ Alexander Haglund
 </table>
 </div>
 </div>
-<div id="suppl.-fig.-1a" class="section level3">
-<h3>Suppl. Fig. 1a</h3>
 </div>
-</div>
-<div id="figure-5a" class="section level2">
-<h2>Figure 5a</h2>
-<pre class="r"><code>full&lt;-read.table(&quot;data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt&quot;)
-full&lt;-full[full$IVW&lt;0.05,]
-full$trait_gene&lt;-paste0(full$GWAS,&quot;_&quot;,full$gene)
-full$IVW_dir&lt;-sapply(full$IVW_beta,function(x){
-    if(x&gt;0){
-        return(&quot;CAUSAL&quot;)
-        }else{
-        return(&quot;PROTECTIVE&quot;)
-        }
-    })
+<div id="suppl.-fig.-1b" class="section level3">
+<h3>Suppl. Fig. 1b</h3>
+<pre class="r"><code>library(ggrepel)
+metadata&lt;-readRDS(&quot;data/METADATA/Final_Seurat_129samples_15May2022_metadata.rds&quot;)
+metadata&lt;-metadata[!metadata$Sample_ID %in% &quot;O141&quot;,]
+df&lt;-as.data.frame(table(metadata$CellType))
+df$celltype&lt;-df$Var1
+library(dplyr)
+df2 &lt;- df %&gt;% 
+  mutate(csum = rev(cumsum(rev(Freq))), 
+         pos =Freq/2 + lead(csum, 1),
+         pos = if_else(is.na(pos), Freq/2, pos))
 
-tmp&lt;-full[full$GWAS==&quot;AD&quot;,]
-tmp&lt;-tmp[order(tmp$celltype),]
-tmp$gene&lt;-factor(tmp$gene,levels=unique(tmp$gene))
-color_pal=ggsci::pal_nejm(&quot;default&quot;)(8)
-colorvec&lt;-c(Astrocytes=color_pal[1],
-           Endothelial=color_pal[2],
-           Excitatory=color_pal[3],
-           Inhibitory=color_pal[4],Microglia=color_pal[5],
-           ODC=color_pal[6],OPC=color_pal[7],Pericytes=color_pal[8])
-
-g&lt;-ggplot(tmp,aes(y=gene,x=IVW_beta,fill=celltype))+
-geom_point(colour=&quot;black&quot;,shape=21,stroke=0.3,size=2)+
-scale_fill_manual(values = colorvec)+
-theme_classic()+
-geom_vline(xintercept=0,linetype=&quot;dotted&quot;)+scale_x_continuous(limits=c(-0.6,0.6))
-g2&lt;-g+
-theme(text=element_text(family=&quot;Helvetica&quot;,size=5),legend.text = element_text(family=&quot;Helvetica&quot;,size=5,face=&quot;bold&quot;),
-      legend.title=element_blank(),
-      legend.spacing.y = unit(-1, &#39;cm&#39;),axis.text.y=element_text(family=&quot;Helvetica&quot;,size=5,face=&quot;bold&quot;))+guides(fill = guide_legend(byrow = TRUE))
-g2</code></pre>
-</div>
-<div id="figure-5b" class="section level2">
-<h2>Figure 5b</h2>
-<pre class="r"><code>full&lt;-read.table(&quot;data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt&quot;)
-plot_df&lt;-data.frame()
-for(i in 1:length(unique(full$GWAS))){
-    gwas&lt;-unique(full$GWAS)[i]
-    tmp_full&lt;-full[full$GWAS==gwas,]
-    cellvec&lt;-as.vector(table(tmp_full$celltype))
-    plot_df&lt;-rbind(plot_df,data.frame(gwas=gwas,
-                                      celltype=names(table(tmp_full$celltype)),
-                                      occurrence=cellvec))
-    }
-g&lt;-ggplot(data=plot_df,aes(y=occurrence,x=gwas,fill=celltype))+
-geom_bar(stat=&quot;identity&quot;,colour=&quot;black&quot;,size=0.25)+
-scale_fill_manual(values=color_pal)+theme_classic()+
-geom_text(aes(label=occurrence),family=&quot;Helvetica&quot;,size=5*0.36, position = position_stack(vjust = 0.5))+
-theme_classic()+scale_y_continuous(expand=c(0,0))+
-labs(title=&quot;Cell-type proportions in MR results&quot;,size=7,family=&quot;Helvetica&quot;)+
-theme(text=element_text(size=7,family=&quot;Helvetica&quot;),axis.text.x=element_text(size=5,face=&quot;bold&quot;,angle=90),
-                                  axis.text.y=element_text(size=5),
+p&lt;-ggplot(df, aes(x=&quot;&quot;,y=Freq,fill=celltype)) +
+  geom_bar(stat=&quot;identity&quot;,colour=&quot;black&quot;,width=1)+
+geom_label_repel(data = df2,
+                   aes(y = pos, label = Freq),
+                   size = 5/(14/5), nudge_x = 1, show.legend = FALSE)+
+theme_classic()+theme(axis.text.x=element_blank(),
+                      axis.line=element_blank(),
+                      plot.title = element_text(size=7,face=&quot;bold&quot;),
+                                  axis.text.y=element_blank(),
                                   axis.title.y=element_blank(),
-                                 axis.title.x=element_blank(),legend.position=&quot;none&quot;,
-     title=element_text(size=7,face=&quot;bold&quot;))
-g</code></pre>
-</div>
-<div id="figure-5c" class="section level2">
-<h2>Figure 5c</h2>
-<pre class="r"><code>full&lt;-read.table(&quot;data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt&quot;)
-full$celltype_gene&lt;-paste0(full$celltype,&quot;.&quot;,full$gene)
-scz&lt;-full[full$GWAS==&quot;SCZ&quot;,]
-iq&lt;-full[full$GWAS==&quot;IQ&quot;,]
-common&lt;-intersect(iq$celltype_gene,scz$celltype_gene)
-
-##remove ct/gene combinations in other traits - we are only interested in the SCZ/IQ overlap
-# filtered&lt;-full[full$celltype_gene %in% common,]
-# filtered&lt;-filtered[!filtered$GWAS %in% c(&quot;SCZ&quot;,&quot;IQ&quot;),]
-# to_exclude&lt;-unique(filtered$celltype_gene)
-# common&lt;-common[!common %in% to_exclude]
-
-
-
-#filter both
-scz&lt;-scz[match(common,scz$celltype_gene),]
-iq&lt;-iq[match(common,iq$celltype_gene),]
-df&lt;-data.frame(celltype_gene=common,IQ=iq$IVW_beta,SCZ=scz$IVW_beta)
-
-
-##now plot
-ylims=c(-0.2,0.2)
-xlims=c(-0.7,0.7)
-
-g&lt;-ggplot(df,aes(x=SCZ,y=IQ,fill=celltype_gene))+
-geom_point(shape=21,size=2)+
-scale_y_continuous(limits=ylims)+
-scale_x_continuous(limits=xlims)+
-geom_vline(xintercept =0,linetype=&quot;dotted&quot;)+
-geom_hline(yintercept =0,linetype=&quot;dotted&quot;)+theme_classic()+
-theme(text=element_text(size=5,family=&quot;Helvetica&quot;),legend.title=element_blank(),legend.text = element_text(family=&quot;Helvetica&quot;,size=5,face=&quot;bold&quot;),legend.spacing.y = unit(-1, &#39;cm&#39;))+
-xlab(&quot;SCZ - MR beta&quot;)+ylab(&quot;IQ - MR beta&quot;)+
-guides(fill = guide_legend(byrow = TRUE))
-g</code></pre>
-</div>
-<div id="figure-5d" class="section level2">
-<h2>Figure 5d</h2>
-<pre class="r"><code>full&lt;-read.table(&quot;data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt&quot;)
-full$celltype_gene&lt;-paste0(full$celltype,&quot;.&quot;,full$gene)
-scz&lt;-full[full$GWAS==&quot;SCZ&quot;,]
-neur&lt;-full[full$GWAS==&quot;NEUR&quot;,]
-common&lt;-intersect(neur$celltype_gene,scz$celltype_gene)
-
-# filtered&lt;-full[full$celltype_gene %in% common,]
-# filtered&lt;-filtered[!filtered$GWAS %in% c(&quot;SCZ&quot;,&quot;NEUR&quot;),]
-# to_exclude&lt;-unique(filtered$celltype_gene)
-# common&lt;-common[!common %in% to_exclude]
-
-
-#filter both
-scz&lt;-scz[match(common,scz$celltype_gene),]
-neur&lt;-neur[match(common,neur$celltype_gene),]
-df&lt;-data.frame(celltype_gene=common,NEUR=neur$IVW_beta,SCZ=scz$IVW_beta)
-
-
-##now plot
-ylims=c(-0.2,0.2)
-xlims=c(-0.8,0.8)
-
-g&lt;-ggplot(df,aes(x=SCZ,y=NEUR,fill=celltype_gene))+
-geom_point(shape=21,size=2)+
-scale_y_continuous(limits=ylims)+
-scale_x_continuous(limits=xlims)+
-geom_vline(xintercept =0,linetype=&quot;dotted&quot;)+
-geom_hline(yintercept =0,linetype=&quot;dotted&quot;)+theme_classic()+
-theme(text=element_text(size=5,family=&quot;Helvetica&quot;),legend.text = element_text(family=&quot;Helvetica&quot;,size=5,face=&quot;bold&quot;),legend.title=element_blank(),legend.spacing.y = unit(-1, &#39;cm&#39;))+
-xlab(&quot;SCZ - MR beta&quot;)+ylab(&quot;NEUR - MR beta&quot;)+guides(fill = guide_legend(byrow = TRUE))
-g</code></pre>
-<p><img src="figure/figures.Rmd/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
+                                 axis.title.x=element_blank(),
+                                                 legend.key.size=unit(0.7,&quot;cm&quot;),
+                                                 legend.position=&quot;none&quot;,
+                                                                legend.text=element_text(size=5),panel.background = element_rect(fill=&#39;transparent&#39;), #transparent panel bg
+    plot.background = element_rect(fill=&#39;transparent&#39;, color=NA), #transparent plot bg
+    panel.grid.major = element_blank(), #remove major gridlines
+    panel.grid.minor = element_blank(), #remove minor gridlines
+    legend.background = element_rect(fill=&#39;transparent&#39;), #transparent legend bg
+    legend.box.background = element_rect(fill=&#39;transparent&#39;))+labs(title=&quot;Total number of cells per cell type&quot;)+
+ggsci::scale_fill_nejm()+ coord_polar(&quot;y&quot;, start=0)
+p</code></pre>
+<p><img src="figure/figures.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-18-1">
-Past versions of unnamed-chunk-18-1.png
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-15-1">
+Past versions of unnamed-chunk-15-1.png
 </button>
 </p>
-<div id="fig-unnamed-chunk-18-1" class="collapse">
+<div id="fig-unnamed-chunk-15-1" class="collapse">
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
 <thead>
@@ -2013,13 +1947,57 @@ Date
 <tbody>
 <tr>
 <td>
-<a href="https://github.com/ah3918/SingleCellMR/blob/3c46f4b136ffe9f2152fbfdb393253171e99660a/docs/figure/figures.Rmd/unnamed-chunk-18-1.png" target="_blank">3c46f4b</a>
+<a href="https://github.com/ah3918/SingleCellMR/blob/016f567a3e46db37a9a89dd0f6228a2d6cd87c5a/docs/figure/figures.Rmd/unnamed-chunk-15-1.png" target="_blank">016f567</a>
 </td>
 <td>
 Alexander Haglund
 </td>
 <td>
 2022-12-01
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/ah3918/SingleCellMR/blob/43e9b1f044ca3f756ba897587c46d72d85cd1052/docs/figure/figures.Rmd/unnamed-chunk-15-1.png" target="_blank">43e9b1f</a>
+</td>
+<td>
+Alexander Haglund
+</td>
+<td>
+2022-12-01
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/ah3918/SingleCellMR/blob/3c08408ce53d6d6f985d9eaa846e1e0642aa30bd/docs/figure/figures.Rmd/unnamed-chunk-15-1.png" target="_blank">3c08408</a>
+</td>
+<td>
+Alexander Haglund
+</td>
+<td>
+2022-12-01
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/ah3918/SingleCellMR/blob/4fcf3eac64490e9323f7548575f9ffc274df12ae/docs/figure/figures.Rmd/unnamed-chunk-15-1.png" target="_blank">4fcf3ea</a>
+</td>
+<td>
+Alexander Haglund
+</td>
+<td>
+2022-12-01
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/ah3918/SingleCellMR/blob/8f071f39327c554f8f61b7a1f285c1e7301976ba/docs/figure/figures.Rmd/unnamed-chunk-15-1.png" target="_blank">8f071f3</a>
+</td>
+<td>
+Alexander Haglund
+</td>
+<td>
+2022-11-18
 </td>
 </tr>
 </tbody>
@@ -2055,9 +2033,9 @@ attached base packages:
 [8] base     
 
 other attached packages:
- [1] ComplexUpset_1.3.3 UpSetR_1.4.0       reshape_0.8.9      tidyr_1.2.1       
- [5] cowplot_1.1.1      dplyr_1.0.9        ggsci_2.9          viridis_0.6.2     
- [9] viridisLite_0.4.1  ggplot2_3.3.6      workflowr_1.7.0   
+ [1] ggrepel_0.9.1      ComplexUpset_1.3.3 UpSetR_1.4.0       reshape_0.8.9     
+ [5] tidyr_1.2.1        cowplot_1.1.1      dplyr_1.0.9        ggsci_2.9         
+ [9] viridis_0.6.2      viridisLite_0.4.1  ggplot2_3.3.6      workflowr_1.7.0   
 
 loaded via a namespace (and not attached):
  [1] tidyselect_1.1.2 xfun_0.32        bslib_0.4.0      purrr_0.3.4     
@@ -2075,6 +2053,7 @@ loaded via a namespace (and not attached):
 [49] patchwork_1.1.2  tibble_3.1.8     whisker_0.4      pkgconfig_2.0.3 
 [53] ellipsis_0.3.2   assertthat_0.2.1 rmarkdown_2.15   httr_1.4.3      
 [57] rstudioapi_0.13  R6_2.5.1         git2r_0.30.1     compiler_4.0.5  </code></pre>
+</div>
 </div>
 </div>
 </div>
