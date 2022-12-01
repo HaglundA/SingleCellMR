@@ -260,7 +260,7 @@ scale_fill_manual(values=colorvec,na.value="white")
 
 ```
 
-### plot1
+### plot
 ```{r}
 ggplot_mainplot1<-ggplot_mainplot1+theme_classic()+
 theme(axis.text.x=element_text(size=5,face="bold",angle=45,vjust=0.8,hjust=0.8,family="Helvetica"),
@@ -316,6 +316,54 @@ g<-plot_grid(ggplot_mainplot1,ggplot_celltype1,ggplot_ivwdir1, align = "h", ncol
 g
 ```
 
+
+## Figure 4a
+
+```{r}
+library(UpSetR)
+library(dplyr)
+library(ComplexUpset)
+library(ggplot2movies)
+library(tidyr)
+
+color_pal=ggsci::pal_nejm("default")(8)
+colorvec<-c(Astrocytes=color_pal[1],
+           Endothelial=color_pal[2],
+           Excitatory=color_pal[3],
+           Inhibitory=color_pal[4],Microglia=color_pal[5],
+           ODC=color_pal[6],OPC=color_pal[7],Pericytes=color_pal[8])
+full<-read.table("data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt")
+gwas<-unique(full$GWAS)
+genes<-unique(full$gene)
+
+resdf<-data.frame(gene=genes)
+for(i in 1:length(gwas)){
+    tmp_genes<-full[full$GWAS==gwas[i],]$gene
+    resdf<-cbind(resdf,genes %in% tmp_genes)
+}
+rownames(resdf)<-resdf$gene
+resdf$gene<-NULL
+colnames(resdf)<-gwas
+
+plot<-upset(resdf,gwas,width_ratio=0.1,height_ratio = 0.4,set_size=FALSE,
+      themes=upset_default_themes(text=element_text(size=6,family="Helvetica")),
+      base_annotations=list(
+          'Intersection size'=intersection_size(color="#000000",size=0.25,
+              mapping=aes(fill="bars_color"),
+            text=list(size=5/(14/5),family="Helvetica"))
+            +scale_fill_manual(values=c("bars_color"="#1F78B4"),guide="none")
+          +theme(plot.background=element_blank(),
+          panel.grid.major = element_blank(), 
+          panel.grid.minor = element_blank())),
+      stripes="white",matrix=(
+        intersection_matrix(
+            geom=geom_point(size=0.5),
+            segment=geom_segment(size=0.3)
+            ))
+      )
+
+plot
+```
 
 # FIGURE 5
 ## Figure 5a
