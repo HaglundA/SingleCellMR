@@ -320,9 +320,9 @@ g
 ## Figure 4b
 
 ```{r}
-library(UpSetR)
+suppressMessages(library(UpSetR))
 library(dplyr)
-library(ComplexUpset)
+suppressMessages(library(ComplexUpset))
 library(tidyr)
 
 color_pal=ggsci::pal_nejm("default")(8)
@@ -367,6 +367,9 @@ plot
 # SUPPLEMENTARY FIGURES
 
 ## Suppl. Fig. 1
+
+### Suppl. Fig. 1a
+
 ```{r}
 metadata<-readRDS("data/METADATA/Final_Seurat_129samples_15May2022_metadata.rds")
 
@@ -400,142 +403,39 @@ theme_classic()+theme(axis.text.x=element_text(size=5,face="bold",angle=90),
 p
 ```
 
+### Suppl. Fig. 1b
+```{r}
+library(ggrepel)
+metadata<-readRDS("data/METADATA/Final_Seurat_129samples_15May2022_metadata.rds")
+metadata<-metadata[!metadata$Sample_ID %in% "O141",]
+df<-as.data.frame(table(metadata$CellType))
+df$celltype<-df$Var1
+library(dplyr)
+df2 <- df %>% 
+  mutate(csum = rev(cumsum(rev(Freq))), 
+         pos =Freq/2 + lead(csum, 1),
+         pos = if_else(is.na(pos), Freq/2, pos))
 
-
-### Suppl. Fig. 1a
-
-
-## Figure 5a
-```{r  eval=FALSE}
-full<-read.table("data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt")
-full<-full[full$IVW<0.05,]
-full$trait_gene<-paste0(full$GWAS,"_",full$gene)
-full$IVW_dir<-sapply(full$IVW_beta,function(x){
-    if(x>0){
-        return("CAUSAL")
-        }else{
-        return("PROTECTIVE")
-        }
-    })
-
-tmp<-full[full$GWAS=="AD",]
-tmp<-tmp[order(tmp$celltype),]
-tmp$gene<-factor(tmp$gene,levels=unique(tmp$gene))
-color_pal=ggsci::pal_nejm("default")(8)
-colorvec<-c(Astrocytes=color_pal[1],
-           Endothelial=color_pal[2],
-           Excitatory=color_pal[3],
-           Inhibitory=color_pal[4],Microglia=color_pal[5],
-           ODC=color_pal[6],OPC=color_pal[7],Pericytes=color_pal[8])
-
-g<-ggplot(tmp,aes(y=gene,x=IVW_beta,fill=celltype))+
-geom_point(colour="black",shape=21,stroke=0.3,size=2)+
-scale_fill_manual(values = colorvec)+
-theme_classic()+
-geom_vline(xintercept=0,linetype="dotted")+scale_x_continuous(limits=c(-0.6,0.6))
-g2<-g+
-theme(text=element_text(family="Helvetica",size=5),legend.text = element_text(family="Helvetica",size=5,face="bold"),
-      legend.title=element_blank(),
-      legend.spacing.y = unit(-1, 'cm'),axis.text.y=element_text(family="Helvetica",size=5,face="bold"))+guides(fill = guide_legend(byrow = TRUE))
-g2
-```
-
-## Figure 5b
-
-```{r eval=FALSE}
-full<-read.table("data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt")
-plot_df<-data.frame()
-for(i in 1:length(unique(full$GWAS))){
-    gwas<-unique(full$GWAS)[i]
-    tmp_full<-full[full$GWAS==gwas,]
-    cellvec<-as.vector(table(tmp_full$celltype))
-    plot_df<-rbind(plot_df,data.frame(gwas=gwas,
-                                      celltype=names(table(tmp_full$celltype)),
-                                      occurrence=cellvec))
-    }
-g<-ggplot(data=plot_df,aes(y=occurrence,x=gwas,fill=celltype))+
-geom_bar(stat="identity",colour="black",size=0.25)+
-scale_fill_manual(values=color_pal)+theme_classic()+
-geom_text(aes(label=occurrence),family="Helvetica",size=5*0.36, position = position_stack(vjust = 0.5))+
-theme_classic()+scale_y_continuous(expand=c(0,0))+
-labs(title="Cell-type proportions in MR results",size=7,family="Helvetica")+
-theme(text=element_text(size=7,family="Helvetica"),axis.text.x=element_text(size=5,face="bold",angle=90),
-                                  axis.text.y=element_text(size=5),
+p<-ggplot(df, aes(x="",y=Freq,fill=celltype)) +
+  geom_bar(stat="identity",colour="black",width=1)+
+geom_label_repel(data = df2,
+                   aes(y = pos, label = Freq),
+                   size = 5/(14/5), nudge_x = 1, show.legend = FALSE)+
+theme_classic()+theme(axis.text.x=element_blank(),
+                      axis.line=element_blank(),
+                      plot.title = element_text(size=7,face="bold"),
+                                  axis.text.y=element_blank(),
                                   axis.title.y=element_blank(),
-                                 axis.title.x=element_blank(),legend.position="none",
-     title=element_text(size=7,face="bold"))
-g
-```
-## Figure 5c
-```{r eval=FALSE}
-full<-read.table("data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt")
-full$celltype_gene<-paste0(full$celltype,".",full$gene)
-scz<-full[full$GWAS=="SCZ",]
-iq<-full[full$GWAS=="IQ",]
-common<-intersect(iq$celltype_gene,scz$celltype_gene)
-
-##remove ct/gene combinations in other traits - we are only interested in the SCZ/IQ overlap
-# filtered<-full[full$celltype_gene %in% common,]
-# filtered<-filtered[!filtered$GWAS %in% c("SCZ","IQ"),]
-# to_exclude<-unique(filtered$celltype_gene)
-# common<-common[!common %in% to_exclude]
-
-
-
-#filter both
-scz<-scz[match(common,scz$celltype_gene),]
-iq<-iq[match(common,iq$celltype_gene),]
-df<-data.frame(celltype_gene=common,IQ=iq$IVW_beta,SCZ=scz$IVW_beta)
-
-
-##now plot
-ylims=c(-0.2,0.2)
-xlims=c(-0.7,0.7)
-
-g<-ggplot(df,aes(x=SCZ,y=IQ,fill=celltype_gene))+
-geom_point(shape=21,size=2)+
-scale_y_continuous(limits=ylims)+
-scale_x_continuous(limits=xlims)+
-geom_vline(xintercept =0,linetype="dotted")+
-geom_hline(yintercept =0,linetype="dotted")+theme_classic()+
-theme(text=element_text(size=5,family="Helvetica"),legend.title=element_blank(),legend.text = element_text(family="Helvetica",size=5,face="bold"),legend.spacing.y = unit(-1, 'cm'))+
-xlab("SCZ - MR beta")+ylab("IQ - MR beta")+
-guides(fill = guide_legend(byrow = TRUE))
-g
+                                 axis.title.x=element_blank(),
+                                                 legend.key.size=unit(0.7,"cm"),
+                                                 legend.position="none",
+                                                                legend.text=element_text(size=5),panel.background = element_rect(fill='transparent'), #transparent panel bg
+    plot.background = element_rect(fill='transparent', color=NA), #transparent plot bg
+    panel.grid.major = element_blank(), #remove major gridlines
+    panel.grid.minor = element_blank(), #remove minor gridlines
+    legend.background = element_rect(fill='transparent'), #transparent legend bg
+    legend.box.background = element_rect(fill='transparent'))+labs(title="Total number of cells per cell type")+
+ggsci::scale_fill_nejm()+ coord_polar("y", start=0)
+p
 ```
 
-## Figure 5d
-
-```{r eval="FALSE"}
-full<-read.table("data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt")
-full$celltype_gene<-paste0(full$celltype,".",full$gene)
-scz<-full[full$GWAS=="SCZ",]
-neur<-full[full$GWAS=="NEUR",]
-common<-intersect(neur$celltype_gene,scz$celltype_gene)
-
-# filtered<-full[full$celltype_gene %in% common,]
-# filtered<-filtered[!filtered$GWAS %in% c("SCZ","NEUR"),]
-# to_exclude<-unique(filtered$celltype_gene)
-# common<-common[!common %in% to_exclude]
-
-
-#filter both
-scz<-scz[match(common,scz$celltype_gene),]
-neur<-neur[match(common,neur$celltype_gene),]
-df<-data.frame(celltype_gene=common,NEUR=neur$IVW_beta,SCZ=scz$IVW_beta)
-
-
-##now plot
-ylims=c(-0.2,0.2)
-xlims=c(-0.8,0.8)
-
-g<-ggplot(df,aes(x=SCZ,y=NEUR,fill=celltype_gene))+
-geom_point(shape=21,size=2)+
-scale_y_continuous(limits=ylims)+
-scale_x_continuous(limits=xlims)+
-geom_vline(xintercept =0,linetype="dotted")+
-geom_hline(yintercept =0,linetype="dotted")+theme_classic()+
-theme(text=element_text(size=5,family="Helvetica"),legend.text = element_text(family="Helvetica",size=5,face="bold"),legend.title=element_blank(),legend.spacing.y = unit(-1, 'cm'))+
-xlab("SCZ - MR beta")+ylab("NEUR - MR beta")+guides(fill = guide_legend(byrow = TRUE))
-g
-```
