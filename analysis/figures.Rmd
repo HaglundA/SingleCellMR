@@ -473,13 +473,86 @@ g
 
 
 
-## Suppl. Fig. 2
+## Suppl. Fig. 3
 ```{r}
+coloc_df<-read.table("data/COLOC_MR_RESULTS//2022-10-25_FULL_COLOC_RES.txt")
+coloc_list<-split(coloc_df,coloc_df$GWAS)
 
+heatmap_list<-list()
+size_vector<-vector()
+for(i in 1:length(coloc_list)){
+    
+    x<-coloc_list[[i]]
+    if(length(x[x$PP.H4.abf>0.5,]$gene)==0){
+       heatmap_list[[i]]<-0
+        size_vector<-c(size_vector,0)
+    }else{
+    genes<-x[x$PP.H4.abf>0.5,]$gene
+    x<-x[x$gene %in% genes,]
+    x$Gene<-factor(x$gene,levels=unique(x$gene))
+    g<-ggplot(x,aes(x=celltype,y=Gene,fill=PP.H4.abf))
+    h1<-g+geom_tile(aes(fill=round(PP.H4.abf,2)),colour="black")+geom_text(aes(label = round(PP.H4.abf, 2)),size=5*0.36,family="Helvetica")+
+        scale_fill_viridis(limits=c(0,1))+
+    theme_classic()+scale_y_discrete(limits=rev)+scale_x_discrete(position="top")+xlab(x$GWAS[1])+
+        theme(axis.text.x=element_text(size=5,family="Helvetica",face="bold"),
+        axis.text.y=element_text(size=5,family="Helvetica"),
+        axis.title=element_text(size=7,family="Helvetica"),
+              legend.position="none")
+        
+   heatmap_list[[i]]<-h1
+        
+    size_vector<-c(size_vector,length(unique(genes)))
+        }
+    }
+names(heatmap_list)<-unique(coloc_df$GWAS)
+
+heatmap_list
 ```
 
-## Suppl. Fig. 2
+## Suppl. Fig. 4
 ```{r}
+
+mateqtlouts<-readRDS("data/eQTL_RESULTS//mateqtlouts_0.2FDR.rds")
+
+mateqtlouts<-lapply(mateqtlouts,function(x){
+  x$fstat=x$t.stat^2
+  return(x)})
+
+scientific_10 <- function(x) {
+  parse(text=gsub("e", ".00 %*% 10^", scales::scientific_format(digits = 3)(x)))
+}
+
+library(ggplot2)
+for(i in 1:length(mateqtlouts)){
+    
+    tmp<-mateqtlouts[[i]]
+    title<-names(mateqtlouts[i])
+    title<-gsub("_agg_cpm","",title)
+    if(title=="Oligo"){
+        title<-"ODC"
+        }else if(title=="Endo"){
+        title<-"Endothelial"
+        }else if(title=="Per"){
+        title<-"Pericytes"
+        }else if(title=="Astro"){
+        title<-"Astrocytes"
+        }
+
+    tmp<-tmp[tmp$FDR<0.05,]
+    g<-ggplot(data=tmp,aes(x=fstat))+
+    geom_line(aes(y=FDR,color="FDR"),size=0.5)+
+    geom_line(aes(y=p.value,color="pvalue"),size=0.5)+
+    scale_color_manual(values = c("FDR"="red", "pvalue"="blue"))+
+    scale_y_continuous(trans="log10",breaks=c(5e-2,5e-5,5e-10,5e-20),labels=scientific_10)+
+    theme_classic()+ggtitle(title)+
+    xlab("F-statistic")+
+    geom_vline(xintercept = 10,linetype="dashed",color="black")+theme(text = element_text(family="Helvetica",size=5),axis.title.y=element_blank(),
+                                                                      axis.text.y=element_text(family="Helvetica",size=6),
+                                                                      axis.text.x=element_text(family="Helvetica",size=6),
+                                                                     legend.title=element_text(family="Helvetica",size=7),
+                                                                      legend.text=element_text(family="Helvetica",size=6))
+    print(g)
+}
 
 ```
 
