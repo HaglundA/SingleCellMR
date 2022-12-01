@@ -506,7 +506,11 @@ for(i in 1:length(coloc_list)){
     }
 names(heatmap_list)<-unique(coloc_df$GWAS)
 
-heatmap_list
+for(i in 1:length(heatmap_list)){
+    if(class(heatmap_list[[i]])=="numeric"){
+      print(heatmap_list[[i]])
+    }
+}
 ```
 
 ## Suppl. Fig. 4
