@@ -540,15 +540,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomah3918SingleCellMRtree5587527b0aa2da712846bf3a31c362ba8c0af864targetblank5587527a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomah3918SingleCellMRtreeed4677c63258e88b4c4b9e67e14bd2ec5dca7665targetblanked4677ca">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/ah3918/SingleCellMR/tree/5587527b0aa2da712846bf3a31c362ba8c0af864" target="_blank">5587527</a>
+<a href="https://github.com/ah3918/SingleCellMR/tree/ed4677c63258e88b4c4b9e67e14bd2ec5dca7665" target="_blank">ed4677c</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomah3918SingleCellMRtree5587527b0aa2da712846bf3a31c362ba8c0af864targetblank5587527a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomah3918SingleCellMRtreeed4677c63258e88b4c4b9e67e14bd2ec5dca7665targetblanked4677ca"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -558,7 +558,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/ah3918/SingleCellMR/tree/5587527b0aa2da712846bf3a31c362ba8c0af864" target="_blank">5587527</a>.
+<a href="https://github.com/ah3918/SingleCellMR/tree/ed4677c63258e88b4c4b9e67e14bd2ec5dca7665" target="_blank">ed4677c</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -574,6 +574,7 @@ were generated:
 <pre><code>
 Ignored files:
     Ignored:    analysis/downstream.nb.html
+    Ignored:    analysis/figure/
     Ignored:    analysis/figures.nb.html
 
 Untracked files:
@@ -641,6 +642,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/ah3918/SingleCellMR/blob/ed4677c63258e88b4c4b9e67e14bd2ec5dca7665/analysis/figures.Rmd" target="_blank">ed4677c</a>
+</td>
+<td>
+Alexander Haglund
+</td>
+<td>
+2022-12-01
+</td>
+<td>
+wflow_publish(c("analysis/figures.Rmd"))
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/ah3918/SingleCellMR/bb50a67c62a202c1c31a5dc1f8ea3880c90eba4b/docs/figures.html" target="_blank">bb50a67</a>
+</td>
+<td>
+Alexander Haglund
+</td>
+<td>
+2022-12-01
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -2690,14 +2725,154 @@ Alexander Haglund
 </div>
 </div>
 </div>
-<div id="suppl.-fig.-2-1" class="section level2">
-<h2>Suppl. Fig. 2</h2>
+<div id="suppl.-fig.-5" class="section level2">
+<h2>Suppl. Fig. 5</h2>
+<div id="suppl.-fig.-5a" class="section level3">
+<h3>Suppl. Fig. 5a</h3>
+<pre class="r"><code>full&lt;-read.table(&quot;data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt&quot;)
+full$celltype_gene&lt;-paste0(full$celltype,&quot;.&quot;,full$gene)
+scz&lt;-full[full$GWAS==&quot;SCZ&quot;,]
+iq&lt;-full[full$GWAS==&quot;IQ&quot;,]
+common&lt;-intersect(iq$celltype_gene,scz$celltype_gene)
+
+#remove ct/gene combinations in other traits - we are only interested in the SCZ/IQ overlap
+filtered&lt;-full[full$celltype_gene %in% common,]
+filtered&lt;-filtered[!filtered$GWAS %in% c(&quot;SCZ&quot;,&quot;IQ&quot;),]
+to_exclude&lt;-unique(filtered$celltype_gene)
+common&lt;-common[!common %in% to_exclude]
+
+
+
+#filter both
+scz&lt;-scz[match(common,scz$celltype_gene),]
+iq&lt;-iq[match(common,iq$celltype_gene),]
+df&lt;-data.frame(celltype_gene=common,IQ=iq$IVW_beta,SCZ=scz$IVW_beta)
+
+
+##now plot
+ylims=c(-0.2,0.2)
+xlims=c(-0.7,0.7)
+
+g&lt;-ggplot(df,aes(x=SCZ,y=IQ,fill=celltype_gene))+
+geom_point(shape=21,size=2)+
+scale_y_continuous(limits=ylims)+
+scale_x_continuous(limits=xlims)+
+geom_vline(xintercept =0,linetype=&quot;dashed&quot;,size=0.3)+
+geom_hline(yintercept =0,linetype=&quot;dashed&quot;,size=0.3)+theme_classic()+
+theme(text=element_text(size=5,family=&quot;Helvetica&quot;),legend.title=element_blank(),
+      axis.text.y=element_text(size=5,family=&quot;Helvetica&quot;),axis.text.x=element_text(size=5,family=&quot;Helvetica&quot;),
+      legend.text = element_text(family=&quot;Helvetica&quot;,size=5,face=&quot;bold&quot;),legend.spacing.y = unit(-1, &#39;cm&#39;))+
+xlab(&quot;SCZ - MR beta&quot;)+ylab(&quot;IQ - MR beta&quot;)+
+guides(fill = guide_legend(byrow = TRUE))
+g</code></pre>
+<p><img src="figure/figures.Rmd/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
-<div id="suppl.-fig.-2-2" class="section level2">
-<h2>Suppl. Fig. 2</h2>
+<div id="suppl.-fig.-5b" class="section level3">
+<h3>Suppl. Fig. 5b</h3>
+<pre class="r"><code>full&lt;-read.table(&quot;data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt&quot;)
+full$celltype_gene&lt;-paste0(full$celltype,&quot;.&quot;,full$gene)
+scz&lt;-full[full$GWAS==&quot;SCZ&quot;,]
+neur&lt;-full[full$GWAS==&quot;NEUR&quot;,]
+common&lt;-intersect(neur$celltype_gene,scz$celltype_gene)
+
+filtered&lt;-full[full$celltype_gene %in% common,]
+filtered&lt;-filtered[!filtered$GWAS %in% c(&quot;SCZ&quot;,&quot;NEUR&quot;),]
+to_exclude&lt;-unique(filtered$celltype_gene)
+common&lt;-common[!common %in% to_exclude]
+
+
+#filter both
+scz&lt;-scz[match(common,scz$celltype_gene),]
+neur&lt;-neur[match(common,neur$celltype_gene),]
+df&lt;-data.frame(celltype_gene=common,NEUR=neur$IVW_beta,SCZ=scz$IVW_beta)
+
+
+##now plot
+ylims=c(-0.2,0.2)
+xlims=c(-0.8,0.8)
+
+g&lt;-ggplot(df,aes(x=SCZ,y=NEUR,fill=celltype_gene))+
+geom_point(shape=21,size=2)+
+scale_y_continuous(limits=ylims)+
+scale_x_continuous(limits=xlims)+
+geom_vline(xintercept =0,linetype=&quot;dashed&quot;,size=0.3)+
+geom_hline(yintercept =0,linetype=&quot;dashed&quot;,size=0.3)+theme_classic()+
+theme(text=element_text(size=5,family=&quot;Helvetica&quot;),legend.title=element_blank(),
+      axis.text.y=element_text(size=5,family=&quot;Helvetica&quot;),axis.text.x=element_text(size=5,family=&quot;Helvetica&quot;),
+      legend.text = element_text(family=&quot;Helvetica&quot;,size=5,face=&quot;bold&quot;),legend.spacing.y = unit(-1, &#39;cm&#39;))+
+xlab(&quot;SCZ - MR beta&quot;)+ylab(&quot;NEUR - MR beta&quot;)+guides(fill = guide_legend(byrow = TRUE))
+g</code></pre>
+<p><img src="figure/figures.Rmd/unnamed-chunk-20-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
-<div id="suppl.-fig.-2-3" class="section level2">
-<h2>Suppl. Fig. 2</h2>
+<div id="suppl.-fig.-5c" class="section level3">
+<h3>Suppl. Fig. 5c</h3>
+<pre class="r"><code>full&lt;-read.table(&quot;data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt&quot;)
+full&lt;-full[full$IVW&lt;0.05,]
+tmp&lt;-full
+df&lt;-data.frame()
+for(i in 1:length(unique(tmp$GWAS))){
+    gwas&lt;-unique(tmp$GWAS)[i]
+    tmp_df&lt;-tmp[grep(gwas,tmp$GWAS),]
+    cellvec&lt;-as.vector(table(tmp_df$celltype))
+    df&lt;-rbind(df,data.frame(gwas=gwas,celltype=names(table(tmp_df$celltype)),occurrence=cellvec))
+}
+
+g&lt;-ggplot(data=df,aes(y=occurrence,x=gwas,fill=celltype))+geom_bar(stat=&quot;identity&quot;,colour=&quot;black&quot;)
+g&lt;-g+geom_text(aes(label=occurrence),family=&quot;Helvetica&quot;,size=5*0.36, position = position_stack(vjust = 0.5))+
+scale_fill_manual(values=color_pal)+theme_classic()+
+scale_y_continuous(expand = c(0, 0))+
+theme(axis.text.x=element_text(size=5,face=&quot;bold&quot;,angle=45,vjust=0.01),
+                                  axis.text.y=element_text(size=5,face=&quot;bold&quot;),
+                                  axis.title.y=element_text(size=7,face=&quot;bold&quot;,margin=margin(r=20)),
+                                 axis.title.x=element_text(size=7,face=&quot;bold&quot;,margin=margin(t=20)),
+                                                 legend.key.size=unit(0.7,&quot;cm&quot;),
+                                                                legend.text=element_text(size=5),
+     title=element_text(size=7,face=&quot;bold&quot;),
+panel.background = element_rect(fill=&#39;transparent&#39;), #transparent panel bg
+    plot.background = element_rect(fill=&#39;transparent&#39;, color=NA), #transparent plot bg
+    panel.grid.major = element_blank(), #remove major gridlines
+    panel.grid.minor = element_blank(), #remove minor gridlines
+    legend.background = element_rect(fill=&#39;transparent&#39;), #transparent legend bg
+    legend.box.background = element_rect(fill=&#39;transparent&#39;))#transparent legend panel
+g&lt;-g+theme(text=element_text(family=&quot;Helvetica&quot;),
+         axis.title.x=element_blank(),
+             axis.title.y=element_blank(), axis.text.x=element_text(size=5,angle=45),
+         legend.position = &quot;none&quot;)+scale_y_continuous(expand = c(0, 0))</code></pre>
+<pre><code>Scale for &#39;y&#39; is already present. Adding another scale for &#39;y&#39;, which will
+replace the existing scale.</code></pre>
+<pre class="r"><code>g</code></pre>
+<p><img src="figure/figures.Rmd/unnamed-chunk-21-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="suppl.-fig.-5d" class="section level3">
+<h3>Suppl. Fig. 5d</h3>
+<pre class="r"><code>full&lt;-read.table(&quot;data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt&quot;)
+full&lt;-full[full$IVW&lt;0.05,]
+full$trait_gene&lt;-paste0(full$GWAS,&quot;_&quot;,full$gene)
+tmp&lt;-full[full$GWAS==&quot;AD&quot;,]
+tmp&lt;-tmp[order(tmp$celltype),]
+tmp$gene&lt;-factor(tmp$gene,levels=unique(tmp$gene))
+color_pal=ggsci::pal_nejm(&quot;default&quot;)(8)
+colorvec&lt;-c(Astrocytes=color_pal[1],
+           Endothelial=color_pal[2],
+           Excitatory=color_pal[3],
+           Inhibitory=color_pal[4],Microglia=color_pal[5],
+           ODC=color_pal[6],OPC=color_pal[7],Pericytes=color_pal[8])
+
+g&lt;-ggplot(tmp,aes(y=gene,x=IVW_beta,fill=celltype))+
+geom_point(colour=&quot;black&quot;,shape=21,stroke=0.3,size=2)+
+scale_fill_manual(values = colorvec)+
+theme_classic()+
+geom_vline(xintercept=0,linetype=&quot;dashed&quot;,size=0.3)+scale_x_continuous(limits=c(-0.6,0.6))
+g2&lt;-g+
+theme(text=element_text(family=&quot;Helvetica&quot;,size=5),legend.text = element_text(family=&quot;Helvetica&quot;,size=5,face=&quot;bold&quot;),
+      legend.title=element_blank(),
+      legend.spacing.y = unit(-1, &#39;cm&#39;),axis.text.y=element_text(family=&quot;Helvetica&quot;,size=5,face=&quot;bold&quot;))+guides(fill = guide_legend(byrow = TRUE))
+g2</code></pre>
+<p><img src="figure/figures.Rmd/unnamed-chunk-22-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="suppl.-fig.-6" class="section level2">
+<h2>Suppl. Fig. 6</h2>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
