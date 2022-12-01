@@ -409,7 +409,7 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2022-11-18
+<strong>Last updated:</strong> 2022-12-01
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -540,15 +540,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomah3918SingleCellMRtree8f071f39327c554f8f61b7a1f285c1e7301976batargetblank8f071f3a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomah3918SingleCellMRtreeeacb4eb6be40a18eea80718c370453edf52b6bf4targetblankeacb4eba">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/ah3918/SingleCellMR/tree/8f071f39327c554f8f61b7a1f285c1e7301976ba" target="_blank">8f071f3</a>
+<a href="https://github.com/ah3918/SingleCellMR/tree/eacb4eb6be40a18eea80718c370453edf52b6bf4" target="_blank">eacb4eb</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomah3918SingleCellMRtree8f071f39327c554f8f61b7a1f285c1e7301976batargetblank8f071f3a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomah3918SingleCellMRtreeeacb4eb6be40a18eea80718c370453edf52b6bf4targetblankeacb4eba"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -558,7 +558,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/ah3918/SingleCellMR/tree/8f071f39327c554f8f61b7a1f285c1e7301976ba" target="_blank">8f071f3</a>.
+<a href="https://github.com/ah3918/SingleCellMR/tree/eacb4eb6be40a18eea80718c370453edf52b6bf4" target="_blank">eacb4eb</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -574,11 +574,11 @@ were generated:
 <pre><code>
 Ignored files:
     Ignored:    analysis/downstream.nb.html
+    Ignored:    analysis/figure/
     Ignored:    analysis/figures.nb.html
 
 Untracked files:
     Untracked:  analysis/DOWNSTREAM_RESULTS.Rmd
-    Untracked:  analysis/downstream.Rmd
     Untracked:  analysis/eQTL_analysis.Rmd
     Untracked:  colossus/
     Untracked:  data/COLOC_MR_RESULTS/
@@ -642,6 +642,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/ah3918/SingleCellMR/blob/eacb4eb6be40a18eea80718c370453edf52b6bf4/analysis/figures.Rmd" target="_blank">eacb4eb</a>
+</td>
+<td>
+Alexander Haglund
+</td>
+<td>
+2022-12-01
+</td>
+<td>
+wflow_publish(c("analysis/figures.Rmd"))
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/ah3918/SingleCellMR/597c47b1a8af0a0de95e6f263a19627b6cadd929/docs/figures.html" target="_blank">597c47b</a>
+</td>
+<td>
+Alexander Haglund
+</td>
+<td>
+2022-11-18
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -710,7 +744,7 @@ colorvec&lt;-c(Astrocytes=color_pal[1],
 <h3>Figure 2a</h3>
 <pre class="r"><code>coloc&lt;-read.table(&quot;data/COLOC_MR_RESULTS/2022-10-25_FULL_COLOC_RES.txt&quot;)
 x&lt;-coloc[coloc$GWAS %in% &quot;AD&quot;,]
-x&lt;-coloc[coloc$GWAS %in% &quot;AD&quot;,]
+
 
 
 genes&lt;-x[x$PP.H4.abf&gt;0.5,]$gene
@@ -767,40 +801,67 @@ Alexander Haglund
 </div>
 <div id="figure-2b" class="section level3">
 <h3>Figure 2b</h3>
-</div>
-<div id="figure-2c" class="section level3">
-<h3>Figure 2c</h3>
-</div>
-<div id="figure-2e" class="section level3">
-<h3>Figure 2e</h3>
+<p>coming soon ### Figure 2c coming soon</p>
 </div>
 <div id="figure-2d" class="section level3">
 <h3>Figure 2d</h3>
-</div>
-</div>
-<div id="figure-3" class="section level1">
-<h1>FIGURE 3</h1>
-<p>The code presented here is in step 5 (Epigenetic Intersection) of the
-downstream results section. The basic syntax is a geom_tile() function
-in ggplot with colours matching cell-types. More in
-data/MARKDOWN/helper_funcs.r</p>
-<p>This is only for Fig 3.a - Fig 3.c and Fig 3.d were made using the
-UCSC track browser.</p>
-<pre class="r"><code>indir&lt;-&quot;data/EXT_DATASETS//RESULTS/&quot;
-fig_dir&lt;-&quot;FIGURES/Figure_3/&quot;
+<pre class="r"><code>coloc_results&lt;-read.table(&quot;data/COLOC_MR_RESULTS/2022-10-25_FULL_COLOC_RES.txt&quot;)
+fig_dir&lt;-&quot;FIGURES/Figure_2/&quot;
 
-g1&lt;-readRDS(paste0(indir,&quot;oligo_intersect_ggobject.rds&quot;))
-g2&lt;-readRDS(paste0(indir,&quot;Excneuron_intersect_ggobject.rds&quot;))
-g3&lt;-readRDS(paste0(indir,&quot;Inneuron_intersect_ggobject.rds&quot;))
-g4&lt;-readRDS(paste0(indir,&quot;microglia_intersect_ggobject.rds&quot;))
+coloc_results&lt;-coloc_results[coloc_results$PP.H4.abf&gt;0.5,]
 
-g1&lt;-g1+theme(legend.position = &quot;none&quot;)
-g2&lt;-g2+theme(legend.position = &quot;none&quot;)
-g3&lt;-g3+theme(legend.position = &quot;none&quot;)
-g4&lt;-g4+theme(legend.position = &quot;none&quot;)</code></pre>
-<div id="oligo" class="section level2">
-<h2>Oligo</h2>
-<pre class="r"><code>g1</code></pre>
+
+g&lt;-ggplot(coloc_results,aes(y=GWAS))+geom_bar(color=&quot;black&quot;,fill=&quot;#166FA2&quot;)+
+geom_text(aes(label=..count..),stat=&quot;count&quot;,hjust=-0.8,size=5/(14/5))+
+labs(x=&quot;Number of colocalisations&quot;)+
+theme_classic()+scale_x_continuous(limits=c(0,120),expand = c(0, 0))+
+theme(text=element_text(family=&quot;Helvetica&quot;,face=&quot;bold&quot;),
+                                             axis.text.x=element_text(size=5,face=&quot;bold&quot;),
+                                            axis.text.y=element_text(size=5),
+     axis.title.x=element_text(size=5),axis.title.y=element_text(size=5))</code></pre>
+</div>
+<div id="figure-2e" class="section level3">
+<h3>Figure 2e</h3>
+<pre class="r"><code>coloc&lt;-read.table(&quot;data/COLOC_MR_RESULTS/2022-10-25_FULL_COLOC_RES.txt&quot;)
+##rename SCV caudate for spacing
+coloc_results$GWAS&lt;-sapply(coloc_results$GWAS,function(x){
+    if(x==&quot;SCV.CAUDATE&quot;){
+        x&lt;-&quot;SCV&quot;}
+    return(x)})
+
+##filter to keep coloc hits
+coloc_results_filtered&lt;-coloc_results[coloc_results$PP.H4.abf&gt;0.5,]
+
+
+gwas_list&lt;-unique(coloc_results_filtered$GWAS)
+reslist&lt;-list()
+
+##count number of cell types per trait
+for(i in 1:length(gwas_list)){
+    tmp&lt;-coloc_results_filtered %&gt;% filter(GWAS==gwas_list[i])
+    freq_table&lt;-as.data.frame(table(tmp$celltype))
+    tmp$celltype_freq&lt;-freq_table[match(tmp$celltype,freq_table$Var1),]$Freq
+
+    #scale by total number of colocs (otherwise larger gwases will have really large points)
+    # tmp$celltype_freq&lt;-tmp$celltype_freq/nrow(tmp)
+    reslist[[i]]&lt;-tmp
+    }
+coloc_results_filtered&lt;-as.data.frame(do.call(rbind,reslist))
+
+color_pal=ggsci::pal_nejm(&quot;default&quot;)(8)
+g&lt;-ggplot(coloc_results_filtered,aes(y=GWAS,x=celltype,size=celltype_freq,fill=celltype))+
+geom_point(pch=21)+
+scale_size(range=c(1,3))+
+# geom_text(aes(label=celltype_freq),size=5/(14/5),vjust=-1.1)+
+theme_classic()+
+scale_fill_manual(values=color_pal)+
+theme(text=element_text(family=&quot;Helvetica&quot;,face=&quot;bold&quot;),
+                                             axis.text.x=element_text(size=5,angle=45),
+                                            axis.text.y=element_text(size=5),
+     axis.title.x=element_text(size=5),axis.title.y=element_text(size=5),
+      legend.text=element_text(size=5),legend.title=element_text(size=5),
+      legend.spacing.y = unit(0.05, &#39;cm&#39;),legend.position = &quot;none&quot;)
+g</code></pre>
 <p><img src="figure/figures.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-4-1">
@@ -840,51 +901,30 @@ Alexander Haglund
 </div>
 </div>
 </div>
-<div id="excneur" class="section level2">
-<h2>ExcNeur</h2>
-<pre class="r"><code>g2</code></pre>
-<p><img src="figure/figures.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-5-1">
-Past versions of unnamed-chunk-5-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-5-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/ah3918/SingleCellMR/blob/8f071f39327c554f8f61b7a1f285c1e7301976ba/docs/figure/figures.Rmd/unnamed-chunk-5-1.png" target="_blank">8f071f3</a>
-</td>
-<td>
-Alexander Haglund
-</td>
-<td>
-2022-11-18
-</td>
-</tr>
-</tbody>
-</table>
 </div>
-</div>
-</div>
-<div id="inneur" class="section level2">
-<h2>InNeur</h2>
-<pre class="r"><code>g3</code></pre>
+<div id="figure-3" class="section level1">
+<h1>FIGURE 3</h1>
+<p>The code presented here is in step 5 (Epigenetic Intersection) of the
+downstream results section. The basic syntax is a geom_tile() function
+in ggplot with colours matching cell-types. More in
+data/MARKDOWN/helper_funcs.r</p>
+<p>This is only for Fig 3.a - Fig 3.c and Fig 3.d were made using the
+UCSC track browser.</p>
+<pre class="r"><code>indir&lt;-&quot;data/EXT_DATASETS//RESULTS/&quot;
+fig_dir&lt;-&quot;FIGURES/Figure_3/&quot;
+
+g1&lt;-readRDS(paste0(indir,&quot;oligo_intersect_ggobject.rds&quot;))
+g2&lt;-readRDS(paste0(indir,&quot;Excneuron_intersect_ggobject.rds&quot;))
+g3&lt;-readRDS(paste0(indir,&quot;Inneuron_intersect_ggobject.rds&quot;))
+g4&lt;-readRDS(paste0(indir,&quot;microglia_intersect_ggobject.rds&quot;))
+
+g1&lt;-g1+theme(legend.position = &quot;none&quot;)
+g2&lt;-g2+theme(legend.position = &quot;none&quot;)
+g3&lt;-g3+theme(legend.position = &quot;none&quot;)
+g4&lt;-g4+theme(legend.position = &quot;none&quot;)</code></pre>
+<div id="oligo" class="section level2">
+<h2>Oligo</h2>
+<pre class="r"><code>g1</code></pre>
 <p><img src="figure/figures.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-6-1">
@@ -924,9 +964,9 @@ Alexander Haglund
 </div>
 </div>
 </div>
-<div id="microglia" class="section level2">
-<h2>Microglia</h2>
-<pre class="r"><code>g4</code></pre>
+<div id="excneur" class="section level2">
+<h2>ExcNeur</h2>
+<pre class="r"><code>g2</code></pre>
 <p><img src="figure/figures.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-7-1">
@@ -966,12 +1006,14 @@ Alexander Haglund
 </div>
 </div>
 </div>
-</div>
-<div id="figure-4" class="section level1">
-<h1>FIGURE 4</h1>
-<div id="figure-4a" class="section level2">
-<h2>Figure 4a</h2>
-<p>bind data together</p>
+<div id="inneur" class="section level2">
+<h2>InNeur</h2>
+<pre class="r"><code>g3</code></pre>
+<p><img src="figure/figures.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" />
+## Microglia</p>
+<pre class="r"><code>g4</code></pre>
+<p><img src="figure/figures.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" />
+# FIGURE 4 ## Figure 4a bind data together</p>
 <pre class="r"><code>#bind data together
 
 pqtl&lt;-read.table(&quot;data/TABLES/pQTL_table.txt&quot;)
@@ -1207,13 +1249,13 @@ ggplot_celltype1&lt;-ggplot_celltype1+theme(plot.margin = unit(c(0,0,0,0), &quot
 
 g&lt;-plot_grid(ggplot_mainplot1,ggplot_celltype1,ggplot_ivwdir1, align = &quot;h&quot;, ncol =3, rel_widths = c(0.008,0.005,0.001))
 g</code></pre>
-<p><img src="figure/figures.Rmd/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/figures.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-10-1">
-Past versions of unnamed-chunk-10-1.png
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-12-1">
+Past versions of unnamed-chunk-12-1.png
 </button>
 </p>
-<div id="fig-unnamed-chunk-10-1" class="collapse">
+<div id="fig-unnamed-chunk-12-1" class="collapse">
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
 <thead>
@@ -1232,7 +1274,7 @@ Date
 <tbody>
 <tr>
 <td>
-<a href="https://github.com/ah3918/SingleCellMR/blob/8f071f39327c554f8f61b7a1f285c1e7301976ba/docs/figure/figures.Rmd/unnamed-chunk-10-1.png" target="_blank">8f071f3</a>
+<a href="https://github.com/ah3918/SingleCellMR/blob/8f071f39327c554f8f61b7a1f285c1e7301976ba/docs/figure/figures.Rmd/unnamed-chunk-12-1.png" target="_blank">8f071f3</a>
 </td>
 <td>
 Alexander Haglund
@@ -1317,13 +1359,13 @@ ggplot_celltype2&lt;-ggplot_celltype2+theme(plot.margin = unit(c(0,0,0,0), &quot
 
 g&lt;-plot_grid(ggplot_mainplot2,ggplot_celltype2,ggplot_ivwdir2, align = &quot;h&quot;, ncol =3, rel_widths = c(0.008,0.005,0.001))
 g</code></pre>
-<p><img src="figure/figures.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/figures.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-11-1">
-Past versions of unnamed-chunk-11-1.png
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-13-1">
+Past versions of unnamed-chunk-13-1.png
 </button>
 </p>
-<div id="fig-unnamed-chunk-11-1" class="collapse">
+<div id="fig-unnamed-chunk-13-1" class="collapse">
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
 <thead>
@@ -1342,7 +1384,7 @@ Date
 <tbody>
 <tr>
 <td>
-<a href="https://github.com/ah3918/SingleCellMR/blob/8f071f39327c554f8f61b7a1f285c1e7301976ba/docs/figure/figures.Rmd/unnamed-chunk-11-1.png" target="_blank">8f071f3</a>
+<a href="https://github.com/ah3918/SingleCellMR/blob/8f071f39327c554f8f61b7a1f285c1e7301976ba/docs/figure/figures.Rmd/unnamed-chunk-13-1.png" target="_blank">8f071f3</a>
 </td>
 <td>
 Alexander Haglund
@@ -1393,13 +1435,13 @@ theme(text=element_text(family=&quot;Helvetica&quot;,size=5),legend.text = eleme
       legend.title=element_blank(),
       legend.spacing.y = unit(-1, &#39;cm&#39;),axis.text.y=element_text(family=&quot;Helvetica&quot;,size=5,face=&quot;bold&quot;))+guides(fill = guide_legend(byrow = TRUE))
 g2</code></pre>
-<p><img src="figure/figures.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/figures.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-12-1">
-Past versions of unnamed-chunk-12-1.png
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-14-1">
+Past versions of unnamed-chunk-14-1.png
 </button>
 </p>
-<div id="fig-unnamed-chunk-12-1" class="collapse">
+<div id="fig-unnamed-chunk-14-1" class="collapse">
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
 <thead>
@@ -1418,7 +1460,7 @@ Date
 <tbody>
 <tr>
 <td>
-<a href="https://github.com/ah3918/SingleCellMR/blob/8f071f39327c554f8f61b7a1f285c1e7301976ba/docs/figure/figures.Rmd/unnamed-chunk-12-1.png" target="_blank">8f071f3</a>
+<a href="https://github.com/ah3918/SingleCellMR/blob/8f071f39327c554f8f61b7a1f285c1e7301976ba/docs/figure/figures.Rmd/unnamed-chunk-14-1.png" target="_blank">8f071f3</a>
 </td>
 <td>
 Alexander Haglund
@@ -1456,13 +1498,13 @@ theme(text=element_text(size=7,family=&quot;Helvetica&quot;),axis.text.x=element
                                  axis.title.x=element_blank(),legend.position=&quot;none&quot;,
      title=element_text(size=7,face=&quot;bold&quot;))
 g</code></pre>
-<p><img src="figure/figures.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/figures.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-13-1">
-Past versions of unnamed-chunk-13-1.png
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-15-1">
+Past versions of unnamed-chunk-15-1.png
 </button>
 </p>
-<div id="fig-unnamed-chunk-13-1" class="collapse">
+<div id="fig-unnamed-chunk-15-1" class="collapse">
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
 <thead>
@@ -1481,7 +1523,7 @@ Date
 <tbody>
 <tr>
 <td>
-<a href="https://github.com/ah3918/SingleCellMR/blob/8f071f39327c554f8f61b7a1f285c1e7301976ba/docs/figure/figures.Rmd/unnamed-chunk-13-1.png" target="_blank">8f071f3</a>
+<a href="https://github.com/ah3918/SingleCellMR/blob/8f071f39327c554f8f61b7a1f285c1e7301976ba/docs/figure/figures.Rmd/unnamed-chunk-15-1.png" target="_blank">8f071f3</a>
 </td>
 <td>
 Alexander Haglund
@@ -1531,44 +1573,7 @@ theme(text=element_text(size=5,family=&quot;Helvetica&quot;),legend.title=elemen
 xlab(&quot;SCZ - MR beta&quot;)+ylab(&quot;IQ - MR beta&quot;)+
 guides(fill = guide_legend(byrow = TRUE))
 g</code></pre>
-<p><img src="figure/figures.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-14-1">
-Past versions of unnamed-chunk-14-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-14-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/ah3918/SingleCellMR/blob/8f071f39327c554f8f61b7a1f285c1e7301976ba/docs/figure/figures.Rmd/unnamed-chunk-14-1.png" target="_blank">8f071f3</a>
-</td>
-<td>
-Alexander Haglund
-</td>
-<td>
-2022-11-18
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/figures.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="figure-5d" class="section level2">
 <h2>Figure 5d</h2>
@@ -1603,44 +1608,7 @@ geom_hline(yintercept =0,linetype=&quot;dotted&quot;)+theme_classic()+
 theme(text=element_text(size=5,family=&quot;Helvetica&quot;),legend.text = element_text(family=&quot;Helvetica&quot;,size=5,face=&quot;bold&quot;),legend.title=element_blank(),legend.spacing.y = unit(-1, &#39;cm&#39;))+
 xlab(&quot;SCZ - MR beta&quot;)+ylab(&quot;NEUR - MR beta&quot;)+guides(fill = guide_legend(byrow = TRUE))
 g</code></pre>
-<p><img src="figure/figures.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-15-1">
-Past versions of unnamed-chunk-15-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-15-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/ah3918/SingleCellMR/blob/8f071f39327c554f8f61b7a1f285c1e7301976ba/docs/figure/figures.Rmd/unnamed-chunk-15-1.png" target="_blank">8f071f3</a>
-</td>
-<td>
-Alexander Haglund
-</td>
-<td>
-2022-11-18
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/figures.Rmd/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
