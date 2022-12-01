@@ -373,7 +373,7 @@ plot
 
 
 ## Figure 5a
-```{r, eval=FALSE}
+```{r  eval=FALSE}
 full<-read.table("data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt")
 full<-full[full$IVW<0.05,]
 full$trait_gene<-paste0(full$GWAS,"_",full$gene)
@@ -409,7 +409,7 @@ g2
 
 ## Figure 5b
 
-```{r, eval=FALSE}
+```{r eval=FALSE}
 full<-read.table("data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt")
 plot_df<-data.frame()
 for(i in 1:length(unique(full$GWAS))){
@@ -434,7 +434,7 @@ theme(text=element_text(size=7,family="Helvetica"),axis.text.x=element_text(size
 g
 ```
 ## Figure 5c
-```{r}
+```{r eval=FALSE}
 full<-read.table("data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt")
 full$celltype_gene<-paste0(full$celltype,".",full$gene)
 scz<-full[full$GWAS=="SCZ",]
@@ -473,7 +473,7 @@ g
 
 ## Figure 5d
 
-```{r, eval=FALSE}
+```{r eval="FALSE"}
 full<-read.table("data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt")
 full$celltype_gene<-paste0(full$celltype,".",full$gene)
 scz<-full[full$GWAS=="SCZ",]
