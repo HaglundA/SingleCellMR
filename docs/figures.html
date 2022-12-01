@@ -540,15 +540,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomah3918SingleCellMRtreea155feacdcbf2a16da9b7d12b9f1ffb41384a223targetblanka155feaa">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomah3918SingleCellMRtree762caf0ad8f906473c46ce70e73c3e241eff107etargetblank762caf0a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/ah3918/SingleCellMR/tree/a155feacdcbf2a16da9b7d12b9f1ffb41384a223" target="_blank">a155fea</a>
+<a href="https://github.com/ah3918/SingleCellMR/tree/762caf0ad8f906473c46ce70e73c3e241eff107e" target="_blank">762caf0</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomah3918SingleCellMRtreea155feacdcbf2a16da9b7d12b9f1ffb41384a223targetblanka155feaa"
+id="strongRepositoryversionstrongahrefhttpsgithubcomah3918SingleCellMRtree762caf0ad8f906473c46ce70e73c3e241eff107etargetblank762caf0a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -558,7 +558,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/ah3918/SingleCellMR/tree/a155feacdcbf2a16da9b7d12b9f1ffb41384a223" target="_blank">a155fea</a>.
+<a href="https://github.com/ah3918/SingleCellMR/tree/762caf0ad8f906473c46ce70e73c3e241eff107e" target="_blank">762caf0</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -574,7 +574,6 @@ were generated:
 <pre><code>
 Ignored files:
     Ignored:    analysis/downstream.nb.html
-    Ignored:    analysis/figure/
     Ignored:    analysis/figures.nb.html
 
 Untracked files:
@@ -642,6 +641,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/ah3918/SingleCellMR/blob/762caf0ad8f906473c46ce70e73c3e241eff107e/analysis/figures.Rmd" target="_blank">762caf0</a>
+</td>
+<td>
+Alexander Haglund
+</td>
+<td>
+2022-12-01
+</td>
+<td>
+wflow_publish(c("analysis/figures.Rmd"))
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/ah3918/SingleCellMR/8f21a16643189b1e440095480a5624a3b7547999/docs/figures.html" target="_blank">8f21a16</a>
+</td>
+<td>
+Alexander Haglund
+</td>
+<td>
+2022-12-01
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1947,6 +1980,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/ah3918/SingleCellMR/blob/8f21a16643189b1e440095480a5624a3b7547999/docs/figure/figures.Rmd/unnamed-chunk-15-1.png" target="_blank">8f21a16</a>
+</td>
+<td>
+Alexander Haglund
+</td>
+<td>
+2022-12-01
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/ah3918/SingleCellMR/blob/016f567a3e46db37a9a89dd0f6228a2d6cd87c5a/docs/figure/figures.Rmd/unnamed-chunk-15-1.png" target="_blank">016f567</a>
 </td>
 <td>
@@ -2004,6 +2048,122 @@ Alexander Haglund
 </table>
 </div>
 </div>
+</div>
+</div>
+<div id="suppl.-fig.-2" class="section level2">
+<h2>Suppl. Fig. 2</h2>
+<pre class="r"><code>res&lt;-read.table(&quot;data/EXT_DATASETS/METABRAIN//metabrain_replication.txt&quot;)
+res$celltype&lt;-c(&quot;Astrocytes&quot;,&quot;Endothelial&quot;,&quot;Excitatory&quot;,&quot;Inhibitory&quot;,&quot;Microglia&quot;,&quot;Oligo&quot;,&quot;OPC&quot;,&quot;Pericytes&quot;)
+color_plane_1=ggsci::pal_nejm(&quot;default&quot;)(8)
+colnames(res)&lt;-c(&quot;total&quot;,&quot;replicated&quot;,&quot;percentage&quot;,&quot;totalinboth&quot;,&quot;celltype&quot;)
+g&lt;-ggplot()+
+geom_point(res,mapping=aes(x=total,y=percentage,fill=celltype),size=2,shape=21)+
+scale_fill_manual(values=c(&quot;Astrocytes&quot;=color_plane_1[1],
+&quot;Endothelial&quot;=color_plane_1[2],
+&quot;Excitatory&quot;=color_plane_1[3],
+&quot;Inhibitory&quot;=color_plane_1[4],
+&quot;Microglia&quot;=color_plane_1[5],
+&quot;Oligo&quot;=color_plane_1[6],
+&quot;OPC&quot;=color_plane_1[7],
+&quot;Pericytes&quot;=color_plane_1[8]))+
+ylab(&quot;Percentage replication in metabrain&quot;)+
+xlab(&quot;Total SNP gene pairs at 5% FDR\nalso assessed in metabrain&quot;)+
+scale_y_continuous(breaks = scales::pretty_breaks(n = 10),limits=c(0,1),labels = function(x) paste0(x*100, &quot;%&quot;))+
+                   scale_x_continuous(breaks = scales::pretty_breaks(n = 7))+
+                  theme_classic()+theme(axis.text.x=element_text(size=5,family=&quot;Helvetica&quot;,angle=45,vjust=0.6,face=&quot;bold&quot;),
+                                  axis.text.y=element_text(size=5,family=&quot;Helvetica&quot;,face=&quot;bold&quot;),
+                                  axis.title.y=element_text(size=6,family=&quot;Helvetica&quot;,margin=margin(r=20),face=&quot;bold&quot;),
+                                 axis.title.x=element_text(size=6,family=&quot;Helvetica&quot;,margin=margin(t=20),face=&quot;bold&quot;),
+                                                 legend.key.size=unit(0.25,&quot;cm&quot;),
+                                                 # legend.position=&quot;none&quot;,
+                                                                legend.text=element_text(size=5),legend.title=element_blank())
+g</code></pre>
+<p><img src="figure/figures.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-16-1">
+Past versions of unnamed-chunk-16-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-16-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/ah3918/SingleCellMR/blob/fd90855c312d6d8817ff6a4c745d35fa19209231/docs/figure/figures.Rmd/unnamed-chunk-16-1.png" target="_blank">fd90855</a>
+</td>
+<td>
+Alexander Haglund
+</td>
+<td>
+2022-12-01
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/ah3918/SingleCellMR/blob/43e9b1f044ca3f756ba897587c46d72d85cd1052/docs/figure/figures.Rmd/unnamed-chunk-16-1.png" target="_blank">43e9b1f</a>
+</td>
+<td>
+Alexander Haglund
+</td>
+<td>
+2022-12-01
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/ah3918/SingleCellMR/blob/3c08408ce53d6d6f985d9eaa846e1e0642aa30bd/docs/figure/figures.Rmd/unnamed-chunk-16-1.png" target="_blank">3c08408</a>
+</td>
+<td>
+Alexander Haglund
+</td>
+<td>
+2022-12-01
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/ah3918/SingleCellMR/blob/4fcf3eac64490e9323f7548575f9ffc274df12ae/docs/figure/figures.Rmd/unnamed-chunk-16-1.png" target="_blank">4fcf3ea</a>
+</td>
+<td>
+Alexander Haglund
+</td>
+<td>
+2022-12-01
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="suppl.-fig.-2-1" class="section level2">
+<h2>Suppl. Fig. 2</h2>
+</div>
+<div id="suppl.-fig.-2-2" class="section level2">
+<h2>Suppl. Fig. 2</h2>
+</div>
+<div id="suppl.-fig.-2-3" class="section level2">
+<h2>Suppl. Fig. 2</h2>
+</div>
+<div id="suppl.-fig.-2-4" class="section level2">
+<h2>Suppl. Fig. 2</h2>
+</div>
+<div id="suppl.-fig.-2-5" class="section level2">
+<h2>Suppl. Fig. 2</h2>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -2053,7 +2213,6 @@ loaded via a namespace (and not attached):
 [49] patchwork_1.1.2  tibble_3.1.8     whisker_0.4      pkgconfig_2.0.3 
 [53] ellipsis_0.3.2   assertthat_0.2.1 rmarkdown_2.15   httr_1.4.3      
 [57] rstudioapi_0.13  R6_2.5.1         git2r_0.30.1     compiler_4.0.5  </code></pre>
-</div>
 </div>
 </div>
 </div>
