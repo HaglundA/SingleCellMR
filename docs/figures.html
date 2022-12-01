@@ -540,15 +540,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomah3918SingleCellMRtree9aafc1c688e1f89dc9fc467d56cb347169003d62targetblank9aafc1ca">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomah3918SingleCellMRtreead8d30bc2a37f515d2a6997bc2e0f246eb578f43targetblankad8d30ba">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/ah3918/SingleCellMR/tree/9aafc1c688e1f89dc9fc467d56cb347169003d62" target="_blank">9aafc1c</a>
+<a href="https://github.com/ah3918/SingleCellMR/tree/ad8d30bc2a37f515d2a6997bc2e0f246eb578f43" target="_blank">ad8d30b</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomah3918SingleCellMRtree9aafc1c688e1f89dc9fc467d56cb347169003d62targetblank9aafc1ca"
+id="strongRepositoryversionstrongahrefhttpsgithubcomah3918SingleCellMRtreead8d30bc2a37f515d2a6997bc2e0f246eb578f43targetblankad8d30ba"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -558,7 +558,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/ah3918/SingleCellMR/tree/9aafc1c688e1f89dc9fc467d56cb347169003d62" target="_blank">9aafc1c</a>.
+<a href="https://github.com/ah3918/SingleCellMR/tree/ad8d30bc2a37f515d2a6997bc2e0f246eb578f43" target="_blank">ad8d30b</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -642,6 +642,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/ah3918/SingleCellMR/blob/ad8d30bc2a37f515d2a6997bc2e0f246eb578f43/analysis/figures.Rmd" target="_blank">ad8d30b</a>
+</td>
+<td>
+Alexander Haglund
+</td>
+<td>
+2022-12-01
+</td>
+<td>
+wflow_publish(c("analysis/figures.Rmd"))
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/ah3918/SingleCellMR/3c08408ce53d6d6f985d9eaa846e1e0642aa30bd/docs/figures.html" target="_blank">3c08408</a>
+</td>
+<td>
+Alexander Haglund
+</td>
+<td>
+2022-12-01
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1321,8 +1355,8 @@ test$new&lt;-newvec
 # df2 = celltype_bar1 %&gt;% complete(gene_trait,celltype)
 ggplot_celltype1&lt;-ggplot(test,aes(x=celltype,y=gene_trait,fill=new))+geom_tile(color=&quot;black&quot;)+
 scale_fill_manual(values=colorvec,na.value=&quot;white&quot;)</code></pre>
-<div id="plot1" class="section level3">
-<h3>plot1</h3>
+<div id="plot" class="section level3">
+<h3>plot</h3>
 <pre class="r"><code>ggplot_mainplot1&lt;-ggplot_mainplot1+theme_classic()+
 theme(axis.text.x=element_text(size=5,face=&quot;bold&quot;,angle=45,vjust=0.8,hjust=0.8,family=&quot;Helvetica&quot;),
       axis.text.y=element_text(size=5,face=&quot;bold&quot;,vjust=0.8,family=&quot;Helvetica&quot;),axis.title.y=element_blank(),
@@ -1400,6 +1434,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/ah3918/SingleCellMR/blob/3c08408ce53d6d6f985d9eaa846e1e0642aa30bd/docs/figure/figures.Rmd/unnamed-chunk-12-1.png" target="_blank">3c08408</a>
+</td>
+<td>
+Alexander Haglund
+</td>
+<td>
+2022-12-01
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/ah3918/SingleCellMR/blob/4fcf3eac64490e9323f7548575f9ffc274df12ae/docs/figure/figures.Rmd/unnamed-chunk-12-1.png" target="_blank">4fcf3ea</a>
 </td>
 <td>
@@ -1423,6 +1468,117 @@ Alexander Haglund
 </tbody>
 </table>
 </div>
+</div>
+</div>
+</div>
+<div id="figure-4a-1" class="section level2">
+<h2>Figure 4a</h2>
+<pre class="r"><code>library(UpSetR)
+library(dplyr)
+library(ComplexUpset)</code></pre>
+<pre><code>
+Attaching package: &#39;ComplexUpset&#39;</code></pre>
+<pre><code>The following object is masked from &#39;package:UpSetR&#39;:
+
+    upset</code></pre>
+<pre class="r"><code>library(ggplot2movies)
+library(tidyr)
+
+color_pal=ggsci::pal_nejm(&quot;default&quot;)(8)
+colorvec&lt;-c(Astrocytes=color_pal[1],
+           Endothelial=color_pal[2],
+           Excitatory=color_pal[3],
+           Inhibitory=color_pal[4],Microglia=color_pal[5],
+           ODC=color_pal[6],OPC=color_pal[7],Pericytes=color_pal[8])
+full&lt;-read.table(&quot;data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt&quot;)
+gwas&lt;-unique(full$GWAS)
+genes&lt;-unique(full$gene)
+
+resdf&lt;-data.frame(gene=genes)
+for(i in 1:length(gwas)){
+    tmp_genes&lt;-full[full$GWAS==gwas[i],]$gene
+    resdf&lt;-cbind(resdf,genes %in% tmp_genes)
+}
+rownames(resdf)&lt;-resdf$gene
+resdf$gene&lt;-NULL
+colnames(resdf)&lt;-gwas
+
+plot&lt;-upset(resdf,gwas,width_ratio=0.1,height_ratio = 0.4,set_size=FALSE,
+      themes=upset_default_themes(text=element_text(size=6,family=&quot;Helvetica&quot;)),
+      base_annotations=list(
+          &#39;Intersection size&#39;=intersection_size(color=&quot;#000000&quot;,size=0.25,
+              mapping=aes(fill=&quot;bars_color&quot;),
+            text=list(size=5/(14/5),family=&quot;Helvetica&quot;))
+            +scale_fill_manual(values=c(&quot;bars_color&quot;=&quot;#1F78B4&quot;),guide=&quot;none&quot;)
+          +theme(plot.background=element_blank(),
+          panel.grid.major = element_blank(), 
+          panel.grid.minor = element_blank())),
+      stripes=&quot;white&quot;,matrix=(
+        intersection_matrix(
+            geom=geom_point(size=0.5),
+            segment=geom_segment(size=0.3)
+            ))
+      )
+
+plot</code></pre>
+<p><img src="figure/figures.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-13-1">
+Past versions of unnamed-chunk-13-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-13-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/ah3918/SingleCellMR/blob/3c08408ce53d6d6f985d9eaa846e1e0642aa30bd/docs/figure/figures.Rmd/unnamed-chunk-13-1.png" target="_blank">3c08408</a>
+</td>
+<td>
+Alexander Haglund
+</td>
+<td>
+2022-12-01
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/ah3918/SingleCellMR/blob/4fcf3eac64490e9323f7548575f9ffc274df12ae/docs/figure/figures.Rmd/unnamed-chunk-13-1.png" target="_blank">4fcf3ea</a>
+</td>
+<td>
+Alexander Haglund
+</td>
+<td>
+2022-12-01
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/ah3918/SingleCellMR/blob/8f071f39327c554f8f61b7a1f285c1e7301976ba/docs/figure/figures.Rmd/unnamed-chunk-13-1.png" target="_blank">8f071f3</a>
+</td>
+<td>
+Alexander Haglund
+</td>
+<td>
+2022-11-18
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
@@ -1462,13 +1618,13 @@ theme(text=element_text(family=&quot;Helvetica&quot;,size=5),legend.text = eleme
       legend.title=element_blank(),
       legend.spacing.y = unit(-1, &#39;cm&#39;),axis.text.y=element_text(family=&quot;Helvetica&quot;,size=5,face=&quot;bold&quot;))+guides(fill = guide_legend(byrow = TRUE))
 g2</code></pre>
-<p><img src="figure/figures.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/figures.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-13-1">
-Past versions of unnamed-chunk-13-1.png
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-14-1">
+Past versions of unnamed-chunk-14-1.png
 </button>
 </p>
-<div id="fig-unnamed-chunk-13-1" class="collapse">
+<div id="fig-unnamed-chunk-14-1" class="collapse">
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
 <thead>
@@ -1487,7 +1643,7 @@ Date
 <tbody>
 <tr>
 <td>
-<a href="https://github.com/ah3918/SingleCellMR/blob/4fcf3eac64490e9323f7548575f9ffc274df12ae/docs/figure/figures.Rmd/unnamed-chunk-13-1.png" target="_blank">4fcf3ea</a>
+<a href="https://github.com/ah3918/SingleCellMR/blob/3c08408ce53d6d6f985d9eaa846e1e0642aa30bd/docs/figure/figures.Rmd/unnamed-chunk-14-1.png" target="_blank">3c08408</a>
 </td>
 <td>
 Alexander Haglund
@@ -1498,7 +1654,18 @@ Alexander Haglund
 </tr>
 <tr>
 <td>
-<a href="https://github.com/ah3918/SingleCellMR/blob/8f071f39327c554f8f61b7a1f285c1e7301976ba/docs/figure/figures.Rmd/unnamed-chunk-13-1.png" target="_blank">8f071f3</a>
+<a href="https://github.com/ah3918/SingleCellMR/blob/4fcf3eac64490e9323f7548575f9ffc274df12ae/docs/figure/figures.Rmd/unnamed-chunk-14-1.png" target="_blank">4fcf3ea</a>
+</td>
+<td>
+Alexander Haglund
+</td>
+<td>
+2022-12-01
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/ah3918/SingleCellMR/blob/8f071f39327c554f8f61b7a1f285c1e7301976ba/docs/figure/figures.Rmd/unnamed-chunk-14-1.png" target="_blank">8f071f3</a>
 </td>
 <td>
 Alexander Haglund
@@ -1536,13 +1703,13 @@ theme(text=element_text(size=7,family=&quot;Helvetica&quot;),axis.text.x=element
                                  axis.title.x=element_blank(),legend.position=&quot;none&quot;,
      title=element_text(size=7,face=&quot;bold&quot;))
 g</code></pre>
-<p><img src="figure/figures.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/figures.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-14-1">
-Past versions of unnamed-chunk-14-1.png
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-15-1">
+Past versions of unnamed-chunk-15-1.png
 </button>
 </p>
-<div id="fig-unnamed-chunk-14-1" class="collapse">
+<div id="fig-unnamed-chunk-15-1" class="collapse">
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
 <thead>
@@ -1561,7 +1728,7 @@ Date
 <tbody>
 <tr>
 <td>
-<a href="https://github.com/ah3918/SingleCellMR/blob/4fcf3eac64490e9323f7548575f9ffc274df12ae/docs/figure/figures.Rmd/unnamed-chunk-14-1.png" target="_blank">4fcf3ea</a>
+<a href="https://github.com/ah3918/SingleCellMR/blob/3c08408ce53d6d6f985d9eaa846e1e0642aa30bd/docs/figure/figures.Rmd/unnamed-chunk-15-1.png" target="_blank">3c08408</a>
 </td>
 <td>
 Alexander Haglund
@@ -1572,7 +1739,18 @@ Alexander Haglund
 </tr>
 <tr>
 <td>
-<a href="https://github.com/ah3918/SingleCellMR/blob/8f071f39327c554f8f61b7a1f285c1e7301976ba/docs/figure/figures.Rmd/unnamed-chunk-14-1.png" target="_blank">8f071f3</a>
+<a href="https://github.com/ah3918/SingleCellMR/blob/4fcf3eac64490e9323f7548575f9ffc274df12ae/docs/figure/figures.Rmd/unnamed-chunk-15-1.png" target="_blank">4fcf3ea</a>
+</td>
+<td>
+Alexander Haglund
+</td>
+<td>
+2022-12-01
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/ah3918/SingleCellMR/blob/8f071f39327c554f8f61b7a1f285c1e7301976ba/docs/figure/figures.Rmd/unnamed-chunk-15-1.png" target="_blank">8f071f3</a>
 </td>
 <td>
 Alexander Haglund
@@ -1622,13 +1800,13 @@ theme(text=element_text(size=5,family=&quot;Helvetica&quot;),legend.title=elemen
 xlab(&quot;SCZ - MR beta&quot;)+ylab(&quot;IQ - MR beta&quot;)+
 guides(fill = guide_legend(byrow = TRUE))
 g</code></pre>
-<p><img src="figure/figures.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/figures.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-15-1">
-Past versions of unnamed-chunk-15-1.png
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-16-1">
+Past versions of unnamed-chunk-16-1.png
 </button>
 </p>
-<div id="fig-unnamed-chunk-15-1" class="collapse">
+<div id="fig-unnamed-chunk-16-1" class="collapse">
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
 <thead>
@@ -1647,7 +1825,7 @@ Date
 <tbody>
 <tr>
 <td>
-<a href="https://github.com/ah3918/SingleCellMR/blob/4fcf3eac64490e9323f7548575f9ffc274df12ae/docs/figure/figures.Rmd/unnamed-chunk-15-1.png" target="_blank">4fcf3ea</a>
+<a href="https://github.com/ah3918/SingleCellMR/blob/3c08408ce53d6d6f985d9eaa846e1e0642aa30bd/docs/figure/figures.Rmd/unnamed-chunk-16-1.png" target="_blank">3c08408</a>
 </td>
 <td>
 Alexander Haglund
@@ -1658,13 +1836,13 @@ Alexander Haglund
 </tr>
 <tr>
 <td>
-<a href="https://github.com/ah3918/SingleCellMR/blob/8f071f39327c554f8f61b7a1f285c1e7301976ba/docs/figure/figures.Rmd/unnamed-chunk-15-1.png" target="_blank">8f071f3</a>
+<a href="https://github.com/ah3918/SingleCellMR/blob/4fcf3eac64490e9323f7548575f9ffc274df12ae/docs/figure/figures.Rmd/unnamed-chunk-16-1.png" target="_blank">4fcf3ea</a>
 </td>
 <td>
 Alexander Haglund
 </td>
 <td>
-2022-11-18
+2022-12-01
 </td>
 </tr>
 </tbody>
@@ -1705,13 +1883,13 @@ geom_hline(yintercept =0,linetype=&quot;dotted&quot;)+theme_classic()+
 theme(text=element_text(size=5,family=&quot;Helvetica&quot;),legend.text = element_text(family=&quot;Helvetica&quot;,size=5,face=&quot;bold&quot;),legend.title=element_blank(),legend.spacing.y = unit(-1, &#39;cm&#39;))+
 xlab(&quot;SCZ - MR beta&quot;)+ylab(&quot;NEUR - MR beta&quot;)+guides(fill = guide_legend(byrow = TRUE))
 g</code></pre>
-<p><img src="figure/figures.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/figures.Rmd/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-16-1">
-Past versions of unnamed-chunk-16-1.png
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-17-1">
+Past versions of unnamed-chunk-17-1.png
 </button>
 </p>
-<div id="fig-unnamed-chunk-16-1" class="collapse">
+<div id="fig-unnamed-chunk-17-1" class="collapse">
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
 <thead>
@@ -1730,7 +1908,18 @@ Date
 <tbody>
 <tr>
 <td>
-<a href="https://github.com/ah3918/SingleCellMR/blob/4fcf3eac64490e9323f7548575f9ffc274df12ae/docs/figure/figures.Rmd/unnamed-chunk-16-1.png" target="_blank">4fcf3ea</a>
+<a href="https://github.com/ah3918/SingleCellMR/blob/3c08408ce53d6d6f985d9eaa846e1e0642aa30bd/docs/figure/figures.Rmd/unnamed-chunk-17-1.png" target="_blank">3c08408</a>
+</td>
+<td>
+Alexander Haglund
+</td>
+<td>
+2022-12-01
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/ah3918/SingleCellMR/blob/4fcf3eac64490e9323f7548575f9ffc274df12ae/docs/figure/figures.Rmd/unnamed-chunk-17-1.png" target="_blank">4fcf3ea</a>
 </td>
 <td>
 Alexander Haglund
@@ -1772,9 +1961,10 @@ attached base packages:
 [8] base     
 
 other attached packages:
-[1] reshape_0.8.9     tidyr_1.2.1       cowplot_1.1.1     dplyr_1.0.9      
-[5] ggsci_2.9         viridis_0.6.2     viridisLite_0.4.1 ggplot2_3.3.6    
-[9] workflowr_1.7.0  
+ [1] ggplot2movies_0.0.1 ComplexUpset_1.3.3  UpSetR_1.4.0       
+ [4] reshape_0.8.9       tidyr_1.2.1         cowplot_1.1.1      
+ [7] dplyr_1.0.9         ggsci_2.9           viridis_0.6.2      
+[10] viridisLite_0.4.1   ggplot2_3.3.6       workflowr_1.7.0    
 
 loaded via a namespace (and not attached):
  [1] tidyselect_1.1.2 xfun_0.32        bslib_0.4.0      purrr_0.3.4     
@@ -1789,9 +1979,9 @@ loaded via a namespace (and not attached):
 [37] farver_2.1.1     fs_1.5.2         gridExtra_2.3    digest_0.6.30   
 [41] stringi_1.7.8    processx_3.7.0   getPass_0.2-2    rprojroot_2.0.3 
 [45] cli_3.4.1        tools_4.0.5      magrittr_2.0.3   sass_0.4.2      
-[49] tibble_3.1.8     whisker_0.4      pkgconfig_2.0.3  ellipsis_0.3.2  
-[53] assertthat_0.2.1 rmarkdown_2.15   httr_1.4.3       rstudioapi_0.13 
-[57] R6_2.5.1         git2r_0.30.1     compiler_4.0.5  </code></pre>
+[49] patchwork_1.1.2  tibble_3.1.8     whisker_0.4      pkgconfig_2.0.3 
+[53] ellipsis_0.3.2   assertthat_0.2.1 rmarkdown_2.15   httr_1.4.3      
+[57] rstudioapi_0.13  R6_2.5.1         git2r_0.30.1     compiler_4.0.5  </code></pre>
 </div>
 </div>
 </div>
