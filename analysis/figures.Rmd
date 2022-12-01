@@ -317,13 +317,12 @@ g
 ```
 
 
-## Figure 4a
+## Figure 4b
 
 ```{r}
 library(UpSetR)
 library(dplyr)
 library(ComplexUpset)
-library(ggplot2movies)
 library(tidyr)
 
 color_pal=ggsci::pal_nejm("default")(8)
