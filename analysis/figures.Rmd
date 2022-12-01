@@ -58,6 +58,7 @@ g
 
 ### Figure 2b
 coming soon
+
 ### Figure 2c
 coming soon
 
@@ -78,6 +79,7 @@ theme(text=element_text(family="Helvetica",face="bold"),
                                              axis.text.x=element_text(size=5,face="bold"),
                                             axis.text.y=element_text(size=5),
      axis.title.x=element_text(size=5),axis.title.y=element_text(size=5))
+g
 ```
 
 ### Figure 2e
