@@ -368,6 +368,40 @@ plot
 # SUPPLEMENTARY FIGURES
 
 ## Suppl. Fig. 1
+```{r}
+metadata<-readRDS("data/METADATA/Final_Seurat_129samples_15May2022_metadata.rds")
+
+##this sample was excluded earlier
+metadata<-metadata[!metadata$Sample_ID %in% "O141",]
+
+samples<-unique(metadata$Sample_ID)
+df<-data.frame(samples=samples,new_id=1:length(samples))
+metadata$new_id<-paste0("Sample ",as.character(df[match(metadata$Sample_ID,df$samples),]$new_id))
+metadata$new_id<-factor(metadata$new_id, levels =unique(metadata$new_id))
+
+tmp<-metadata
+color_panel<-ggsci::pal_nejm("default")(8)
+p<-ggplot(tmp,aes(x=new_id,fill=CellType))+geom_bar(color="black")+
+scale_fill_manual(values=color_panel)+
+scale_y_continuous(expand=c(0,0))+
+theme_classic()+theme(axis.text.x=element_text(size=5,face="bold",angle=90),
+                      plot.title = element_text(size=5,face="bold"),
+                                  axis.text.y=element_text(size=5,face="bold"),
+                                  axis.title.y=element_blank(),
+                                 axis.title.x=element_blank(),
+                                                 legend.key.size=unit(0.7,"cm"),
+                      legend.position="none",
+
+                                                                legend.text=element_text(size=15),panel.background = element_rect(fill='transparent'), #transparent panel bg
+    plot.background = element_rect(fill='transparent', color=NA), #transparent plot bg
+    panel.grid.major = element_blank(), #remove major gridlines
+    panel.grid.minor = element_blank(), #remove minor gridlines
+    legend.background = element_rect(fill='transparent'), #transparent legend bg
+    legend.box.background = element_rect(fill='transparent'))+labs(title="Cell type distribution per indiviudal")
+p
+```
+
+
 
 ### Suppl. Fig. 1a
 
