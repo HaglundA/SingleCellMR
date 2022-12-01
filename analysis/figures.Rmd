@@ -365,9 +365,15 @@ plot<-upset(resdf,gwas,width_ratio=0.1,height_ratio = 0.4,set_size=FALSE,
 plot
 ```
 
-# FIGURE 5
+# SUPPLEMENTARY FIGURES
+
+## Suppl. Fig. 1
+
+### Suppl. Fig. 1a
+
+
 ## Figure 5a
-```{r}
+```{r, eval=FALSE}
 full<-read.table("data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt")
 full<-full[full$IVW<0.05,]
 full$trait_gene<-paste0(full$GWAS,"_",full$gene)
@@ -403,7 +409,7 @@ g2
 
 ## Figure 5b
 
-```{r}
+```{r, eval=FALSE}
 full<-read.table("data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt")
 plot_df<-data.frame()
 for(i in 1:length(unique(full$GWAS))){
@@ -467,7 +473,7 @@ g
 
 ## Figure 5d
 
-```{r}
+```{r, eval=FALSE}
 full<-read.table("data/COLOC_MR_RESULTS//2022-10-25_FULL_MR_RES.txt")
 full$celltype_gene<-paste0(full$celltype,".",full$gene)
 scz<-full[full$GWAS=="SCZ",]
