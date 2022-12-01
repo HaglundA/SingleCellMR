@@ -662,6 +662,15 @@ OT_table<-full[,c("GWAS","gene","celltype","OpenTargets_disease_hit")]
 write.table(OT_table,"data/TABLES/OpenTargets_table.txt")
 ```
 
+### check numbers that have a hit
+
+```{r}
+OT_table<-read.table("data/TABLES//OpenTargets_table.txt")
+OT_table$gene_trait<-paste0(OT_table$gene,"_",OT_table$GWAS)
+OT_table<-OT_table[!duplicated(OT_table$gene_trait),]
+table(OT_table$OpenTargets_disease_hit)
+```
+
 
 ## DGIdb
 ```{r}
@@ -687,7 +696,7 @@ write.table(dgidb_table,"data/TABLES/dgidb_table.txt")
 ### check numbers that have a hit
 
 ```{r}
-dgidb_table<-read.table("data/TABLES//OpenTargets_table.txt")
+dgidb_table<-read.table("data/TABLES/dgidb_table.txt")
 dgidb_table<-dgidb_table[!duplicated(dgidb_table$gene),]
 table(dgidb_table$DGIDB_intersect)
 ```
